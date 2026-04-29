@@ -8,16 +8,35 @@ function Dashboard() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    // In a real app, fetch dashboard data
-    setStats({
-      donation: 0,
-      level: "Bronze",
-      peopleImpacted: 0,
-      caloriesBurned: 0,
-      workoutsDone: 0,
-      healthyMeals: 0
-    });
+    const fetchStats = async () => {
+      try {
+        const res = await API.get("/progress/stats");
+        if (res.data && res.data.length > 0) {
+          const latest = res.data[0];
+          setStats({
+            donation: 0, // Calculate based on data if needed
+            level: "Bronze",
+            peopleImpacted: 0,
+            caloriesBurned: latest.calories_burned || 0,
+            workoutsDone: res.data.length,
+            healthyMeals: 0
+          });
+        }
+      } catch (err) {
+        console.error("Dashboard stats error:", err);
+        setStats({
+          donation: 0,
+          level: "Bronze",
+          peopleImpacted: 0,
+          caloriesBurned: 0,
+          workoutsDone: 0,
+          healthyMeals: 0
+        });
+      }
+    };
+    fetchStats();
   }, []);
+
 
   const quickActions = [
     { title: "Start Health Assessment", desc: "Get AI-powered personalized plans", icon: "❤️", path: "/health", color: "bg-green-500/20 text-green-400" },

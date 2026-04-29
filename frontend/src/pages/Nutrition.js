@@ -2,80 +2,52 @@ import { useState, useEffect } from "react";
 import API from "../api/axios";
 
 function Nutrition() {
+
   const [plan, setPlan] = useState(null);
   const [activeTab, setActiveTab] = useState("today");
 
+  const fetchPlan = async () => {
+    try {
+      const res = await API.get("/nutrition/current");
+      if (res.data && res.data.plan_json) {
+        setPlan(JSON.parse(res.data.plan_json));
+      } else {
+        generatePlan();
+      }
+    } catch (err) {
+      console.error("Failed to fetch nutrition:", err);
+      // Fallback mock data
+      setPlan({
+        today: [
+          { type: "Breakfast", time: "7:00 AM", name: "Dosa with Sambar", calories: 350, protein: 8, carbs: 60, fat: 8, ingredients: ["Dosa", "Sambar"], image: "🥞" }
+        ],
+        week: [],
+        shoppingList: []
+      });
+    }
+  };
+
+  const generatePlan = async () => {
+    try {
+      const res = await API.post("/nutrition/generate", {
+        preferences: "Vegetarian",
+        goal: "Health",
+        restrictions: "None"
+      });
+      if (res.data && res.data.plan_json) {
+        setPlan(JSON.parse(res.data.plan_json));
+      }
+    } catch (err) {
+      console.error("Nutrition generation error:", err);
+    }
+  };
+
   useEffect(() => {
-    // In a real app, fetch nutrition plan
-    setPlan({
-      today: [
-        {
-          type: "Breakfast",
-          time: "7:00 AM",
-          name: "Dosa with Sambar and Coconut Chutney",
-          calories: 350,
-          protein: 8,
-          carbs: 60,
-          fat: 8,
-          ingredients: ["Dosa", "Sambar", "Coconut", "Chana", "Cumin", "Coriander"],
-          image: "🥞"
-        },
-        {
-          type: "Lunch",
-          time: "12:30 PM",
-          name: "Whole Wheat Roti with Paneer and Mixed Vegetables",
-          calories: 450,
-          protein: 18,
-          carbs: 55,
-          fat: 15,
-          ingredients: ["Whole Wheat Roti", "Paneer", "Onions", "Tomatoes", "Cumin", "Coriander", "Fenugreek"],
-          image: "🍲"
-        },
-        {
-          type: "Dinner",
-          time: "7:00 PM",
-          name: "Grilled Fish with Quinoa and Steamed Vegetables",
-          calories: 400,
-          protein: 35,
-          carbs: 30,
-          fat: 12,
-          ingredients: ["Fish", "Quinoa", "Broccoli", "Carrots", "Cumin", "Cardamom"],
-          image: "🐟"
-        },
-        {
-          type: "Snack",
-          time: "4:00 PM",
-          name: "Roasted Makhana",
-          calories: 150,
-          protein: 4,
-          carbs: 25,
-          fat: 2,
-          ingredients: ["Makhana", "Salt", "Black Pepper"],
-          image: "🍿"
-        }
-      ],
-      week: [
-        { day: "Wednesday", meals: ["Upma", "Brown Rice & Chole", "Grilled Chicken", "Fruit Juice"] },
-        { day: "Thursday", meals: ["Dosa", "Paneer & Roti", "Grilled Fish", "Cucumber Salad"], today: true },
-        { day: "Friday", meals: ["Oatmeal", "Brown Rice & Rajma", "Grilled Chicken", "Fruit Salad"] },
-        { day: "Saturday", meals: ["Idli", "Whole Wheat Roti", "Grilled Fish", "Cucumber Salad"] },
-        { day: "Sunday", meals: ["Upma", "Brown Rice & Paneer", "Grilled Chicken", "Fresh Fruit"] }
-      ],
-      shoppingList: [
-        { name: "Cumin", bought: true },
-        { name: "Coriander", bought: true },
-        { name: "Brown Rice", bought: true },
-        { name: "Onions", bought: false },
-        { name: "Tomatoes", bought: false },
-        { name: "Fenugreek", bought: false },
-        { name: "Broccoli", bought: false },
-        { name: "Cardamom", bought: false },
-        { name: "Coconut", bought: false },
-        { name: "Carrots", bought: false },
-        { name: "Chana", bought: false }
-      ]
-    });
+    fetchPlan();
   }, []);
+
+
+
 
   const handleBuy = (item) => {
     window.open(`https://www.bigbasket.com/ps/?q=${encodeURIComponent(item)}`, "_blank");

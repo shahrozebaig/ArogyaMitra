@@ -1,4 +1,6 @@
 import { useState } from "react";
+import API from "../api/axios";
+
 
 function AICoach() {
   const [messages, setMessages] = useState([
@@ -40,24 +42,34 @@ function AICoach() {
     }
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    const newUserMsg = { sender: "user", text: input, time: "03:47 PM" };
-    setMessages([...messages, newUserMsg]);
+    const userMessage = input;
+    const newUserMsg = { sender: "user", text: userMessage, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
+    setMessages(prev => [...prev, newUserMsg]);
     setInput("");
     
-    // Mock AI response
-    setTimeout(() => {
-      setMessages(prev => [...prev, {
+    try {
+      const res = await API.post("/aromi/chat", { message: userMessage });
+      const aiReply = {
         sender: "ai",
-        text: activeCoach === "Fitness" 
-          ? "That sounds like a great plan! Consistency is key. Should we look at a specific workout for tomorrow?"
-          : "Namaste! I am AROMI, your personal health companion. I have access to your personalized workout and nutrition plans. How can I assist you today? 🧘",
-        time: "03:47 PM",
+        text: res.data.reply,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         coach: activeCoach
-      }]);
-    }, 1000);
+      };
+      setMessages(prev => [...prev, aiReply]);
+    } catch (err) {
+      console.error("Chat error:", err);
+      const errorMsg = {
+        sender: "ai",
+        text: "I'm having trouble connecting to my brain right now. Please try again later! 🧠🔌",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        coach: activeCoach
+      };
+      setMessages(prev => [...prev, errorMsg]);
+    }
   };
+
 
   return (
     <div className="max-w-5xl mx-auto h-[80vh] flex flex-col animate-fade-in">

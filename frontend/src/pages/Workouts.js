@@ -14,15 +14,16 @@ function Workouts() {
 
   const fetchPlan = async () => {
     try {
-
-      // In a real app, we'd fetch the existing plan. 
-      // For this demo, we'll generate if none exists or just use mock data to ensure the UI looks right.
-      const res = await API.get("/workout/plan"); // Assuming this endpoint exists or will be created
-      if (res.data) {
-        setPlan(res.data);
+      const res = await API.get("/workout/current");
+      if (res.data && res.data.plan_json) {
+        setPlan(JSON.parse(res.data.plan_json));
+      } else {
+        // If no plan, we might want to generate one or show a "Generate" button
+        generatePlan();
       }
-    } catch {
-      // Fallback mock data if API fails, to ensure the UI matches the screenshot
+    } catch (err) {
+      console.error("Failed to fetch plan:", err);
+      // Fallback mock data
       setPlan({
         today: {
           title: "Upper Body and Cardio",
@@ -30,45 +31,33 @@ function Workouts() {
           exerciseCount: 3,
           recommendedTime: "6:00 AM - 7:00 AM",
           exercises: [
-            {
-              id: 1,
-              name: "Diamond push-ups",
-              sets: 3,
-              reps: "12-15",
-              rest: "60s",
-              description: "Start in a plank position with your hands closer together than shoulder-width apart, and your index fingers and thumbs forming a diamond shape, lower your body down until your chest almost touches the ground.",
-              video: "https://www.youtube.com/embed/S_7T0q2eG2I"
-            },
-            {
-              id: 2,
-              name: "Mountain climbers",
-              sets: 3,
-              reps: "30-60 seconds",
-              rest: "45s",
-              description: "Start in a plank position, bring one knee up towards your chest, then quickly switch to the other knee, mimicking the motion of running.",
-              video: "https://www.youtube.com/embed/zT-9L37ReGk"
-            },
-            {
-              id: 3,
-              name: "Jumping jacks",
-              sets: 3,
-              reps: "30-60 seconds",
-              rest: "60s",
-              description: "Stand with your feet together, jump your feet out to the sides while raising your arms above your head, then quickly return to the starting position.",
-              video: "https://www.youtube.com/embed/nGaXj3kkmrU"
-            }
+            { id: 1, name: "Diamond push-ups", sets: 3, reps: "12-15", rest: "60s", description: "Start in a plank position with hands closer together.", video: "https://www.youtube.com/embed/S_7T0q2eG2I" },
+            { id: 2, name: "Mountain climbers", sets: 3, reps: "30-60s", rest: "45s", description: "Start in a plank position, bring knees to chest.", video: "https://www.youtube.com/embed/zT-9L37ReGk" }
           ]
         },
         week: [
-          { day: "Wednesday", title: "Rest Day", duration: "0 min", exercises: 0, status: "Rest Day" },
-          { day: "Thursday", title: "Upper Body and Cardio", duration: "45 min", exercises: 3, status: "TODAY", active: true },
-          { day: "Friday", title: "Lower Body and Core", duration: "45 min", exercises: 3, status: "Upcoming" }
+          { day: "Thursday", title: "Upper Body and Cardio", duration: "45 min", exercises: 3, status: "TODAY", active: true }
         ]
       });
-    } finally {
-      // Done loading
     }
   };
+
+  const generatePlan = async () => {
+    try {
+      const res = await API.post("/workout/generate", {
+        goal: "Muscle Gain",
+        location: "Home",
+        duration: 45,
+        fitness_level: "Beginner"
+      });
+      if (res.data && res.data.plan_json) {
+        setPlan(JSON.parse(res.data.plan_json));
+      }
+    } catch (err) {
+      console.error("Generation error:", err);
+    }
+  };
+
 
   const startWorkout = (exercise = null) => {
     const exercises = plan?.today?.exercises || [];
