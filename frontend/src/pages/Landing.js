@@ -1,11 +1,5 @@
 import { Link } from "react-router-dom";
 function Landing() {
-  const stats = [
-    { label: "Active Users", value: "10K+", icon: "👥" },
-    { label: "Workouts Completed", value: "50K+", icon: "⚡" },
-    { label: "Raised for Charity", value: "₹2L+", icon: "💝" },
-    { label: "Success Rate", value: "95%", icon: "🏆" },
-  ];
   const features = [
     {
       title: "AI-Powered Plans",
@@ -32,26 +26,7 @@ function Landing() {
       color: "bg-red-500/20 text-red-400",
     },
   ];
-  const reviews = [
-    {
-      name: "Priya Sharma",
-      role: "Software Engineer",
-      text: "ArogyaMitra transformed my fitness journey! The AI plans are spot on and the charity aspect keeps me motivated.",
-      stars: 5,
-    },
-    {
-      name: "Rahul Kumar",
-      role: "Student",
-      text: "The real-time AI tracking is incredible. It feels like having a personal trainer in my pocket 24/7!",
-      stars: 5,
-    },
-    {
-      name: "Anika Patel",
-      role: "Doctor",
-      text: "The nutrition plans are scientifically sound and easy to follow. Highly recommended!",
-      stars: 5,
-    },
-  ];
+
   return (
     <div className="min-h-screen bg-[#0f111a] text-white">
       <nav className="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
@@ -61,7 +36,6 @@ function Landing() {
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
           <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="#reviews" className="hover:text-white transition-colors">Reviews</a>
         </div>
         <div className="flex items-center gap-4">
           <Link to="/login" className="text-sm font-medium hover:text-purple-400 transition-colors">Login</Link>
@@ -71,9 +45,6 @@ function Landing() {
       <section className="relative px-8 pt-20 pb-32 max-w-7xl mx-auto text-center space-y-8 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-purple-600/10 blur-[120px] -z-10 rounded-full"></div>
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-          <div className="inline-block px-4 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-400 text-xs font-bold uppercase tracking-widest animate-pulse">
-            The Future of Personal Fitness
-          </div>
           <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-tight">
             The World's Most <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600">Intelligent</span> Fitness Companion
           </h1>
@@ -83,21 +54,10 @@ function Landing() {
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center pt-4">
             <Link to="/register" className="btn-primary !px-10 !py-4 text-lg">Start Your Transformation 🚀</Link>
-            <Link to="/login" className="btn-outline !px-10 !py-4 text-lg">Member Login</Link>
           </div>
         </div>
       </section>
-      <section className="px-8 py-20 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((s, i) => (
-            <div key={i} className="glass-card p-8 text-center space-y-2 glass-card-hover">
-              <div className="text-2xl mb-2">{s.icon}</div>
-              <p className="text-4xl font-black">{s.value}</p>
-              <p className="text-xs font-bold uppercase tracking-widest text-white/40">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      
       <section id="features" className="px-8 py-32 max-w-7xl mx-auto space-y-16">
         <div className="text-center space-y-4">
           <h2 className="text-4xl font-bold">Why Choose <span className="text-purple-400">ArogyaMitra?</span></h2>
@@ -117,57 +77,12 @@ function Landing() {
           ))}
         </div>
       </section>
-      <section id="reviews" className="px-8 py-32 max-w-7xl mx-auto space-y-16">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold">What Our <span className="text-purple-400">Users Say</span></h2>
-          <p className="max-w-xl mx-auto text-white/40">Join thousands of satisfied users who transformed their lives.</p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {reviews.map((r, i) => (
-            <div key={i} className="glass-card p-8 space-y-6 relative group">
-              <div className="flex gap-1">
-                {[...Array(r.stars)].map((_, i) => (
-                  <span key={i} className="text-yellow-500 text-sm">★</span>
-                ))}
-              </div>
-              <p className="text-white/60 italic leading-relaxed">"{r.text}"</p>
-              <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xs">👤</div>
-                <div>
-                  <h4 className="font-bold text-sm">{r.name}</h4>
-                  <p className="text-[10px] text-white/40 uppercase font-bold tracking-wider">{r.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-      <section className="px-8 py-32 max-w-7xl mx-auto">
-        <div className="glass-card p-12 md:p-20 text-center space-y-10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full -mr-48 -mt-48"></div>
-          <div className="relative z-10 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-black">Ready to Transform Your Life?</h2>
-            <p className="text-white/40 max-w-lg mx-auto">Join ArogyaMitra today and start your personalized fitness journey with AI guidance.</p>
-          </div>
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-6">
-            <Link to="/register" className="btn-primary !px-10 !py-4 text-lg">
-              Start Your Journey 🚀
-            </Link>
-            <Link to="/login" className="btn-outline !px-10 !py-4 text-lg">
-              Already a Member? →
-            </Link>
-          </div>
-          <div className="relative z-10 flex flex-wrap justify-center gap-8 pt-8 border-t border-white/5 text-[10px] uppercase font-bold tracking-[0.2em] text-white/20">
-            <div className="flex items-center gap-2"><span>✅</span> Free to start</div>
-            <div className="flex items-center gap-2"><span>✅</span> No credit card required</div>
-            <div className="flex items-center gap-2"><span>✅</span> Cancel anytime</div>
-          </div>
-        </div>
-      </section>
+
       <footer className="px-8 py-12 border-t border-white/5 text-center text-white/20 text-xs font-medium tracking-widest uppercase">
         © 2026 ArogyaMitra. Built for the future of fitness.
       </footer>
     </div>
+
   );
 }
 export default Landing;
