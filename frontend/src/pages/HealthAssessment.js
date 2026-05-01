@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
-
 function HealthAssessment() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -12,24 +11,43 @@ function HealthAssessment() {
     fitness_level: "",
     workout_location: "",
     workout_time: "",
+    dietary_preference: "Vegetarian",
     allergies: "",
     medical_conditions: "",
   });
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    const calories = form.fitness_goal === "Weight Loss" ? 1600 : form.fitness_goal === "Muscle Gain" ? 2800 : 2100;
     try {
       await API.post("/health/assessment", form);
+      await Promise.all([
+        API.post("/workout/generate", {
+          goal: form.fitness_goal,
+          location: form.workout_location,
+          duration: 30,
+          fitness_level: form.fitness_level
+        }),
+        API.post("/nutrition/generate", {
+          calories: calories,
+          diet_type: form.dietary_preference || "Vegetarian",
+          allergies: form.allergies || "None"
+        })
+      ]);
+      await API.post("/progress/update", {
+        weight: parseFloat(form.weight),
+        calories_burned: 0,
+        workout_completed: 0,
+        healthy_meals_count: 0
+      });
       navigate("/dashboard");
     } catch (err) {
-      alert("Failed to submit assessment");
+      console.error("Failed to generate plans:", err);
+      alert("Assessment saved, but plan generation failed. You can try generating from the dashboard.");
+      navigate("/dashboard");
     }
   };
-
   return (
     <div className="max-w-3xl mx-auto space-y-10 animate-fade-in pb-20">
       <div className="space-y-2">
@@ -38,12 +56,10 @@ function HealthAssessment() {
         </h1>
         <p className="text-white/40">Complete this assessment to get your AI-powered personalized plans!</p>
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Physical Metrics */}
         <div className="glass-card p-8 space-y-6">
           <h3 className="text-lg font-bold flex items-center gap-2 border-b border-white/5 pb-4">
-             <span className="text-blue-400">📏</span> Physical Metrics
+            <span className="text-blue-400">📏</span> Physical Metrics
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="space-y-1">
@@ -60,14 +76,12 @@ function HealthAssessment() {
             </div>
           </div>
         </div>
-
-        {/* Fitness Goals */}
         <div className="glass-card p-8 space-y-6">
           <h3 className="text-lg font-bold flex items-center gap-2 border-b border-white/5 pb-4">
-             <span className="text-green-400">🎯</span> Fitness Goals
+            <span className="text-green-400">🎯</span> Fitness Goals
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
-             <div className="space-y-1">
+            <div className="space-y-1">
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Fitness Goal</label>
               <select name="fitness_goal" onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500/50 text-white/60" required>
                 <option value="">Select Goal</option>
@@ -88,13 +102,21 @@ function HealthAssessment() {
             </div>
           </div>
         </div>
-
-        {/* Lifestyle & Health */}
         <div className="glass-card p-8 space-y-6">
           <h3 className="text-lg font-bold flex items-center gap-2 border-b border-white/5 pb-4">
-             <span className="text-yellow-400">🥗</span> Lifestyle & Health
+            <span className="text-yellow-400">🥗</span> Lifestyle & Nutrition
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Dietary Preference</label>
+              <select name="dietary_preference" onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500/50 text-white/60" required>
+                <option value="">Select Diet</option>
+                <option value="Vegetarian">Vegetarian 🥦</option>
+                <option value="Non-Vegetarian">Non-Vegetarian 🍗</option>
+                <option value="Vegan">Vegan 🌱</option>
+                <option value="Eggetarian">Eggetarian 🥚</option>
+              </select>
+            </div>
             <div className="space-y-1">
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Workout Location</label>
               <select name="workout_location" onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500/50 text-white/60" required>
@@ -104,18 +126,9 @@ function HealthAssessment() {
                 <option value="Outdoor">Outdoor</option>
               </select>
             </div>
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Preferred Workout Time</label>
-              <select name="workout_time" onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500/50 text-white/60" required>
-                <option value="">Select Time</option>
-                <option value="Morning">Morning</option>
-                <option value="Afternoon">Afternoon</option>
-                <option value="Evening">Evening</option>
-              </select>
-            </div>
           </div>
           <div className="grid md:grid-cols-2 gap-6 pt-4">
-             <div className="space-y-1">
+            <div className="space-y-1">
               <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Allergies</label>
               <textarea name="allergies" placeholder="e.g., Peanuts, Dairy (Optional)" onChange={handleChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500/50 text-sm h-24" />
             </div>
@@ -125,7 +138,6 @@ function HealthAssessment() {
             </div>
           </div>
         </div>
-
         <button
           type="submit"
           className="w-full py-5 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl text-white font-black text-xl hover:shadow-2xl hover:shadow-purple-600/30 active:scale-[0.98] transition-all"
@@ -136,5 +148,4 @@ function HealthAssessment() {
     </div>
   );
 }
-
 export default HealthAssessment;

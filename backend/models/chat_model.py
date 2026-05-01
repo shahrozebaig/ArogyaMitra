@@ -9,4 +9,8 @@ class ChatMessage(Base):
     role = Column(String)
     message = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+<<<<<<< HEAD
     user = relationship("User")
+=======
+    user = relationship("User")
+>>>>>>> 4499f26 (Updated & Modified)

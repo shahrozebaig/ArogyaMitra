@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 function Landing() {
   const stats = [
     { label: "Active Users", value: "10K+", icon: "👥" },
@@ -7,7 +6,6 @@ function Landing() {
     { label: "Raised for Charity", value: "₹2L+", icon: "💝" },
     { label: "Success Rate", value: "95%", icon: "🏆" },
   ];
-
   const features = [
     {
       title: "AI-Powered Plans",
@@ -16,9 +14,9 @@ function Landing() {
       color: "bg-purple-500/20 text-purple-400",
     },
     {
-      title: "Smart Scheduling",
-      desc: "Automatic Google Calendar integration for seamless plan management.",
-      icon: "📅",
+      title: "Real-time Coaching",
+      desc: "Adaptive health coach that learns your preferences and adjusts in real-time.",
+      icon: "✨",
       color: "bg-blue-500/20 text-blue-400",
     },
     {
@@ -34,7 +32,6 @@ function Landing() {
       color: "bg-red-500/20 text-red-400",
     },
   ];
-
   const reviews = [
     {
       name: "Priya Sharma",
@@ -45,7 +42,7 @@ function Landing() {
     {
       name: "Rahul Kumar",
       role: "Student",
-      text: "Love how it syncs with my Google Calendar. Never miss a workout now!",
+      text: "The real-time AI tracking is incredible. It feels like having a personal trainer in my pocket 24/7!",
       stars: 5,
     },
     {
@@ -55,10 +52,8 @@ function Landing() {
       stars: 5,
     },
   ];
-
   return (
     <div className="min-h-screen bg-[#0f111a] text-white">
-      {/* Navigation */}
       <nav className="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center font-bold">A</div>
@@ -73,34 +68,25 @@ function Landing() {
           <Link to="/register" className="btn-primary !px-5 !py-2 text-sm">Get Started</Link>
         </div>
       </nav>
-
-      {/* Hero Section */}
       <section className="relative px-8 pt-20 pb-32 max-w-7xl mx-auto text-center space-y-8 overflow-hidden">
-        {/* Glow effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-purple-600/10 blur-[120px] -z-10 rounded-full"></div>
-        
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-yellow-500 text-sm font-medium animate-fade-in">
-          <span>✨</span>
-          Your AI Fitness Companion
-        </div>
-
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter animate-fade-in">
-          Your AI Fitness <br />
-          <span className="bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">Companion</span>
-        </h1>
-
-        <p className="max-w-2xl mx-auto text-white/40 text-lg md:text-xl leading-relaxed animate-fade-in">
-          Transform your health journey with personalized AI-powered workout plans, nutrition guidance, and automatic charity donations. Join thousands who've already started their transformation!
-        </p>
-
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 pt-4 animate-fade-in">
-          <Link to="/register" className="btn-primary !px-8 !py-4 text-lg">
-            Start Free Journey →
-          </Link>
+        <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
+          <div className="inline-block px-4 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-400 text-xs font-bold uppercase tracking-widest animate-pulse">
+            The Future of Personal Fitness
+          </div>
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-tight">
+            The World's Most <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600">Intelligent</span> Fitness Companion
+          </h1>
+          <p className="text-xl text-white/40 max-w-2xl mx-auto leading-relaxed">
+            ArogyaMitra isn't just an app—it's a full-stack intelligent system.
+            Real-time AI pose tracking, dynamic nutrition planning, and an adaptive health coach that learns and grows with you.
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center pt-4">
+            <Link to="/register" className="btn-primary !px-10 !py-4 text-lg">Start Your Transformation 🚀</Link>
+            <Link to="/login" className="btn-outline !px-10 !py-4 text-lg">Member Login</Link>
+          </div>
         </div>
       </section>
-
-      {/* Stats Section */}
       <section className="px-8 py-20 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((s, i) => (
@@ -112,14 +98,11 @@ function Landing() {
           ))}
         </div>
       </section>
-
-      {/* Features Section */}
       <section id="features" className="px-8 py-32 max-w-7xl mx-auto space-y-16">
         <div className="text-center space-y-4">
           <h2 className="text-4xl font-bold">Why Choose <span className="text-purple-400">ArogyaMitra?</span></h2>
           <p className="max-w-xl mx-auto text-white/40">Experience the future of fitness with our AI-powered platform that adapts to your lifestyle.</p>
         </div>
-
         <div className="grid md:grid-cols-4 gap-6">
           {features.map((f, i) => (
             <div key={i} className="glass-card p-8 space-y-6 glass-card-hover group">
@@ -134,14 +117,11 @@ function Landing() {
           ))}
         </div>
       </section>
-
-      {/* Reviews Section */}
       <section id="reviews" className="px-8 py-32 max-w-7xl mx-auto space-y-16">
         <div className="text-center space-y-4">
           <h2 className="text-4xl font-bold">What Our <span className="text-purple-400">Users Say</span></h2>
           <p className="max-w-xl mx-auto text-white/40">Join thousands of satisfied users who transformed their lives.</p>
         </div>
-
         <div className="grid md:grid-cols-3 gap-8">
           {reviews.map((r, i) => (
             <div key={i} className="glass-card p-8 space-y-6 relative group">
@@ -162,17 +142,13 @@ function Landing() {
           ))}
         </div>
       </section>
-
-      {/* CTA Section */}
       <section className="px-8 py-32 max-w-7xl mx-auto">
         <div className="glass-card p-12 md:p-20 text-center space-y-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full -mr-48 -mt-48"></div>
-          
           <div className="relative z-10 space-y-4">
             <h2 className="text-4xl md:text-5xl font-black">Ready to Transform Your Life?</h2>
             <p className="text-white/40 max-w-lg mx-auto">Join ArogyaMitra today and start your personalized fitness journey with AI guidance.</p>
           </div>
-
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-6">
             <Link to="/register" className="btn-primary !px-10 !py-4 text-lg">
               Start Your Journey 🚀
@@ -181,7 +157,6 @@ function Landing() {
               Already a Member? →
             </Link>
           </div>
-
           <div className="relative z-10 flex flex-wrap justify-center gap-8 pt-8 border-t border-white/5 text-[10px] uppercase font-bold tracking-[0.2em] text-white/20">
             <div className="flex items-center gap-2"><span>✅</span> Free to start</div>
             <div className="flex items-center gap-2"><span>✅</span> No credit card required</div>
@@ -189,13 +164,10 @@ function Landing() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
       <footer className="px-8 py-12 border-t border-white/5 text-center text-white/20 text-xs font-medium tracking-widest uppercase">
         © 2026 ArogyaMitra. Built for the future of fitness.
       </footer>
     </div>
   );
 }
-
 export default Landing;

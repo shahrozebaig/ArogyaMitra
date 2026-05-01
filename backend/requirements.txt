@@ -1,14 +1,11 @@
-fastapi==0.109.0           # Web framework
-uvicorn==0.27.0            # Server to run FastAPI
-sqlalchemy==2.0.25         # Database ORM
-python-dotenv==1.0.0       # Load .env files
-pydantic==2.5.3            # Data validation
-pydantic[email]            # Email validation
-python-jose[cryptography]  # JWT tokens
-passlib[bcrypt]            # Password hashing
-python-multipart           # Form data handling
-groq                       # Groq AI client
-requests                   # HTTP requests (YouTube, Spoonacular)
-google-api-python-client   # Google Calendar
-google-auth-httplib2       # Google auth
-google-auth-oauthlib       # Google OAuth
+fastapi==0.109.0         
+uvicorn==0.27.0            
+sqlalchemy==2.0.25         
+python-dotenv==1.0.0       
+pydantic==2.5.3            
+pydantic[email]            
+python-jose[cryptography]  
+passlib[bcrypt]           
+python-multipart           
+groq                      
+requests                   

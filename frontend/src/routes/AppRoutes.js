@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
@@ -7,7 +6,6 @@ import HealthAssessment from "../pages/HealthAssessment";
 import Workouts from "../pages/Workouts";
 import Nutrition from "../pages/Nutrition";
 import Progress from "../pages/Progress";
-
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -23,5 +21,4 @@ function AppRoutes() {
     </BrowserRouter>
   );
 }
-
 export default AppRoutes;

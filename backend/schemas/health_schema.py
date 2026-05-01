@@ -1,6 +1,4 @@
 from pydantic import BaseModel
-
-
 class HealthCreate(BaseModel):
     age: int
     height: int
@@ -9,10 +7,9 @@ class HealthCreate(BaseModel):
     fitness_level: str
     workout_location: str
     workout_time: str
+    dietary_preference: str = "Vegetarian"
     allergies: str | None = None
     medical_conditions: str | None = None
-
-
 class HealthResponse(BaseModel):
     id: int
     user_id: int
@@ -23,8 +20,8 @@ class HealthResponse(BaseModel):
     fitness_level: str
     workout_location: str
     workout_time: str
+    dietary_preference: str | None = "Vegetarian"
     allergies: str | None = None
     medical_conditions: str | None = None
-
     class Config:
         from_attributes = True

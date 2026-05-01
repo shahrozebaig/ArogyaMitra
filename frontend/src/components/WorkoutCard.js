@@ -2,7 +2,6 @@ function WorkoutCard({ day, exercises }) {
   return (
     <div className="bg-white p-4 rounded shadow">
       <h2 className="font-bold mb-2">{day}</h2>
-
       {exercises.map((ex, i) => (
         <div key={i} className="mb-2">
           <p>{ex.name}</p>
@@ -19,5 +18,4 @@ function WorkoutCard({ day, exercises }) {
     </div>
   );
 }
-
 export default WorkoutCard;

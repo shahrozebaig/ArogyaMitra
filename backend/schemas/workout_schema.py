@@ -1,13 +1,9 @@
 from pydantic import BaseModel
-
-
 class WorkoutGenerateRequest(BaseModel):
     goal: str
     location: str
     duration: int
     fitness_level: str
-
-
 class WorkoutResponse(BaseModel):
     id: int
     user_id: int
@@ -15,6 +11,5 @@ class WorkoutResponse(BaseModel):
     goal: str
     duration: int
     plan_json: str
-
     class Config:
         from_attributes = True

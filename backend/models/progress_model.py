@@ -11,4 +11,8 @@ class ProgressRecord(Base):
     workout_completed = Column(Integer)
     healthy_meals_count = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+<<<<<<< HEAD
     user = relationship("User")
+=======
+    user = relationship("User")
+>>>>>>> 4499f26 (Updated & Modified)

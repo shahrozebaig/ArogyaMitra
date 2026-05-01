@@ -7,4 +7,8 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
+<<<<<<< HEAD
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+=======
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+>>>>>>> 4499f26 (Updated & Modified)
