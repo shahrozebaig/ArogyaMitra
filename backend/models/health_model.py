@@ -15,8 +15,4 @@ class HealthProfile(Base):
     dietary_preference = Column(String, default="Vegetarian")
     allergies = Column(String)
     medical_conditions = Column(String)
-<<<<<<< HEAD
     user = relationship("User")
-=======
-    user = relationship("User")
->>>>>>> 4499f26 (Updated & Modified)

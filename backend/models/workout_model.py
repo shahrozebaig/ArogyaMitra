@@ -9,8 +9,4 @@ class WorkoutPlan(Base):
     goal = Column(String)
     duration = Column(Integer)
     plan_json = Column(Text)
-<<<<<<< HEAD
     user = relationship("User")
-=======
-    user = relationship("User")
->>>>>>> 4499f26 (Updated & Modified)

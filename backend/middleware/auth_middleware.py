@@ -7,8 +7,4 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     payload = verify_access_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
-<<<<<<< HEAD
     return payload.get("user_id")
-=======
-    return payload.get("user_id")
->>>>>>> 4499f26 (Updated & Modified)

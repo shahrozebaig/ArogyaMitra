@@ -8,8 +8,4 @@ class NutritionPlan(Base):
     calories = Column(Integer)
     diet_type = Column(String)
     plan_json = Column(Text)
-<<<<<<< HEAD
     user = relationship("User")
-=======
-    user = relationship("User")
->>>>>>> 4499f26 (Updated & Modified)
