@@ -5,8 +5,9 @@ import useUserStore from "../store/userStore";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginType, setLoginType] = useState("user");
+  const [showPassword, setShowPassword] = useState(false);
   const setUser = useUserStore((state) => state.setUser);
+
   const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,21 +34,9 @@ function Login() {
             <h1 className="text-3xl font-black tracking-tight">Welcome Back!</h1>
             <p className="text-white/40 text-sm">Continue your fitness journey with ArogyaMitra</p>
           </div>
-          <div className="flex bg-white/5 p-1 rounded-xl border border-white/10">
-            <button
-              onClick={() => setLoginType("user")}
-              className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${loginType === 'user' ? 'bg-white/10 text-white shadow-lg' : 'text-white/40 hover:text-white'}`}
-            >
-              <span>👤</span> User Login
-            </button>
-            <button
-              onClick={() => setLoginType("admin")}
-              className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${loginType === 'admin' ? 'bg-white/10 text-white shadow-lg' : 'text-white/40 hover:text-white'}`}
-            >
-              <span>🛡️</span> Admin Login
-            </button>
-          </div>
+          
           <form onSubmit={handleLogin} className="space-y-6">
+
             <div className="space-y-4">
               <div className="space-y-1">
                 <label className="text-xs font-bold text-white/40 uppercase tracking-widest">Username</label>
@@ -66,16 +55,22 @@ function Login() {
                 </div>
                 <div className="relative">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="••••••••••••"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500/50 transition-all"
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 cursor-pointer hover:text-white transition-colors">👁️</span>
+                  <span 
+                    className={`absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer transition-colors ${showPassword ? 'text-purple-400' : 'text-white/20 hover:text-white'}`}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "👁️‍🗨️" : "👁️"}
+                  </span>
                 </div>
               </div>
             </div>
+
             <button
               type="submit"
               className="w-full py-4 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl text-white font-bold hover:shadow-lg hover:shadow-purple-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
