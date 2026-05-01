@@ -7,7 +7,12 @@
     @apply bg-[#0f111a] text-white;
     font-family: 'Inter', sans-serif;
   }
+  select option {
+    background: #1a1c2e;
+    color: white;
+  }
 }
+
 
 @layer components {
   .glass-card {
