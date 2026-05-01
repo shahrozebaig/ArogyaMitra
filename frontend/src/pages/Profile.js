@@ -3,7 +3,7 @@ import useUserStore from "../store/userStore";
 import API from "../api/axios";
 function Profile() {
   const user = useUserStore((state) => state.user);
-  const [activeTab, setActiveTab] = useState("Profile");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,8 +21,8 @@ function Profile() {
           setFormData({
             name: user?.name || "Aragonda Srinivas",
             email: user?.email || "abcd@gmail.com",
-            phone: res.data.phone || "",
             age: String(res.data.age) || "",
+
             gender: res.data.gender || "Male",
             height: String(res.data.height) || "",
             weight: String(res.data.weight) || ""
@@ -56,18 +56,41 @@ function Profile() {
     }
   };
   const handleResetAccount = async () => {
-    if (window.confirm("⚠️ ARE YOU SURE? This will delete ALL your plans and progress! You will need to take the assessment again. This cannot be undone!")) {
+    if (window.confirm("⚠️ Reset metrics? This will clear your Age, Gender, Height, and Weight, and let you restart your assessment.")) {
       try {
+        await API.post("/health/profile/update", {
+          ...formData,
+          age: 0,
+          gender: "Male",
+          height: 0,
+          weight: 0,
+          fitness_goal: "Stay Fit",
+          fitness_level: "Beginner"
+        });
         await API.post("/health/reset");
-        alert("Account reset successfully. Redirecting to assessment...");
+
+        alert("Metrics reset successfully. Redirecting to assessment...");
         window.location.href = "/health";
       } catch (err) {
         console.error("Reset failed:", err);
       }
     }
   };
+
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        alert("Picture selected! (Upload logic can be connected here)");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-10 animate-fade-in pb-20">
+
       <div className="flex justify-between items-end">
         <div className="space-y-2">
           <h1 className="text-4xl font-black tracking-tight flex items-center gap-3">
@@ -75,21 +98,27 @@ function Profile() {
           </h1>
           <p className="text-white/40">Manage your account settings and preferences</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-bold uppercase tracking-widest text-white/60 hover:bg-white/10 transition-all">
-          <span>📝</span> Edit Profile
-        </button>
       </div>
+
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1 space-y-6">
           <div className="glass-card p-8 text-center space-y-6 relative overflow-hidden group">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-purple-600/10 blur-[60px] rounded-full -z-10"></div>
             <div className="relative">
-              <div className="w-28 h-28 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full mx-auto flex items-center justify-center text-4xl font-black text-white shadow-2xl shadow-purple-600/20 group-hover:scale-105 transition-transform">
-                {formData.name.charAt(0)}
-              </div>
-              <button className="absolute bottom-0 right-1/2 translate-x-10 w-8 h-8 bg-white/10 border border-white/10 rounded-full flex items-center justify-center text-xs backdrop-blur-xl hover:bg-white/20 transition-all">
-                📷
-              </button>
+              <label className="cursor-pointer block relative group/avatar">
+                <div className="w-28 h-28 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full mx-auto flex items-center justify-center text-4xl font-black text-white shadow-2xl shadow-purple-600/20 group-hover:scale-105 transition-transform overflow-hidden">
+                  {formData.name.charAt(0)}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex items-center justify-center text-sm font-bold">
+                    Change 📷
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleProfilePicChange}
+                />
+              </label>
             </div>
             <div className="space-y-1">
               <h2 className="text-2xl font-bold">{formData.name}</h2>
@@ -110,28 +139,8 @@ function Profile() {
               </div>
             </div>
           </div>
-          <div className="glass-card p-4 space-y-2">
-            {["Profile", "Settings", "Notifications", "Privacy"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`w-full px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest text-left transition-all flex items-center justify-between group ${activeTab === tab
-                    ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white hover:bg-white/[0.02]"
-                  }`}
-              >
-                <span className="flex items-center gap-3">
-                  {tab === 'Profile' && '👤'}
-                  {tab === 'Settings' && '⚙️'}
-                  {tab === 'Notifications' && '🔔'}
-                  {tab === 'Privacy' && '🛡️'}
-                  {tab}
-                </span>
-                <span className={`opacity-0 group-hover:opacity-100 transition-opacity ${activeTab === tab ? 'opacity-100' : ''}`}>→</span>
-              </button>
-            ))}
-          </div>
         </div>
+
         <div className="lg:col-span-2">
           <div className="glass-card p-8 md:p-10 space-y-8">
             <div className="space-y-2 border-b border-white/5 pb-6">
@@ -157,15 +166,7 @@ function Profile() {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500/50 transition-all"
                 />
               </div>
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Phone</label>
-                <input
-                  name="phone"
-                  placeholder="Enter phone number"
-                  onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500/50 transition-all"
-                />
-              </div>
+
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Age</label>
                 <input
@@ -177,17 +178,15 @@ function Profile() {
               </div>
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Gender</label>
-                <select
+                <input
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500/50 transition-all text-white/60"
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
+                  placeholder="e.g., Male"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500/50 transition-all"
+                />
               </div>
+
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Height (cm)</label>
                 <input
