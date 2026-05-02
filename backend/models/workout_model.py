@@ -9,4 +9,5 @@ class WorkoutPlan(Base):
     goal = Column(String)
     duration = Column(Integer)
     plan_json = Column(Text)
+    created_at = Column(String) # Storing as YYYY-MM-DD for easy day check
     user = relationship("User")
