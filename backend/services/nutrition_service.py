@@ -3,6 +3,7 @@ from models.nutrition_model import NutritionPlan
 from services.groq_service import generate_response
 from utils.prompt_templates import nutrition_prompt
 import json
+import datetime
 def generate_nutrition(db: Session, user_id: int, data: dict):
     prompt = nutrition_prompt(data)
     ai_response = generate_response(prompt)
@@ -24,7 +25,8 @@ def generate_nutrition(db: Session, user_id: int, data: dict):
         user_id=user_id,
         calories=data.get("calories", 2000),
         diet_type=data.get("diet_type", "Vegetarian"),
-        plan_json=json.dumps(plan)
+        plan_json=json.dumps(plan),
+        created_at=datetime.date.today().isoformat()
     )
     db.add(nutrition)
     db.commit()
