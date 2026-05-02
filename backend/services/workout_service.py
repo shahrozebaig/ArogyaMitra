@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+import datetime
 from models.workout_model import WorkoutPlan
 from services.groq_service import generate_response
 from services.youtube_service import get_exercise_video
@@ -25,7 +26,8 @@ def generate_workout(db: Session, user_id: int, data: dict):
         title="7 Day Workout Plan",
         goal=data.get("goal"),
         duration=data.get("duration"),
-        plan_json=json.dumps(plan)
+        plan_json=json.dumps(plan),
+        created_at=datetime.date.today().isoformat()
     )
     db.add(workout)
     db.commit()
