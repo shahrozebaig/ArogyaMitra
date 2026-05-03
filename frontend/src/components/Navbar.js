@@ -31,7 +31,7 @@ function Navbar() {
               <h1 className="text-xl font-black italic uppercase tracking-tighter leading-none group-hover:text-blue-500 transition-colors">
                 Arogya<span className="text-white/40">Mitra</span>
               </h1>
-              <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.4em] leading-none mt-1">Core System v2.0</span>
+              <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.4em] leading-none mt-1">Platform v2.0</span>
             </div>
           </Link>
           <nav className="hidden lg:flex items-center gap-1">
@@ -44,9 +44,6 @@ function Navbar() {
                   className={`group relative px-6 py-2 transition-all`}
                 >
                   <div className="flex flex-col items-center">
-                    <span className={`text-[8px] font-black uppercase tracking-[0.3em] mb-1 transition-colors ${isActive ? 'text-blue-500' : 'text-white/20 group-hover:text-white/40'}`}>
-                      PRT-{link.id}
-                    </span>
                     <span className={`text-xs font-black italic uppercase tracking-widest transition-all ${isActive ? 'text-white' : 'text-white/40 group-hover:text-white/70'}`}>
                       {link.name}
                     </span>
@@ -63,15 +60,14 @@ function Navbar() {
           <div className="flex items-center gap-4">
             <Link to="/profile" className="flex items-center gap-4 group">
               <div className="text-right hidden md:block">
-                <p className="text-[8px] font-black text-white/20 uppercase tracking-widest leading-none mb-1">Operator</p>
                 <p className="text-xs font-black italic uppercase text-white group-hover:text-blue-500 transition-colors">
-                  {user?.name || "Neural Operator"}
+                  {user?.name || "Member"}
                 </p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 transition-all overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="text-[10px] font-black italic text-white/60 relative z-10">
-                  {user?.name?.slice(0, 2).toUpperCase() || "JD"}
+                  {user?.name?.slice(0, 2).toUpperCase() || "AM"}
                 </span>
               </div>
             </Link>
@@ -85,7 +81,7 @@ function Navbar() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
               </div>
-              <span className="hidden lg:block text-[9px] font-black text-white/20 uppercase tracking-[0.2em] group-hover:text-red-500 transition-colors">Abort</span>
+              <span className="hidden lg:block text-[9px] font-black text-white/20 uppercase tracking-[0.2em] group-hover:text-red-500 transition-colors">Logout</span>
             </button>
           </div>
         </div>
