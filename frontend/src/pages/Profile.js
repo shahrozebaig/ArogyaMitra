@@ -17,8 +17,8 @@ function Profile() {
         const res = await API.get("/health/profile");
         if (res.data) {
           setFormData({
-            name: user?.name || "Neural Operator",
-            email: user?.email || "operator@arogyamitra.sys",
+            name: user?.name || "",
+            email: user?.email || "",
             age: String(res.data.age) || "",
             gender: res.data.gender || "Male",
             height: String(res.data.height) || "",
@@ -46,14 +46,14 @@ function Profile() {
         workout_location: user?.workout_location || "Home",
         workout_time: user?.workout_time || "Morning"
       });
-      alert("System Identity Synchronized! ✨");
+      alert("Profile updated successfully! ✨");
     } catch (err) {
       console.error("Failed to update profile:", err);
-      alert("Update failed. Please verify biometrics.");
+      alert("Update failed. Please check your data.");
     }
   };
   const handleResetAccount = async () => {
-    if (window.confirm("⚠️ SYSTEM RESET: This will wipe all biometric data and protocols. Proceed?")) {
+    if (window.confirm("Account Reset: This will clear all your data. Proceed?")) {
       try {
         await API.post("/health/profile/update", {
           ...formData,
@@ -65,7 +65,7 @@ function Profile() {
           fitness_level: "Beginner"
         });
         await API.post("/health/reset");
-        alert("System state cleared. Initiating recalibration...");
+        alert("Account reset successfully.");
         window.location.href = "/health";
       } catch (err) {
         console.error("Reset failed:", err);
@@ -77,7 +77,7 @@ function Profile() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        alert("Visual identifier selected. Uplink logic pending.");
+        alert("Profile picture update feature coming soon.");
       };
       reader.readAsDataURL(file);
     }
@@ -89,16 +89,12 @@ function Profile() {
           <div className="flex items-center gap-4">
             <div className="w-1.5 h-10 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)]"></div>
             <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none">
-              Operator <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">Identity</span>
+              My <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">Profile</span>
             </h1>
           </div>
-          <p className="text-xs font-bold text-white/20 uppercase tracking-[0.4em] pl-6 italic">
-            System Authorization: <span className="text-white">Granted</span> {" // "} Access Level: <span className="text-white">Admin</span>
-          </p>
         </div>
       </div>
-
       <div className="grid lg:grid-cols-12 gap-12">
         <div className="lg:col-span-4 space-y-8">
           <div className="bg-[#111114] border border-white/5 rounded-[40px] p-10 text-center space-y-8 shadow-2xl relative overflow-hidden group">
@@ -106,9 +102,9 @@ function Profile() {
             <div className="relative">
               <label className="cursor-pointer block relative mx-auto w-32 h-32 group/avatar">
                 <div className="w-full h-full bg-white text-black rounded-[32px] flex items-center justify-center text-5xl font-black italic shadow-2xl shadow-white/5 group-hover/avatar:scale-105 transition-all duration-500 overflow-hidden relative">
-                  {formData.name.charAt(0)}
+                  {formData.name.charAt(0) || "U"}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-white">Modify</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-white">Change</span>
                     <span className="text-xl">📷</span>
                   </div>
                 </div>
@@ -116,14 +112,13 @@ function Profile() {
               </label>
             </div>
             <div className="space-y-2">
-              <h2 className="text-3xl font-black italic uppercase tracking-tighter leading-none">{formData.name}</h2>
+              <h2 className="text-3xl font-black italic uppercase tracking-tighter leading-none">{formData.name || "User Name"}</h2>
               <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">{formData.email}</p>
             </div>
-            <div className="grid grid-cols-3 gap-4 pt-8 border-t border-white/5">
+            <div className="grid grid-cols-2 gap-4 pt-8 border-t border-white/5">
               {[
                 { label: 'Workouts', val: '24' },
-                { label: 'Cycles', val: '18' },
-                { label: 'Delta', val: '3kg' }
+                { label: 'Points', val: '180' }
               ].map((stat, i) => (
                 <div key={i} className="space-y-1">
                   <p className="text-2xl font-black italic tracking-tighter">{stat.val}</p>
@@ -135,19 +130,18 @@ function Profile() {
         </div>
         <div className="lg:col-span-8">
           <div className="bg-[#111114] border border-white/5 rounded-[40px] p-10 md:p-12 space-y-12 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-12 text-9xl opacity-[0.02] font-black italic pointer-events-none">REGISTRY</div>
             <div className="space-y-2 border-b border-white/5 pb-8 relative z-10">
-              <h3 className="text-2xl font-black italic uppercase tracking-tight leading-none">Biometric Registry</h3>
-              <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">System parameters and physical identifiers</p>
+              <h3 className="text-2xl font-black italic uppercase tracking-tight leading-none">Account Details</h3>
+              <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">Manage your personal information</p>
             </div>
             <div className="grid md:grid-cols-2 gap-x-12 gap-y-10 relative z-10">
               {[
-                { label: 'Full Designation', name: 'name', type: 'text' },
-                { label: 'Communication Uplink', name: 'email', type: 'email' },
-                { label: 'Chrono Age', name: 'age', type: 'number' },
-                { label: 'Neural Gender', name: 'gender', type: 'text' },
-                { label: 'Verticality (cm)', name: 'height', type: 'number' },
-                { label: 'Mass Index (kg)', name: 'weight', type: 'number' }
+                { label: 'Full Name', name: 'name', type: 'text' },
+                { label: 'Email Address', name: 'email', type: 'email' },
+                { label: 'Age', name: 'age', type: 'number' },
+                { label: 'Gender', name: 'gender', type: 'text' },
+                { label: 'Height (cm)', name: 'height', type: 'number' },
+                { label: 'Weight (kg)', name: 'weight', type: 'number' }
               ].map((field) => (
                 <div key={field.name} className="space-y-3 group/field">
                   <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] pl-1 transition-colors group-focus-within/field:text-white">
@@ -169,13 +163,13 @@ function Profile() {
                 onClick={handleUpdateProfile}
                 className="flex-1 bg-white text-black py-6 rounded-[24px] text-sm font-black uppercase italic tracking-[0.2em] hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-2xl shadow-white/5"
               >
-                Synchronize Identity ➔
+                Save Changes ➔
               </button>
               <button
                 onClick={handleResetAccount}
                 className="px-10 py-6 bg-red-600/5 border border-red-600/10 text-red-500 rounded-[24px] text-[10px] font-black uppercase tracking-[0.3em] hover:bg-red-600 hover:text-white hover:border-red-600 transition-all active:scale-95"
               >
-                System Reset
+                Reset Account
               </button>
             </div>
           </div>
