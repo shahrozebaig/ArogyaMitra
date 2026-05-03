@@ -19,7 +19,7 @@ function HealthAssessment() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
-    const calories = form.fitness_goal === "Weight Loss" ? 1600 : form.fitness_goal === "Muscle Gain" ? 2800 : 2100;
+    e.preventDefault();
     try {
       await API.post("/health/assessment", form);
       await Promise.all([
@@ -30,10 +30,15 @@ function HealthAssessment() {
           fitness_level: form.fitness_level
         }),
         API.post("/nutrition/generate", {
-          calories: calories,
+          age: parseInt(form.age) || 25,
+          height: parseInt(form.height) || 170,
+          weight: parseInt(form.weight) || 65,
+          fitness_goal: form.fitness_goal,
+          fitness_level: form.fitness_level,
           diet_type: form.dietary_preference || "Vegetarian",
           allergies: form.allergies || "None"
         })
+
       ]);
       await API.post("/progress/update", {
         weight: parseFloat(form.weight),
@@ -41,6 +46,7 @@ function HealthAssessment() {
         workout_completed: 0,
         healthy_meals_count: 0
       });
+
       navigate("/dashboard");
     } catch (err) {
       console.error("Failed to generate plans:", err);
