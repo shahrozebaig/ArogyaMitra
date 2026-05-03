@@ -5,10 +5,10 @@ function Workouts() {
   const [plan, setPlan] = useState(null);
   const [activeTab, setActiveTab] = useState("today");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchPlan();
   }, []);
-  const [loading, setLoading] = useState(false);
   const fetchPlan = async () => {
     setLoading(true);
     try {
@@ -55,173 +55,177 @@ function Workouts() {
     });
   };
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="space-y-1">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
-            Workout Plans
-          </h1>
-          <p className="text-white/40">AI-powered personalized workout plans</p>
+    <div className="max-w-7xl mx-auto pb-24 px-6 md:px-8 space-y-12 animate-fade-in relative">
+      <div className="pt-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <div className="w-1.5 h-10 bg-purple-600 rounded-full"></div>
+            <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none">
+              Training <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-600">Protocols</span>
+            </h1>
+          </div>
+          <p className="text-xs font-bold text-white/20 uppercase tracking-[0.4em] pl-6">
+            Neural Architecture: <span className="text-white">Physical Evolution</span> {" // "} System: <span className="text-purple-500">Active</span>
+          </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
           <button
             onClick={generatePlan}
             disabled={loading}
-            className="px-4 py-2 bg-purple-600/10 border border-purple-500/20 text-purple-400 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-purple-600/20 transition-all flex items-center gap-2"
+            className="px-8 py-4 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-purple-600 hover:border-purple-600 transition-all flex items-center justify-center gap-3 group"
           >
-            {loading ? "🔄" : "✨"} Refresh AI Plan
+            {loading ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div> : "✨"}
+            <span>Re-Generate Protocol</span>
           </button>
-          <div className="flex bg-white/5 p-1 rounded-xl border border-white/10">
+          <div className="flex bg-[#111114] p-1.5 rounded-[20px] border border-white/5 shadow-2xl">
             <button
               onClick={() => setActiveTab("today")}
-              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "today" ? "bg-white/10 text-white" : "text-white/40 hover:text-white"}`}
+              className={`px-8 py-3 rounded-[14px] text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === "today" ? "bg-white text-black italic" : "text-white/20 hover:text-white"}`}
             >
-              Today
+              Active Session
             </button>
             <button
               onClick={() => setActiveTab("week")}
-              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "week" ? "bg-white/10 text-white" : "text-white/40 hover:text-white"}`}
+              className={`px-8 py-3 rounded-[14px] text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === "week" ? "bg-white text-black italic" : "text-white/20 hover:text-white"}`}
             >
-              This Week
+              Macro Cycle
             </button>
           </div>
         </div>
       </div>
       {loading ? (
-        <div className="glass-card p-20 flex flex-col items-center justify-center space-y-4">
-          <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-white/40 font-bold uppercase tracking-widest text-xs">Generating your personalized plan...</p>
+        <div className="bg-[#111114] border border-white/5 rounded-[40px] p-32 flex flex-col items-center justify-center space-y-8 shadow-2xl">
+          <div className="w-16 h-16 border-4 border-purple-500/10 border-t-purple-500 rounded-full animate-spin"></div>
+          <div className="text-center space-y-2">
+            <p className="text-lg font-black uppercase italic tracking-widest">Architecting Protocol</p>
+            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Processing Neural Health Metrics...</p>
+          </div>
         </div>
       ) : !plan ? (
-        <div className="glass-card p-20 flex flex-col items-center justify-center space-y-6 text-center">
-          <div className="text-6xl">🏋️</div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold">No Workout Plan Found</h2>
-            <p className="text-white/40 max-w-sm">Complete your health assessment or click below to generate your first AI-powered workout plan!</p>
+        <div className="bg-[#111114] border border-white/5 rounded-[40px] p-32 flex flex-col items-center justify-center space-y-10 text-center shadow-2xl">
+          <div className="text-8xl grayscale opacity-20 animate-pulse">📡</div>
+          <div className="space-y-4">
+            <h2 className="text-4xl font-black italic uppercase tracking-tighter">No Active Protocol</h2>
+            <p className="text-white/40 max-w-sm mx-auto text-sm font-medium uppercase tracking-tight">Complete your physical assessment to initiate neural training mapping.</p>
           </div>
-          <button onClick={generatePlan} className="btn-primary !px-10">Generate My Plan 🚀</button>
+          <button onClick={generatePlan} className="px-12 py-6 bg-white text-black font-black uppercase italic tracking-widest text-sm rounded-2xl hover:bg-purple-500 hover:text-white transition-all shadow-2xl shadow-white/5">
+            Initialize Protocol ➔
+          </button>
         </div>
       ) : (
-        <>
-          {activeTab === "today" && plan?.today && (
-            <div className="space-y-6">
-              <div className="glass-card p-8 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 blur-[100px] -mr-32 -mt-32 rounded-full group-hover:bg-purple-600/20 transition-all duration-500"></div>
-                <div className="relative z-10 space-y-6">
-                  <div className="flex justify-between items-start">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3">
-                        <span className="p-2 bg-blue-500/20 text-blue-400 rounded-lg">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                          </svg>
-                        </span>
-                        <h2 className="text-2xl font-semibold">Today's Workout 💪</h2>
-                      </div>
-                      <h3 className="text-3xl font-bold">{plan.today.title}</h3>
-                      <div className="flex gap-4 text-white/60 text-sm">
-                        <span className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          {plan.today.duration}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                          </svg>
-                          {plan.today.exercises?.length || 0} exercises
-                        </span>
-                      </div>
+        <div className="grid lg:grid-cols-4 gap-12">
+          {activeTab === "today" && plan?.today ? (
+            <>
+              <div className="lg:col-span-1 space-y-8">
+                <div className="bg-[#111114] border border-white/5 rounded-[32px] p-8 space-y-8 shadow-2xl sticky top-8">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-black text-purple-500 uppercase tracking-[0.3em]">Active Blueprint</span>
+                    <h3 className="text-2xl font-black italic uppercase tracking-tighter">{plan.today.title}</h3>
+                  </div>
+                  <div className="space-y-4 pt-4 border-t border-white/5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">Duration</span>
+                      <span className="text-sm font-bold italic">{plan.today.duration}</span>
                     </div>
-                    <span className="px-4 py-1.5 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-full text-xs font-semibold uppercase tracking-wider">
-                      Incomplete
-                    </span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">Volume</span>
+                      <span className="text-sm font-bold italic">{plan.today.exercises?.length || 0} Units</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">Window</span>
+                      <span className="text-sm font-bold italic">{plan.today.recommendedTime || "ANYTIME"}</span>
+                    </div>
                   </div>
-                  <div className="p-4 bg-blue-500/5 border border-blue-500/10 rounded-xl flex items-center gap-3">
-                    <span className="text-blue-400">📍</span>
-                    <p className="text-sm">
-                      <span className="text-blue-400 font-medium">Recommended Time:</span> {plan.today.recommendedTime || "Anytime"}
-                    </p>
-                  </div>
+                  <button
+                    onClick={() => startWorkout()}
+                    className="w-full py-5 bg-white text-black font-black uppercase italic tracking-widest text-xs rounded-2xl hover:bg-purple-500 hover:text-white transition-all shadow-xl active:scale-[0.98]"
+                  >
+                    Execute Protocol ➔
+                  </button>
                 </div>
               </div>
-              <div className="space-y-4">
-                {plan.today.exercises?.map((ex) => (
-                  <div key={ex.id} className="glass-card p-6 glass-card-hover group">
-                    <div className="flex gap-6 items-start">
-                      <div className="pt-1">
-                        <div className="w-6 h-6 border-2 border-white/20 rounded-full group-hover:border-purple-500/50 transition-colors"></div>
+              <div className="lg:col-span-3 space-y-6">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-1 h-6 bg-blue-600 rounded-full"></div>
+                  <h3 className="text-xl font-black italic uppercase tracking-tight">Sequence Analysis</h3>
+                </div>
+                {plan.today.exercises?.map((ex, idx) => (
+                  <div key={ex.id} className="group bg-[#111114] border border-white/5 p-8 rounded-[40px] hover:border-blue-500/30 transition-all shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/20 group-hover:bg-blue-500 transition-colors"></div>
+                    <div className="flex flex-col md:flex-row gap-8 items-start relative z-10">
+                      <div className="text-5xl font-black italic text-white/5 group-hover:text-blue-500/10 transition-colors leading-none pt-2">
+                        {String(idx + 1).padStart(2, '0')}
                       </div>
-                      <div className="flex-1 space-y-3">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="text-lg font-semibold">{ex.name}</h4>
-                            <div className="flex gap-3 mt-1">
-                              <span className="text-xs bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-md font-medium">Sets: {ex.sets}</span>
-                              <span className="text-xs bg-green-500/10 text-green-400 px-2.5 py-1 rounded-md font-medium">Reps: {ex.reps}</span>
-                              <span className="text-xs bg-orange-500/10 text-orange-400 px-2.5 py-1 rounded-md font-medium">Rest: {ex.rest}</span>
+                      <div className="flex-1 space-y-6">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                          <div className="space-y-1">
+                            <h4 className="text-2xl font-black italic uppercase tracking-tight group-hover:text-blue-400 transition-colors">{ex.name}</h4>
+                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Target: Muscular Evolution</p>
+                          </div>
+                          <div className="flex gap-3">
+                            <div className="bg-white/5 border border-white/5 px-4 py-2 rounded-xl text-center min-w-[80px]">
+                              <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Sets</p>
+                              <p className="text-sm font-black italic">{ex.sets}</p>
+                            </div>
+                            <div className="bg-white/5 border border-white/5 px-4 py-2 rounded-xl text-center min-w-[80px]">
+                              <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Reps</p>
+                              <p className="text-sm font-black italic">{ex.reps}</p>
+                            </div>
+                            <div className="bg-white/5 border border-white/5 px-4 py-2 rounded-xl text-center min-w-[80px]">
+                              <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Rest</p>
+                              <p className="text-sm font-black italic text-blue-400">{ex.rest}</p>
                             </div>
                           </div>
-                          <button
-                            onClick={() => startWorkout(ex)}
-                            className="p-3 bg-white/5 rounded-xl hover:bg-purple-600/20 hover:text-purple-400 transition-all active:scale-90"
-                          >
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                            </svg>
-                          </button>
                         </div>
-                        <p className="text-sm text-white/40 leading-relaxed max-w-2xl">
+                        <p className="text-sm text-white/40 font-medium leading-relaxed max-w-3xl">
                           {ex.description}
                         </p>
+                        <button
+                          onClick={() => startWorkout(ex)}
+                          className="flex items-center gap-2 text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] hover:text-white transition-colors"
+                        >
+                          View Tactical Analysis ➔
+                        </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-              <button
-                onClick={() => startWorkout()}
-                className="w-full btn-primary py-4 text-lg shadow-xl"
-              >
-                Start Workout
-              </button>
-            </div>
-          )}
-          {activeTab === "week" && plan?.week && (
-            <div className="space-y-4">
-              {plan.week.map((item, idx) => {
-                const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
-                const isToday = item.day === today;
-                return (
-                  <div key={idx} className={`glass-card p-6 glass-card-hover flex justify-between items-center ${isToday ? 'border-purple-500/30 bg-purple-500/5' : ''}`}>
-                    <div className="flex gap-6 items-center">
-                      <div className="w-12 text-sm font-medium text-white/40">
-                        {item.day.slice(0, 3)}
+            </>
+          ) : activeTab === "week" && plan?.week ? (
+            <div className="lg:col-span-4 space-y-6">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-1 h-6 bg-purple-600 rounded-full"></div>
+                <h3 className="text-xl font-black italic uppercase tracking-tight">Macro Cycle Overview</h3>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {plan.week.map((item, idx) => {
+                  const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+                  const isToday = item.day === todayName;
+                  return (
+                    <div key={idx} className={`bg-[#111114] border p-8 rounded-[40px] space-y-6 shadow-2xl transition-all ${isToday ? 'border-purple-500 shadow-purple-500/10' : 'border-white/5 hover:border-white/20'}`}>
+                      <div className="flex justify-between items-start">
+                        <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${isToday ? 'text-purple-400' : 'text-white/20'}`}>
+                          {item.day}
+                        </span>
+                        {isToday && <span className="bg-purple-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Today</span>}
                       </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          {isToday && <span className="text-yellow-400 text-xs">★</span>}
-                          <h4 className={`font-semibold ${isToday ? 'text-white' : 'text-white/60'}`}>{item.day} {isToday && <span className="text-[10px] bg-yellow-400/20 text-yellow-400 px-1.5 py-0.5 rounded ml-2">TODAY</span>}</h4>
-                        </div>
-                        <p className="text-lg font-medium">{item.title}</p>
-                        <div className="flex gap-4 text-xs text-white/30">
-                          <span>{item.duration}</span>
-                          <span>{item.exercises || 0} exercises</span>
-                        </div>
+                      <div className="space-y-2 min-h-[80px]">
+                        <h4 className="text-xl font-black italic uppercase tracking-tighter leading-tight">{item.title}</h4>
+                        <p className={`text-[10px] font-black uppercase tracking-widest ${item.status === 'Rest Day' ? 'text-blue-400' : 'text-white/20'}`}>{item.status}</p>
+                      </div>
+                      <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                        <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">{item.duration}</span>
+                        <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">{item.exercises || 0} Units</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className={`text-[10px] font-bold uppercase tracking-widest ${item.status === 'Rest Day' ? 'text-blue-400' : item.status === 'Completed' ? 'text-green-400' : 'text-orange-400'}`}>
-                        {item.status}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          )}
-        </>
+          ) : null}
+        </div>
       )}
     </div>
   );
