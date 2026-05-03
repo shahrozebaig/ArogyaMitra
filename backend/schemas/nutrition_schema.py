@@ -1,7 +1,12 @@
 from pydantic import BaseModel
 class NutritionGenerateRequest(BaseModel):
-    calories: int
+    age: int | None = 25
+    height: int | None = 175
+    weight: int | None = 70
+    fitness_goal: str | None = "Stay Fit"
+    fitness_level: str | None = "Beginner"
     diet_type: str
+    calories: int | None = 2000
     allergies: str | None = None
 class NutritionResponse(BaseModel):
     id: int
