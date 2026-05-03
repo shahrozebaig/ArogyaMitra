@@ -7,7 +7,6 @@ function Profile() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
     age: "",
     gender: "Male",
     height: "",
@@ -22,7 +21,6 @@ function Profile() {
             name: user?.name || "Aragonda Srinivas",
             email: user?.email || "abcd@gmail.com",
             age: String(res.data.age) || "",
-
             gender: res.data.gender || "Male",
             height: String(res.data.height) || "",
             weight: String(res.data.weight) || ""
@@ -40,10 +38,10 @@ function Profile() {
   const handleUpdateProfile = async () => {
     try {
       await API.post("/health/profile/update", {
-        ...formData,
-        age: parseInt(formData.age),
-        height: parseFloat(formData.height),
-        weight: parseFloat(formData.weight),
+        age: parseInt(formData.age) || 0,
+        height: parseFloat(formData.height) || 0,
+        weight: parseFloat(formData.weight) || 0,
+        gender: formData.gender,
         fitness_goal: user?.fitness_goal || "Stay Fit",
         fitness_level: user?.fitness_level || "Beginner",
         workout_location: user?.workout_location || "Home",
@@ -55,6 +53,7 @@ function Profile() {
       alert("Update failed. Please check your inputs.");
     }
   };
+
   const handleResetAccount = async () => {
     if (window.confirm("⚠️ Reset metrics? This will clear your Age, Gender, Height, and Weight, and let you restart your assessment.")) {
       try {
