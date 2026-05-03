@@ -24,7 +24,7 @@ function App() {
         <Route path="/workouts" element={<MainLayout><Workouts /></MainLayout>} />
         <Route path="/nutrition" element={<MainLayout><Nutrition /></MainLayout>} />
         <Route path="/progress" element={<MainLayout><Progress /></MainLayout>} />
-        <Route path="/session" element={<MainLayout><WorkoutSession /></MainLayout>} />
+        <Route path="/session" element={<WorkoutSession />} />
         <Route path="/workout-complete" element={<MainLayout><WorkoutComplete /></MainLayout>} />
         <Route path="/ai-coach" element={<MainLayout><AICoach /></MainLayout>} />
         <Route path="/profile" element={<MainLayout><Profile /></MainLayout>} />
