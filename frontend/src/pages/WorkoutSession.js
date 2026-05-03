@@ -68,44 +68,60 @@ function WorkoutSession() {
     return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
   };
   return (
-    <div className="max-w-7xl mx-auto space-y-6 animate-fade-in pb-12">
-      <div className="flex justify-between items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10">
-        <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-[#0a0a0c] text-white p-6 md:p-10 font-sans selection:bg-purple-500/30">
+      <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 mb-12 border-b border-white/5 pb-8">
+        <div className="flex items-center gap-8">
           <button
             onClick={() => navigate("/workouts")}
-            className="p-2 hover:bg-white/10 rounded-xl transition-all"
+            className="group flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all active:scale-95"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            <svg className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" />
             </svg>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Abort Session</span>
           </button>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-sm font-bold">A</span>
+          <div className="h-8 w-[1px] bg-white/5 hidden md:block"></div>
+          <div className="flex flex-col">
+            <span className="text-[9px] font-black text-purple-500 uppercase tracking-[0.4em] mb-1">Status: {isRunning ? 'Active' : 'Paused'}</span>
+            <div className="flex items-center gap-3">
+              <div className={`w-2 h-2 rounded-full ${isRunning ? 'bg-green-500 animate-pulse' : 'bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]'}`}></div>
+              <h1 className="text-2xl font-black italic uppercase tracking-tighter leading-none">
+                Neural <span className="text-white/40">Session</span>
+              </h1>
             </div>
-            <h1 className="text-xl font-bold">ArogyaMitra</h1>
           </div>
         </div>
-        <div className="flex items-center gap-6">
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-white/60">
-            <a href="/dashboard" className="hover:text-white transition-colors">Dashboard</a>
-            <a href="/workouts" className="text-white border-b-2 border-purple-500 pb-1 transition-all">Workouts</a>
-            <a href="/nutrition" className="hover:text-white transition-colors">Nutrition</a>
-            <a href="/progress" className="hover:text-white transition-colors">Progress</a>
-            <a href="/ai-coach" className="hover:text-white transition-colors">AI Coach</a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-400 to-blue-400 flex items-center justify-center text-[10px] font-bold text-black group-hover:scale-110 transition-transform">
-              {state?.user?.name?.slice(0, 2).toUpperCase() || "AM"}
-            </div>
-            <button className="text-[10px] uppercase font-bold text-white/40 hover:text-white transition-colors tracking-widest">Profile</button>
+        <div className="hidden lg:flex items-center gap-12 bg-white/5 px-8 py-3 rounded-2xl border border-white/5">
+          <div className="flex flex-col items-center">
+            <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em] mb-1">Signal</span>
+            <span className="text-xs font-bold italic text-green-400 uppercase">Optimized</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em] mb-1">Protocol</span>
+            <span className="text-xs font-bold italic text-white uppercase">{exercise?.name || 'Protocol Delta'}</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em] mb-1">Target</span>
+            <span className="text-xs font-bold italic text-purple-400 uppercase">Hypertrophy</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-right hidden sm:block">
+            <p className="text-[9px] font-black text-white/20 uppercase tracking-widest leading-none">Operator</p>
+            <p className="text-sm font-black italic uppercase text-white">Ravi S. // Alpha</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-sm font-black italic shadow-2xl shadow-purple-500/20">
+            RS
           </div>
         </div>
       </div>
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <div className="glass-card overflow-hidden group relative">
-            <div className="aspect-video bg-black/50">
+      <div className="max-w-screen-2xl mx-auto grid xl:grid-cols-12 gap-8 items-start">
+        <div className="xl:col-span-5 space-y-8">
+          <div className="bg-[#111114] border border-white/5 rounded-[40px] overflow-hidden shadow-2xl group relative">
+            <div className="absolute top-4 left-4 z-20 flex gap-2">
+              <span className="bg-black/60 backdrop-blur-md text-[8px] font-black px-3 py-1.5 rounded-lg border border-white/10 uppercase tracking-widest italic">Tactical Analysis</span>
+            </div>
+            <div className="aspect-video bg-black/50 relative">
               <iframe
                 width="100%"
                 height="100%"
@@ -114,131 +130,167 @@ function WorkoutSession() {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
+                className="opacity-80 group-hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
               />
             </div>
-            <div className="p-4 bg-black/80 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center shadow-lg shadow-red-600/20">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" /></svg>
+            <div className="p-8 space-y-6">
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-black italic uppercase tracking-tight text-white/90">{exercise?.name}</h2>
+                  <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">Execution Blueprint // V1.4</p>
                 </div>
-                <div>
-                  <p className="text-xs font-bold">{exercise?.name}</p>
-                  <p className="text-[10px] text-white/40">Powered by YouTube</p>
+                <div className="flex gap-2">
+                  <div className="bg-white/5 p-2 rounded-xl border border-white/5">
+                    <svg className="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  </div>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <button className="p-1.5 hover:bg-white/10 rounded"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg></button>
-                <button className="p-1.5 hover:bg-white/10 rounded"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg></button>
+              <div className="space-y-4 pt-6 border-t border-white/5">
+                <h3 className="text-[10px] font-black text-purple-500 uppercase tracking-[0.4em]">Protocol Instructions</h3>
+                <p className="text-sm text-white/50 leading-relaxed font-medium">
+                  {exercise?.description || "Initializing exercise description. Follow tactical analysis for optimal form and neural recruitment patterns."}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setIsRunning(!isRunning)}
+                  className={`py-5 rounded-2xl text-[11px] font-black uppercase italic tracking-[0.2em] transition-all flex items-center justify-center gap-3 ${isRunning ? 'bg-white/5 border border-white/10 text-white/40 hover:text-white' : 'bg-purple-600 text-white shadow-xl shadow-purple-600/20 hover:scale-[1.02]'}`}
+                >
+                  {isRunning ? (
+                    <>
+                      <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                      Pause Execution
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                      Initialize Session
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={nextExercise}
+                  disabled={reps < targetReps && !isRunning}
+                  className={`py-5 rounded-2xl text-[11px] font-black uppercase italic tracking-[0.2em] transition-all border ${reps >= targetReps ? 'bg-green-600/20 border-green-500 text-green-400 hover:bg-green-600 hover:text-white' : 'bg-white/5 border-white/10 text-white/20 cursor-not-allowed'}`}
+                >
+                  Protocol Complete ➔
+                </button>
               </div>
             </div>
           </div>
-          <div className="glass-card p-6 space-y-4">
-            <h3 className="flex items-center gap-2 text-lg font-semibold">
-              <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Instructions
-            </h3>
-            <p className="text-sm text-white/60 leading-relaxed">
-              {exercise?.description}
-            </p>
-            <button
-              onClick={() => setIsRunning(!isRunning)}
-              className={`w-full py-4 rounded-xl text-lg font-bold transition-all ${isRunning ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' : 'bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-600/20'}`}
-            >
-              {isRunning ? "Pause Workout" : "Start Workout"}
-            </button>
-            {reps >= (parseInt(exercise?.reps) || 10) && (
-              <button
-                onClick={nextExercise}
-                className="w-full py-4 rounded-xl text-lg font-bold bg-green-600 hover:bg-green-700 transition-all mt-2"
-              >
-                Complete Set & Next →
-              </button>
-            )}
+          <div className="bg-[#111114] border border-white/5 p-8 rounded-[40px] space-y-6">
+            <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.4em]">Performance Tips</h3>
+            <ul className="space-y-4">
+              {[
+                "Maintain constant tension through the full range of motion.",
+                "Explosive concentric phase, controlled eccentric phase.",
+                "Neural focus: Mind-muscle connection at the peak contraction.",
+                "Hydration levels: Optimal for system performance."
+              ].map((tip, i) => (
+                <li key={i} className="flex gap-4 items-start group">
+                  <div className="w-5 h-5 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-[10px] font-black text-blue-400 shrink-0 mt-0.5 group-hover:bg-blue-500 group-hover:text-white transition-all">{i + 1}</div>
+                  <p className="text-xs text-white/40 group-hover:text-white/70 transition-colors font-medium leading-relaxed">{tip}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <div className="space-y-6">
-          <div className="glass-card overflow-hidden relative aspect-video flex items-center justify-center bg-gray-900/50">
-            <CameraTracker
-              isActive={isRunning}
-              onRepUpdate={(count) => {
-                if (isRunning) setReps(count);
-              }}
-            />
+        <div className="xl:col-span-7 space-y-8">
+          <div className="bg-[#111114] border border-white/5 rounded-[40px] overflow-hidden relative aspect-video shadow-2xl group">
+            <div className="absolute top-6 left-6 z-20 flex gap-2">
+              <span className="bg-red-600 text-white text-[8px] font-black px-3 py-1 rounded-lg border border-red-500/50 uppercase tracking-widest flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                Live Neural Feed
+              </span>
+            </div>
+            <div className="absolute inset-0 z-10 flex items-center justify-center">
+              <CameraTracker
+                isActive={isRunning}
+                onRepUpdate={(count) => {
+                  if (isRunning) setReps(count);
+                }}
+              />
+            </div>
             {!isRunning && reps === 0 && (
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center space-y-4">
-                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20">
-                  <svg className="w-8 h-8 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              <div className="absolute inset-0 z-30 bg-black/60 backdrop-blur-md flex flex-col items-center justify-center space-y-6">
+                <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center border border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-8 h-8 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <div className="text-center">
-                  <p className="font-semibold">Camera not started</p>
-                  <p className="text-xs text-white/40">Click "Start Workout" to activate</p>
+                <div className="text-center space-y-2">
+                  <p className="text-lg font-black uppercase italic tracking-widest text-white/80">Camera Standby</p>
+                  <p className="text-[10px] text-white/20 font-bold uppercase tracking-[0.4em]">Initialize Session to enable neural mapping</p>
                 </div>
               </div>
             )}
+            <div className="absolute top-0 right-0 w-32 h-32 border-t border-r border-white/10 rounded-tr-[40px] pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 border-b border-l border-white/10 rounded-bl-[40px] pointer-events-none"></div>
           </div>
-          <div className="glass-card p-6 space-y-8">
-            <h3 className="text-lg font-semibold">Workout Progress</h3>
-            <div className="flex flex-col items-center justify-center space-y-2">
-              <span className="text-6xl font-bold font-mono tracking-tighter text-blue-400">
-                {formatTime(timeRemaining)}
-              </span>
-              <p className="text-sm text-white/40 uppercase tracking-widest font-medium">Time Remaining</p>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center space-y-1">
-                <p className="text-2xl font-bold">{setsLeft}</p>
-                <p className="text-[10px] text-white/40 uppercase font-bold">Sets Left</p>
-              </div>
-              <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center space-y-1">
-                <p className="text-2xl font-bold text-green-400">{exercise?.reps}</p>
-                <p className="text-[10px] text-white/40 uppercase font-bold">Reps/Set</p>
-              </div>
-              <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center space-y-1">
-                <p className="text-2xl font-bold text-purple-400">{reps}</p>
-                <p className="text-[10px] text-white/40 uppercase font-bold">Detected</p>
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="bg-[#111114] border border-white/5 p-10 rounded-[40px] space-y-8 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-20"></div>
+              <div className="text-center space-y-4 relative z-10">
+                <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em]">Time Remaining</span>
+                <p className="text-8xl font-black italic tracking-tighter text-blue-500 drop-shadow-[0_0_20px_rgba(59,130,246,0.3)] leading-none">
+                  {formatTime(timeRemaining)}
+                </p>
+                <div className="flex justify-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className={`w-6 h-1 rounded-full transition-colors ${isRunning ? 'bg-blue-500 animate-pulse' : 'bg-white/5'}`} style={{ animationDelay: `${i * 0.1}s` }}></div>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs font-medium">
-                <span className="text-white/40">Set Completion</span>
-                <span className="text-green-400">{exerciseProgress}%</span>
+            <div className="grid grid-rows-2 gap-8">
+              <div className="bg-[#111114] border border-white/5 p-8 rounded-[40px] flex items-center justify-between shadow-2xl">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Active Sets</span>
+                  <p className="text-4xl font-black italic text-white leading-none">{setsLeft} / {exercise?.sets || 3}</p>
+                </div>
+                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full border-2 border-dashed border-white/10 animate-[spin_10s_linear_infinite]"></div>
+                </div>
               </div>
-              <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-green-500 to-emerald-400 h-full transition-all duration-500"
-                  style={{ width: `${exerciseProgress}%` }}
-                ></div>
+              <div className="bg-[#111114] border border-white/5 p-8 rounded-[40px] flex items-center justify-between shadow-2xl">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black text-purple-500 uppercase tracking-widest">Neural Reps</span>
+                  <p className="text-4xl font-black italic text-white leading-none">{reps} <span className="text-white/20 text-xl font-medium tracking-tight">/ {targetReps}</span></p>
+                </div>
+                <div className="w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                  <span className="text-xl font-black italic text-purple-400">#</span>
+                </div>
               </div>
             </div>
           </div>
-          <div className="glass-card p-6 space-y-4">
-            <h3 className="flex items-center gap-2 text-lg font-semibold">
-              <span className="text-yellow-400">💪</span>
-              Pro Tips
-            </h3>
-            <ul className="space-y-3 text-sm text-white/60">
-              <li className="flex items-start gap-2">
-                <span className="text-green-400">✓</span>
-                Keep consistent movement throughout
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-400">✓</span>
-                Control the speed - don't rush
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-400">✓</span>
-                Breathe in and out steadily
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-400">✓</span>
-                The camera tracks your movements
-              </li>
-            </ul>
+          <div className="bg-[#111114] border border-white/5 p-10 rounded-[40px] space-y-8 shadow-2xl">
+            <div className="flex justify-between items-end">
+              <div className="space-y-2">
+                <h3 className="text-[10px] font-black text-green-500 uppercase tracking-[0.5em]">Protocol Completion</h3>
+                <p className="text-4xl font-black italic text-white uppercase tracking-tighter">Phase {exerciseProgress}% <span className="text-white/20">Integrated</span></p>
+              </div>
+              <div className="text-right">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Cycle Load</span>
+                <p className="text-xl font-bold italic text-white">OPTIMAL</p>
+              </div>
+            </div>
+            <div className="relative h-4 bg-white/5 rounded-full overflow-hidden border border-white/5">
+              <div
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-700 ease-out shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                style={{ width: `${exerciseProgress}%` }}
+              >
+                <div className="absolute top-0 right-0 w-8 h-full bg-white/20 skew-x-[30deg] translate-x-4"></div>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              {[0, 25, 50, 75, 100].map(mark => (
+                <div key={mark} className="flex flex-col items-center gap-2">
+                  <div className={`w-1 h-2 rounded-full ${exerciseProgress >= mark ? 'bg-green-500' : 'bg-white/10'}`}></div>
+                  <span className="text-[8px] font-black text-white/20 uppercase tracking-widest">{mark}%</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
