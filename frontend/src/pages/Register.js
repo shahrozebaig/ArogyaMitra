@@ -84,7 +84,7 @@ function Register() {
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1 group">
+                <div className="space-y-1 group relative">
                   <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.15em] group-focus-within:text-purple-500 transition-colors">Access Key</label>
                   <input
                     type={showPassword ? "text" : "password"}
@@ -94,8 +94,15 @@ function Register() {
                     onChange={handleChange}
                     required
                   />
+                  <button 
+                    type="button"
+                    className="absolute right-4 bottom-4 text-[9px] font-black text-white/20 hover:text-white transition-colors"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "SECURE" : "VIEW"}
+                  </button>
                 </div>
-                <div className="space-y-1 group">
+                <div className="space-y-1 group relative">
                   <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.15em] group-focus-within:text-purple-500 transition-colors">Verify Key</label>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
@@ -105,8 +112,16 @@ function Register() {
                     onChange={handleChange}
                     required
                   />
+                  <button 
+                    type="button"
+                    className="absolute right-4 bottom-4 text-[9px] font-black text-white/20 hover:text-white transition-colors"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? "SECURE" : "VIEW"}
+                  </button>
                 </div>
               </div>
+
             </div>
             <button
               type="submit"
