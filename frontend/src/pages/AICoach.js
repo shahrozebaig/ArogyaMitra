@@ -1,21 +1,26 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
 function AICoach() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const coach = {
-    name: "AI Fitness Coach",
-    subtitle: "Your personal AI trainer is here to help 24/7",
-    icon: "🤖",
-    color: "text-green-400",
-    bg: "bg-green-400/20"
-  };
+  const [loading, setLoading] = useState(false);
+  const scrollRef = useRef(null);
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
     const userMessage = input;
-    const newUserMsg = { sender: "user", text: userMessage, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
+    const newUserMsg = {
+      sender: "user",
+      text: userMessage,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
     setMessages(prev => [...prev, newUserMsg]);
     setInput("");
+    setLoading(true);
     try {
       const res = await API.post("/aromi/chat", {
         message: userMessage,
@@ -30,65 +35,94 @@ function AICoach() {
       setMessages(prev => [...prev, aiReply]);
     } catch (err) {
       console.error("Chat error:", err);
+    } finally {
+      setLoading(false);
     }
   };
   return (
-    <div className="max-w-5xl mx-auto h-[80vh] flex flex-col animate-fade-in">
-      <div className="flex-1 glass-card overflow-hidden flex flex-col relative border-white/5">
-        <div className="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+    <div className="max-w-6xl mx-auto h-[calc(100vh-140px)] flex flex-col pb-12 px-6 md:px-8 animate-fade-in">
+      <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-10 mb-8">
+        <div className="space-y-3">
           <div className="flex items-center gap-4">
-            <div className={`w-12 h-12 ${coach.bg} ${coach.color} rounded-2xl flex items-center justify-center text-2xl border border-white/5`}>
-              {coach.icon}
-            </div>
-            <div>
-              <h2 className="text-xl font-bold tracking-tight">{coach.name}</h2>
-              <p className="text-xs text-white/40">{coach.subtitle}</p>
-            </div>
+            <div className="w-1.5 h-8 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.3)]"></div>
+            <h1 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter leading-none">
+              Cognitive <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-600">Uplink</span>
+            </h1>
           </div>
-          <button className="text-white/20 hover:text-white transition-colors">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
-          </button>
+          <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] pl-6 italic">
+            Unit: <span className="text-emerald-500">Aromi-v2</span> {" // "} Status: <span className="text-white">Cognitive Sync Active</span>
+          </p>
         </div>
-        <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+      </div>
+      <div className="flex-1 bg-[#111114] border border-white/5 rounded-[40px] overflow-hidden flex flex-col shadow-2xl relative">
+        <div className="absolute top-0 right-0 p-12 text-[10rem] opacity-[0.01] font-black italic pointer-events-none tracking-tighter">NEURAL</div>
+        <div ref={scrollRef} className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar relative z-10">
+          {messages.length === 0 && (
+            <div className="h-full flex flex-col items-center justify-center space-y-8 opacity-20">
+              <div className="text-8xl">🧬</div>
+              <div className="text-center space-y-2">
+                <h3 className="text-xl font-black italic uppercase tracking-widest">Interface Ready</h3>
+                <p className="text-[10px] font-black uppercase tracking-[0.4em]">Awaiting Data Input...</p>
+              </div>
+            </div>
+          )}
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} animate-fade-in`}>
-              <div className={`flex gap-4 max-w-[80%] ${msg.sender === "user" ? "flex-row-reverse" : ""}`}>
-                {msg.sender === "ai" && (
-                  <div className={`w-8 h-8 shrink-0 rounded-lg flex items-center justify-center text-sm ${msg.coach === 'Fitness' ? 'bg-green-400/20 text-green-400' : 'bg-purple-400/20 text-purple-400'}`}>
-                    {msg.coach === 'Fitness' ? '🤖' : '🧠'}
-                  </div>
-                )}
-                <div className="space-y-1">
-                  <div className={`px-5 py-3 rounded-2xl text-sm leading-relaxed ${msg.sender === "user"
-                      ? "bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-tr-none shadow-lg shadow-purple-600/10"
-                      : "bg-white/5 border border-white/10 text-white/80 rounded-tl-none"
+              <div className={`flex gap-6 max-w-[85%] sm:max-w-[70%] ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                <div className={`w-10 h-10 shrink-0 rounded-xl border flex items-center justify-center text-lg transition-all ${msg.sender === "user" ? "bg-white border-white text-black" : "bg-white/5 border-white/10 text-emerald-500"}`}>
+                  {msg.sender === "user" ? "U" : "A"}
+                </div>
+                <div className="space-y-3">
+                  <div className={`px-8 py-6 rounded-[32px] text-sm leading-relaxed font-medium transition-all ${msg.sender === "user"
+                    ? "bg-white text-black italic font-bold shadow-2xl shadow-white/5 rounded-tr-none"
+                    : "bg-white/[0.03] border border-white/5 text-white/90 rounded-tl-none hover:bg-white/[0.05]"
                     }`}>
                     {msg.text}
                   </div>
-                  <p className={`text-[9px] font-bold uppercase tracking-widest text-white/20 ${msg.sender === "user" ? "text-right" : "text-left"}`}>
-                    {msg.time}
-                  </p>
+                  <div className={`flex items-center gap-3 px-2 ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                    <span className="w-1.5 h-1.5 bg-white/10 rounded-full"></span>
+                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/20 italic">{msg.time} {" // "} {msg.sender === "user" ? "Operator" : "Uplink"}</p>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
+          {loading && (
+            <div className="flex justify-start animate-pulse">
+              <div className="flex gap-6 items-center">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                  <div className="w-4 h-4 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+                </div>
+                <p className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.3em] italic">Neural Processing...</p>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="p-6 bg-white/[0.02] border-t border-white/5">
-          <div className="relative">
+        <div className="p-10 bg-white/[0.01] border-t border-white/5 relative z-10">
+          <div className="relative group">
             <input
               type="text"
-              placeholder="Ask anything about fitness, nutrition, or wellness..."
-              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-purple-500/50 transition-all pr-16"
+              placeholder="Transmit Command or Inquiry..."
+              className="w-full bg-white/[0.03] border border-white/5 rounded-[24px] px-8 py-6 text-sm font-bold italic uppercase tracking-tight focus:outline-none focus:border-emerald-500/30 focus:bg-white/[0.05] transition-all pr-24 placeholder:text-white/10 group-hover:border-white/10"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             />
-            <button
-              onClick={handleSend}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg hover:scale-105 active:scale-95 transition-all"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-            </button>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              <button
+                onClick={handleSend}
+                disabled={loading || !input.trim()}
+                className="px-6 py-4 bg-white text-black rounded-xl flex items-center justify-center shadow-2xl hover:bg-emerald-500 hover:text-white transition-all active:scale-95 disabled:opacity-20 disabled:grayscale"
+              >
+                <span className="text-[10px] font-black uppercase tracking-widest italic mr-2 hidden sm:block">Transmit</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+              </button>
+            </div>
+          </div>
+          <div className="mt-4 flex justify-between px-2">
+            <p className="text-[8px] font-black text-white/10 uppercase tracking-[0.4em]">System: Ready for Uplink</p>
+            <p className="text-[8px] font-black text-white/10 uppercase tracking-[0.4em]">Encryption: Active</p>
           </div>
         </div>
       </div>
