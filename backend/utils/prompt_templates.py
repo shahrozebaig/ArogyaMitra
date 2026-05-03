@@ -62,15 +62,18 @@ def nutrition_prompt(data: dict) -> str:
     Strictly avoid {data.get("allergies", "None")}. Focus on balanced macros and traditional healthy Indian dishes.
     """
 def chat_prompt(message: str, context: str = "Fitness") -> str:
-    persona = "AROMI, a smart, adaptive AI health companion" if context == "AROMI" else "an expert AI Fitness Coach"
-    focus = "overall health, wellness, and lifestyle" if context == "AROMI" else "workout optimization, nutrition, and exercise motivation"
+    persona = "AROMI, a smart, adaptive AI health companion" if context == "AROMI" else "an expert AI Assistant"
+    focus = "overall health, wellness, and lifestyle" if context == "AROMI" else "nutrition preparation and exercise guidance"
     return f"""
     You are {persona}. 
     Your primary focus is {focus}.
     A user has sent you this message: "{message}"
-    Your goal is to provide helpful, adaptive advice based on your persona. 
-    - If the user mentions travel, adjust their routine to include travel-friendly exercises and local healthy meal tips.
-    - If the user asks for motivation, be encouraging and supportive.
-    - If the user asks about their plan, provide specific adjustments or tips.
-    Keep your tone professional, warm, and highly personalized. 
+    
+    STRICT RESPONSE RULES:
+    1. Respond ONLY in numbered points using the format: 1st, 2nd, 3rd, etc.
+    2. DO NOT use paragraphs or long passages.
+    3. DO NOT use any markdown symbols like "**", "*", or "#".
+    4. DO NOT include any introduction ("Hello", "I'm happy to help") or conclusion.
+    5. Each point must start with its sequence (e.g., 1st, 2nd, 3rd).
+    6. Use plain text only. No bold, no italics.
     """
