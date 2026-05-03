@@ -8,6 +8,7 @@ class HealthProfile(Base):
     age = Column(Integer)
     height = Column(Integer)
     weight = Column(Integer)
+    gender = Column(String)
     fitness_goal = Column(String)
     fitness_level = Column(String)
     workout_location = Column(String)
