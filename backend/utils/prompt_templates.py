@@ -27,21 +27,30 @@ def workout_prompt(data: dict) -> str:
 def nutrition_prompt(data: dict) -> str:
     diet = data.get("diet_type", "Vegetarian")
     return f"""
-    You are a professional nutritionist specializing in Indian cuisine. 
-    Create a 7-day Indian meal plan based on:
-    - Target Calories: {data.get("calories")}
+    You are a professional nutritionist specializing in Indian cuisine and clinical dietetics. 
+    Calculate and create a 7-day Indian meal plan based on this user profile:
+    - Age: {data.get("age")}
+    - Height: {data.get("height")} cm
+    - Weight: {data.get("weight")} kg
+    - Fitness Goal: {data.get("fitness_goal")}
+    - Fitness Level: {data.get("fitness_level")}
     - Diet Type: {diet}
     - Restrictions/Allergies: {data.get("allergies", "None")}
     - Current Day: {data.get("current_day", "Monday")}
-    STRICT DIET RULES:
-    - If "Vegetarian": No meat, no fish, no eggs. Dairy is okay.
-    - If "Non-Vegetarian": YOU MUST INCLUDE chicken, fish, eggs, or mutton in EVERY Lunch and Dinner. This is NOT optional. Do not provide a purely vegetarian plan.
-    - If "Vegan": No meat, no dairy (milk/ghee), no eggs. Focus on plant-based (Dal, Chana, Tofu).
-    - If "Eggetarian": No meat/fish, but eggs MUST be included (e.g., Egg Bhurji, Boiled Eggs).
+
+    INSTRUCTIONS:
+    1. First, calculate the appropriate daily calorie intake for this user based on their physical metrics and fitness goal.
+    2. Create a meal plan that matches these calculated calories.
+    3. STRICT DIET RULES:
+       - If "Vegetarian": No meat, no fish, no eggs. Dairy is okay.
+       - If "Non-Vegetarian": YOU MUST INCLUDE chicken, fish, eggs, or mutton in EVERY Lunch and Dinner.
+       - If "Vegan": No meat, no dairy, no eggs.
+       - If "Eggetarian": No meat/fish, but eggs MUST be included.
+
     Return a valid JSON object with the following structure:
     {{
       "today": [
-        {{ "type": "Breakfast/Lunch/Dinner/Snack", "time": "String", "name": "String (Must be the meals for {data.get("current_day", "Monday")}. If Non-Vegetarian, ensure the main meals contain meat/eggs.)", "calories": Number, "protein": Number, "carbs": Number, "fat": Number, "ingredients": ["String"], "image": "Emoji" }}
+        {{ "type": "Breakfast/Lunch/Dinner/Snack", "time": "String", "name": "String", "calories": Number, "protein": Number, "carbs": Number, "fat": Number, "ingredients": ["String"], "image": "Emoji" }}
       ],
       "week": [
         {{ "day": "String", "meals": ["String"], "today": Boolean }}
