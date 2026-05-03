@@ -38,25 +38,23 @@ function Landing() {
           <a href="#features" className="hover:text-white transition-colors">Features</a>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/login" className="text-sm font-medium hover:text-purple-400 transition-colors">Login</Link>
-          <Link to="/register" className="btn-primary !px-5 !py-2 text-sm">Get Started</Link>
+          <Link to="/login" className="px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-sm font-bold hover:bg-white/10 transition-all">Login</Link>
         </div>
       </nav>
-      <section className="relative px-8 pt-20 pb-32 max-w-7xl mx-auto text-center space-y-8 overflow-hidden">
+      <section className="relative px-8 pt-32 pb-40 max-w-7xl mx-auto text-center space-y-12 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-purple-600/10 blur-[120px] -z-10 rounded-full"></div>
-        <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-tight">
-            The World's Most <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600">Intelligent</span> Fitness Companion
+        <div className="max-w-4xl mx-auto text-center space-y-10 relative z-10">
+          <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.9] uppercase italic">
+            Elite <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600">Performance</span>
           </h1>
-          <p className="text-xl text-white/40 max-w-2xl mx-auto leading-relaxed">
-            ArogyaMitra isn't just an app—it's a full-stack intelligent system.
-            Real-time AI pose tracking, dynamic nutrition planning, and an adaptive health coach that learns and grows with you.
+          <p className="text-lg md:text-xl text-white/40 max-w-2xl mx-auto leading-relaxed font-medium">
+            The next generation of personal health management. 
+            Engineered with advanced neural networks to architect your physical evolution.
           </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center pt-4">
-            <Link to="/register" className="btn-primary !px-10 !py-4 text-lg">Start Your Transformation 🚀</Link>
-          </div>
         </div>
       </section>
+
       
       <section id="features" className="px-8 py-32 max-w-7xl mx-auto space-y-16">
         <div className="text-center space-y-4">
