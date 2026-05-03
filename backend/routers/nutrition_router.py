@@ -15,9 +15,12 @@ def get_current_nutrition(db: Session = Depends(get_db)):
     if not nutrition or nutrition.created_at != today:
         health = db.query(HealthProfile).filter(HealthProfile.user_id == user_id).order_by(HealthProfile.id.desc()).first()
         if health:
-            calories = 1600 if health.fitness_goal == "Weight Loss" else 2800 if health.fitness_goal == "Muscle Gain" else 2100
             payload = {
-                "calories": calories,
+                "age": health.age,
+                "height": health.height,
+                "weight": health.weight,
+                "fitness_goal": health.fitness_goal,
+                "fitness_level": health.fitness_level,
                 "diet_type": health.dietary_preference or "Vegetarian",
                 "allergies": health.allergies or "None",
                 "current_day": datetime.datetime.now().strftime("%A")
