@@ -39,79 +39,74 @@ function AICoach() {
     }
   };
   return (
-    <div className="max-w-6xl mx-auto h-[calc(100vh-140px)] flex flex-col pb-12 px-6 md:px-8 animate-fade-in">
+    <div className="max-w-6xl mx-auto h-[calc(100vh-140px)] flex flex-col pb-12 px-6 md:px-10 animate-fade-in">
       <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-10 mb-8">
-        <div className="space-y-3">
-          <div className="flex items-center gap-4">
-            <div className="w-1.5 h-8 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.3)]"></div>
-            <h1 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter leading-none">
-              AI <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-600">Coach</span>
-            </h1>
-          </div>
+        <div className="space-y-2">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
+            AI <span className="text-emerald-500">Coach</span>
+          </h1>
+          <p className="text-sm text-white/40 font-medium">Your personalized training and nutrition assistant.</p>
         </div>
       </div>
-      <div className="flex-1 bg-[#111114] border border-white/5 rounded-[40px] overflow-hidden flex flex-col shadow-2xl relative">
-        <div ref={scrollRef} className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar relative z-10">
+      <div className="flex-1 bg-[#111114] border border-white/5 rounded-[32px] overflow-hidden flex flex-col shadow-sm">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
           {messages.length === 0 && (
-            <div className="h-full flex flex-col items-center justify-center space-y-8 opacity-20">
-              <div className="text-8xl">💪</div>
-              <div className="text-center space-y-2">
-                <h3 className="text-xl font-black italic uppercase tracking-widest">Coach is Ready</h3>
-                <p className="text-[10px] font-black uppercase tracking-[0.4em]">Ask anything about your fitness journey</p>
+            <div className="h-full flex flex-col items-center justify-center space-y-6 opacity-20">
+              <div className="text-7xl">💪</div>
+              <div className="text-center space-y-1">
+                <h3 className="text-lg font-bold text-white">How can I help you today?</h3>
+                <p className="text-xs font-medium text-white/60">Ask about workouts, nutrition, or recovery tips.</p>
               </div>
             </div>
           )}
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} animate-fade-in`}>
-              <div className={`flex gap-6 max-w-[85%] sm:max-w-[70%] ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                <div className={`w-10 h-10 shrink-0 rounded-xl border flex items-center justify-center text-sm transition-all ${msg.sender === "user" ? "bg-white border-white text-black" : "bg-white/5 border-white/10 text-emerald-500"}`}>
+              <div className={`flex gap-4 max-w-[85%] sm:max-w-[75%] ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                <div className={`w-9 h-9 shrink-0 rounded-xl border flex items-center justify-center text-xs font-bold transition-all ${msg.sender === "user" ? "bg-white border-white text-black" : "bg-white/5 border-white/10 text-emerald-500"}`}>
                   {msg.sender === "user" ? "U" : "C"}
                 </div>
-                <div className="space-y-3">
-                  <div className={`px-8 py-6 rounded-[32px] text-sm leading-relaxed font-medium transition-all ${msg.sender === "user"
-                    ? "bg-white text-black italic font-bold shadow-2xl shadow-white/5 rounded-tr-none"
-                    : "bg-white/[0.03] border border-white/5 text-white/90 rounded-tl-none hover:bg-white/[0.05]"
+                <div className="space-y-2">
+                  <div className={`px-6 py-4 rounded-[24px] text-sm leading-relaxed font-medium transition-all ${msg.sender === "user"
+                    ? "bg-white text-black shadow-md rounded-tr-none"
+                    : "bg-white/[0.03] border border-white/5 text-white/90 rounded-tl-none"
                     }`}>
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                   </div>
-                  <div className={`flex items-center gap-3 px-2 ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                    <span className="w-1.5 h-1.5 bg-white/10 rounded-full"></span>
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/20 italic">{msg.time} {" // "} {msg.sender === "user" ? "You" : "Coach"}</p>
-                  </div>
+                  <p className={`text-[10px] font-bold text-white/20 uppercase tracking-widest px-2 ${msg.sender === "user" ? "text-right" : "text-left"}`}>
+                    {msg.time}
+                  </p>
                 </div>
               </div>
             </div>
           ))}
           {loading && (
             <div className="flex justify-start animate-pulse">
-              <div className="flex gap-6 items-center">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                  <div className="w-4 h-4 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+              <div className="flex gap-4 items-center">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                  <div className="w-3 h-3 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
                 </div>
-                <p className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.3em] italic">Coach is thinking...</p>
+                <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Coach is typing...</p>
               </div>
             </div>
           )}
         </div>
-        <div className="p-10 bg-white/[0.01] border-t border-white/5 relative z-10">
-          <div className="relative group">
+        <div className="p-8 bg-white/[0.01] border-t border-white/5">
+          <div className="relative">
             <input
               type="text"
               placeholder="Ask anything about training or nutrition..."
-              className="w-full bg-white/[0.03] border border-white/5 rounded-[24px] px-8 py-6 text-sm font-bold italic uppercase tracking-tight focus:outline-none focus:border-emerald-500/30 focus:bg-white/[0.05] transition-all pr-24 placeholder:text-white/10 group-hover:border-white/10"
+              className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm font-semibold text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.05] transition-all pr-24 placeholder:text-white/10"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <div className="absolute right-2 top-1/2 -translate-y-1/2">
               <button
                 onClick={handleSend}
                 disabled={loading || !input.trim()}
-                className="px-6 py-4 bg-white text-black rounded-xl flex items-center justify-center shadow-2xl hover:bg-emerald-500 hover:text-white transition-all active:scale-95 disabled:opacity-20 disabled:grayscale"
+                className="px-6 py-2.5 bg-white text-black rounded-xl font-bold text-xs hover:bg-emerald-500 hover:text-white transition-all disabled:opacity-20 shadow-md"
               >
-                <span className="text-[10px] font-black uppercase tracking-widest italic mr-2 hidden sm:block">Send</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                Send
               </button>
             </div>
           </div>
