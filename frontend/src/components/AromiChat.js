@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
+
 function AromiChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       sender: "ai",
-      text: "Hi, I'm your Health Assistant. How can I help you today? 👋",
+      text: "Neural mapping complete. I am your Assistant. How can I facilitate your health objectives today? 👋",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -17,11 +18,13 @@ function AromiChat() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
   useEffect(() => {
     const handleOpen = () => setIsOpen(true);
     window.addEventListener("open-aromi-chat", handleOpen);
     return () => window.removeEventListener("open-aromi-chat", handleOpen);
   }, []);
+
   const handleSend = async () => {
     if (!input.trim()) return;
     const userMessage = input;
@@ -47,76 +50,85 @@ function AromiChat() {
       console.error("Chat error:", err);
     }
   };
+
   return (
-    <div className="fixed bottom-6 right-6 z-[1000] flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-[2000] flex flex-col items-end pointer-events-none">
       {isOpen && (
-        <div className="mb-4 w-[320px] md:w-[380px] h-[500px] bg-white text-black border border-black/10 rounded-2xl flex flex-col overflow-hidden animate-fade-in shadow-2xl pointer-events-auto">
-          {/* Chat Header */}
-          <div className="p-4 bg-purple-600 text-white flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-lg">
+        <div className="mb-4 w-[calc(100vw-32px)] sm:w-[380px] h-[70vh] sm:h-[550px] bg-[#111114] text-white border border-white/10 rounded-[32px] flex flex-col overflow-hidden animate-fade-in shadow-[0_32px_64px_-12px_rgba(0,0,0,0.8)] pointer-events-auto backdrop-blur-xl">
+          {/* Executive Chat Header */}
+          <div className="p-6 bg-white/[0.03] border-b border-white/5 flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-xl shadow-purple-600/20">
                 ✨
               </div>
               <div className="space-y-0.5">
-                <h4 className="text-sm font-bold">Health Assistant</h4>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
-                  <p className="text-[10px] font-medium opacity-70">Active</p>
+                <h4 className="text-sm font-black uppercase tracking-widest">Health Intelligence</h4>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                  <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">Synchronized</p>
                 </div>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/10 transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 transition-all active:scale-90"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              <svg className="w-5 h-5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-gray-50">
+
+          {/* Chat Content */}
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-black/20">
             {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed font-medium ${msg.sender === "user"
-                  ? "bg-purple-600 text-white rounded-tr-none"
-                  : "bg-white border border-black/5 text-gray-800 rounded-tl-none shadow-sm"
+              <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} animate-slide-up`}>
+                <div className={`max-w-[85%] px-5 py-4 rounded-[24px] text-sm leading-relaxed font-medium shadow-sm ${msg.sender === "user"
+                  ? "bg-purple-600 text-white rounded-tr-none italic"
+                  : "bg-white/[0.03] border border-white/10 text-white/90 rounded-tl-none"
                   }`}>
                   {msg.text}
                 </div>
               </div>
             ))}
           </div>
-          <div className="p-4 bg-white border-t border-gray-100">
+
+          {/* Input Area */}
+          <div className="p-6 bg-white/[0.02] border-t border-white/5">
             <div className="relative group">
               <input
                 type="text"
-                placeholder="Ask me anything..."
-                className="w-full bg-gray-100 border-none rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 pr-12 transition-all"
+                placeholder="Synchronize with assistant..."
+                className="w-full bg-white/[0.05] border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold text-white focus:outline-none focus:border-purple-500/50 pr-14 transition-all placeholder:text-white/10"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
               />
               <button
                 onClick={handleSend}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white shadow-md hover:bg-purple-700 transition-all"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center shadow-2xl hover:bg-purple-600 hover:text-white transition-all active:scale-90"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Floating Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center text-2xl shadow-xl hover:scale-105 active:scale-95 transition-all pointer-events-auto text-white shadow-purple-600/20"
+        className="w-16 h-16 bg-purple-600 rounded-[24px] flex items-center justify-center text-3xl shadow-[0_16px_32px_-8px_rgba(147,51,234,0.5)] hover:scale-110 active:scale-90 transition-all duration-300 pointer-events-auto text-white group relative overflow-hidden"
       >
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <div className="absolute inset-0 bg-gradient-to-tr from-purple-700 to-purple-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <svg className="w-8 h-8 relative z-10" fill="currentColor" viewBox="0 0 24 24">
           <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.2L4 17.2V4H20V16Z" />
         </svg>
       </button>
     </div>
   );
 }
+
 export default AromiChat;
