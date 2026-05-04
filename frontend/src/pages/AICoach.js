@@ -1,29 +1,55 @@
 import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
+import useUserStore from "../store/userStore";
+
 function AICoach() {
+  const user = useUserStore((state) => state.user);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+  };
+
+  useEffect(() => {
+    // Initial greeting
+    const greeting = `${getGreeting()}, ${user?.name?.split(' ')[0] || "there"}! I'm your AI Coach. How can I help you reach your fitness goals today?`;
+    setMessages([
+      {
+        sender: "ai",
+        text: greeting,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }
+    ]);
+  }, [user]);
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
-  const handleSend = async () => {
-    if (!input.trim() || loading) return;
-    const userMessage = input;
+
+  const handleSend = async (textOverride = null) => {
+    const textToSend = textOverride || input;
+    if (!textToSend.trim() || loading) return;
+
     const newUserMsg = {
       sender: "user",
-      text: userMessage,
+      text: textToSend,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
     setMessages(prev => [...prev, newUserMsg]);
     setInput("");
     setLoading(true);
+
     try {
       const res = await API.post("/aromi/chat", {
-        message: userMessage,
+        message: textToSend,
         context: "Fitness"
       });
       const aiReply = {
@@ -38,37 +64,34 @@ function AICoach() {
       setLoading(false);
     }
   };
+
+  const suggestions = [
+    "Give me a 15-min home workout",
+    "How much protein do I need?",
+    "Best exercises for back pain",
+    "Simple healthy breakfast ideas"
+  ];
+
   return (
-    <div className="max-w-6xl mx-auto h-[calc(100vh-140px)] flex flex-col pb-12 px-6 md:px-10 animate-fade-in">
-      <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-10 mb-8">
-        <div className="space-y-2">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
-            AI <span className="text-emerald-500">Coach</span>
-          </h1>
-          <p className="text-sm text-white/40 font-medium">Your personalized training and nutrition assistant.</p>
-        </div>
-      </div>
-      <div className="flex-1 bg-[#111114] border border-white/5 rounded-[32px] overflow-hidden flex flex-col shadow-sm">
-        <div ref={scrollRef} className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
-          {messages.length === 0 && (
-            <div className="h-full flex flex-col items-center justify-center space-y-6 opacity-20">
-              <div className="text-7xl">💪</div>
-              <div className="text-center space-y-1">
-                <h3 className="text-lg font-bold text-white">How can I help you today?</h3>
-                <p className="text-xs font-medium text-white/60">Ask about workouts, nutrition, or recovery tips.</p>
-              </div>
-            </div>
-          )}
+    <div className="max-w-5xl mx-auto h-[calc(100vh-140px)] flex flex-col pb-8 px-6 md:px-10 animate-fade-in">
+      {/* Chat Interface Container */}
+      <div className="flex-1 bg-[#0d0d0f] border border-white/5 rounded-[32px] overflow-hidden flex flex-col shadow-2xl relative">
+        
+        {/* Messages Area */}
+        <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 md:p-10 space-y-10 custom-scrollbar">
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} animate-fade-in`}>
-              <div className={`flex gap-4 max-w-[85%] sm:max-w-[75%] ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                <div className={`w-9 h-9 shrink-0 rounded-xl border flex items-center justify-center text-xs font-bold transition-all ${msg.sender === "user" ? "bg-white border-white text-black" : "bg-white/5 border-white/10 text-emerald-500"}`}>
-                  {msg.sender === "user" ? "U" : "C"}
+              <div className={`flex gap-5 max-w-[90%] sm:max-w-[80%] ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                {/* Avatar */}
+                <div className={`w-10 h-10 shrink-0 rounded-full border flex items-center justify-center text-sm font-bold transition-all ${msg.sender === "user" ? "bg-purple-600 border-purple-500 text-white" : "bg-emerald-600 border-emerald-500 text-white"}`}>
+                  {msg.sender === "user" ? (user?.name?.charAt(0) || "U") : "A"}
                 </div>
+                
+                {/* Message Bubble */}
                 <div className="space-y-2">
-                  <div className={`px-6 py-4 rounded-[24px] text-sm leading-relaxed font-medium transition-all ${msg.sender === "user"
-                    ? "bg-white text-black shadow-md rounded-tr-none"
-                    : "bg-white/[0.03] border border-white/5 text-white/90 rounded-tl-none"
+                  <div className={`px-6 py-4 rounded-[28px] text-[15px] leading-relaxed font-medium transition-all ${msg.sender === "user"
+                    ? "bg-[#1a1a1c] text-white rounded-tr-none border border-white/5 shadow-lg"
+                    : "bg-[#212124] text-white/90 rounded-tl-none border border-white/5"
                     }`}>
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                   </div>
@@ -79,40 +102,71 @@ function AICoach() {
               </div>
             </div>
           ))}
+
           {loading && (
             <div className="flex justify-start animate-pulse">
-              <div className="flex gap-4 items-center">
-                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                  <div className="w-3 h-3 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+              <div className="flex gap-5 items-center">
+                <div className="w-10 h-10 rounded-full bg-emerald-600/20 border border-emerald-600/30 flex items-center justify-center">
+                  <div className="w-4 h-4 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
                 </div>
-                <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Coach is typing...</p>
+                <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Coach is analyzing...</p>
               </div>
             </div>
           )}
         </div>
-        <div className="p-8 bg-white/[0.01] border-t border-white/5">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Ask anything about training or nutrition..."
-              className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm font-semibold text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.05] transition-all pr-24 placeholder:text-white/10"
+
+        {/* Input & Suggestions Section */}
+        <div className="p-6 md:p-10 bg-gradient-to-t from-black/20 to-transparent border-t border-white/5 space-y-6">
+          
+          {/* Suggestion Chips */}
+          {messages.length < 3 && !loading && (
+            <div className="flex flex-wrap gap-2 justify-center">
+              {suggestions.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleSend(s)}
+                  className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-semibold text-white/60 hover:bg-white/10 hover:text-white transition-all whitespace-nowrap"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Input Box */}
+          <div className="relative max-w-4xl mx-auto w-full">
+            <textarea
+              rows="1"
+              placeholder="Ask your AI Coach anything..."
+              className="w-full bg-[#1a1a1c] border border-white/10 rounded-[24px] px-6 py-5 text-sm font-medium text-white focus:outline-none focus:border-purple-500/50 focus:bg-[#212124] transition-all pr-16 placeholder:text-white/20 resize-none overflow-hidden"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
             />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
               <button
-                onClick={handleSend}
+                onClick={() => handleSend()}
                 disabled={loading || !input.trim()}
-                className="px-6 py-2.5 bg-white text-black rounded-xl font-bold text-xs hover:bg-emerald-500 hover:text-white transition-all disabled:opacity-20 shadow-md"
+                className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:bg-purple-500 hover:text-white transition-all disabled:opacity-20 shadow-lg"
               >
-                Send
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
               </button>
             </div>
           </div>
+          <p className="text-[10px] text-center text-white/20 font-medium tracking-wide">
+            AI Coach can provide guidance but should not replace professional medical advice.
+          </p>
         </div>
       </div>
     </div>
   );
 }
+
 export default AICoach;
