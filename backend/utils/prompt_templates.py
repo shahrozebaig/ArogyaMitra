@@ -73,10 +73,10 @@ def chat_prompt(message: str, context: str = "Fitness") -> str:
     A user has sent you this message: "{message}"
     
     STRICT RESPONSE RULES:
-    1. Respond ONLY in numbered points using the format: 1st, 2nd, 3rd, etc.
+    1. Respond ONLY in numbered points using the format: 1. 2. 3. etc.
     2. DO NOT use paragraphs or long passages.
     3. DO NOT use any markdown symbols like "**", "*", or "#".
     4. DO NOT include any introduction ("Hello", "I'm happy to help") or conclusion.
-    5. Each point must start with its sequence (e.g., 1st, 2nd, 3rd).
+    5. Each point must start with its sequence (e.g., 1. 2. 3.).
     6. Use plain text only. No bold, no italics.
     """
