@@ -26,9 +26,6 @@ function Dashboard() {
     };
     fetchTasks();
   }, []);
-  const quickActions = [
-    { title: "Fill out details", desc: "Generate your AI plans ➔", icon: "📋", path: "/health", color: "bg-purple-500/10 text-purple-400" },
-  ];
   const hasTasks = tasks.workout || tasks.nutrition;
   return (
     <div className="max-w-7xl mx-auto pb-24 space-y-10 animate-fade-in relative px-6 md:px-10">
@@ -40,26 +37,28 @@ function Dashboard() {
       </div>
       <div className="grid lg:grid-cols-4 gap-10">
         <div className="lg:col-span-1 space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-6">
             <h2 className="text-[11px] font-bold text-white/30 uppercase tracking-[0.1em] px-1">Action Center</h2>
-            <div className="space-y-3">
-              {quickActions.map((action, i) => (
-                <Link
-                  key={i}
-                  to={action.path}
-                  className="w-full block text-left p-6 bg-[#111114] border border-white/5 rounded-2xl group hover:border-purple-500/50 hover:bg-white/[0.02] transition-all shadow-sm"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 ${action.color} rounded-xl border border-white/5 flex items-center justify-center text-xl transition-all group-hover:scale-105`}>
-                      {action.icon}
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-semibold text-white/90">{action.title}</h3>
-                      <p className="text-[11px] text-white/30 font-medium">{action.desc}</p>
-                    </div>
+            <div className="bg-[#111114] border border-white/5 rounded-[24px] p-6 space-y-6 shadow-sm">
+              <div className="space-y-4">
+                {[
+                  { id: "1st", text: "Fill out the form based on your goals" },
+                  { id: "2nd", text: "Click on Generate to start AI analysis" },
+                  { id: "3rd", text: "Get your personalized plans automatically" }
+                ].map((step, i) => (
+                  <div key={i} className="flex gap-4 items-start group">
+                    <span className="text-[10px] font-bold text-purple-500 uppercase tracking-widest mt-1 shrink-0">{step.id}</span>
+                    <p className="text-xs font-semibold text-white/60 leading-relaxed group-hover:text-white transition-colors">{step.text}</p>
                   </div>
-                </Link>
-              ))}
+                ))}
+              </div>
+              <Link
+                to="/health"
+                className="w-full flex items-center justify-between p-4 bg-purple-500/10 border border-purple-500/20 rounded-xl group hover:bg-purple-500 hover:border-purple-500 transition-all shadow-sm"
+              >
+                <span className="text-xs font-bold text-purple-400 group-hover:text-white transition-colors">Start Assessment</span>
+                <span className="text-purple-400 group-hover:text-white group-hover:translate-x-1 transition-all">➔</span>
+              </Link>
             </div>
           </div>
         </div>
