@@ -55,137 +55,117 @@ function Workouts() {
     });
   };
   return (
-    <div className="max-w-7xl mx-auto pb-24 px-6 md:px-8 space-y-12 animate-fade-in relative">
+    <div className="max-w-7xl mx-auto pb-24 px-6 md:px-10 space-y-12 animate-fade-in">
       <div className="pt-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <div className="w-1.5 h-10 bg-purple-600 rounded-full"></div>
-            <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none">
-              Training <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-600">Protocols</span>
-            </h1>
-          </div>
-          <p className="text-xs font-bold text-white/20 uppercase tracking-[0.4em] pl-6">
-            Neural Architecture: <span className="text-white">Physical Evolution</span> {" // "} System: <span className="text-purple-500">Active</span>
-          </p>
+        <div className="space-y-3">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
+            Training <span className="text-purple-500">Plan</span>
+          </h1>
+          <p className="text-sm text-white/40 font-medium">Your personalized strength and conditioning schedule.</p>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
           <button
             onClick={generatePlan}
             disabled={loading}
-            className="px-8 py-4 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-purple-600 hover:border-purple-600 transition-all flex items-center justify-center gap-3 group"
+            className="px-6 py-3 bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-purple-600 transition-all flex items-center justify-center gap-3 group"
           >
             {loading ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div> : "✨"}
-            <span>Re-Generate Protocol</span>
+            <span>Update Plan</span>
           </button>
-          <div className="flex bg-[#111114] p-1.5 rounded-[20px] border border-white/5 shadow-2xl">
+          <div className="flex bg-[#111114] p-1 rounded-xl border border-white/5">
             <button
               onClick={() => setActiveTab("today")}
-              className={`px-8 py-3 rounded-[14px] text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === "today" ? "bg-white text-black italic" : "text-white/20 hover:text-white"}`}
+              className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === "today" ? "bg-white text-black" : "text-white/40 hover:text-white"}`}
             >
-              Active Session
+              Today
             </button>
             <button
               onClick={() => setActiveTab("week")}
-              className={`px-8 py-3 rounded-[14px] text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === "week" ? "bg-white text-black italic" : "text-white/20 hover:text-white"}`}
+              className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === "week" ? "bg-white text-black" : "text-white/40 hover:text-white"}`}
             >
-              Macro Cycle
+              Weekly
             </button>
           </div>
         </div>
       </div>
       {loading ? (
-        <div className="bg-[#111114] border border-white/5 rounded-[40px] p-32 flex flex-col items-center justify-center space-y-8 shadow-2xl">
-          <div className="w-16 h-16 border-4 border-purple-500/10 border-t-purple-500 rounded-full animate-spin"></div>
-          <div className="text-center space-y-2">
-            <p className="text-lg font-black uppercase italic tracking-widest">Architecting Protocol</p>
-            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Processing Neural Health Metrics...</p>
-          </div>
+        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-24 flex flex-col items-center justify-center space-y-6">
+          <div className="w-12 h-12 border-4 border-purple-500/10 border-t-purple-500 rounded-full animate-spin"></div>
+          <p className="text-sm font-medium text-white/40">Curating your training sequence...</p>
         </div>
       ) : !plan ? (
-        <div className="bg-[#111114] border border-white/5 rounded-[40px] p-32 flex flex-col items-center justify-center space-y-10 text-center shadow-2xl">
-          <div className="text-8xl grayscale opacity-20 animate-pulse">📡</div>
-          <div className="space-y-4">
-            <h2 className="text-4xl font-black italic uppercase tracking-tighter">No Active Protocol</h2>
-            <p className="text-white/40 max-w-sm mx-auto text-sm font-medium uppercase tracking-tight">Complete your physical assessment to initiate neural training mapping.</p>
+        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-24 flex flex-col items-center justify-center space-y-8 text-center">
+          <div className="text-6xl opacity-20">🏃‍♂️</div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-white">No active plan found</h2>
+            <p className="text-white/40 max-w-sm mx-auto text-sm">Complete your assessment to generate a personalized workout plan.</p>
           </div>
-          <button onClick={generatePlan} className="px-12 py-6 bg-white text-black font-black uppercase italic tracking-widest text-sm rounded-2xl hover:bg-purple-500 hover:text-white transition-all shadow-2xl shadow-white/5">
-            Initialize Protocol ➔
+          <button onClick={generatePlan} className="px-10 py-4 bg-white text-black font-bold text-sm rounded-xl hover:bg-purple-600 hover:text-white transition-all shadow-lg">
+            Generate Plan ➔
           </button>
         </div>
       ) : (
-        <div className="grid lg:grid-cols-4 gap-12">
+        <div className="grid lg:grid-cols-4 gap-10">
           {activeTab === "today" && plan?.today ? (
             <>
-              <div className="lg:col-span-1 space-y-8">
-                <div className="bg-[#111114] border border-white/5 rounded-[32px] p-8 space-y-8 shadow-2xl sticky top-8">
-                  <div className="space-y-2">
-                    <span className="text-[9px] font-black text-purple-500 uppercase tracking-[0.3em]">Active Blueprint</span>
-                    <h3 className="text-2xl font-black italic uppercase tracking-tighter">{plan.today.title}</h3>
+              <div className="lg:col-span-1">
+                <div className="bg-[#111114] border border-white/5 rounded-[32px] p-8 space-y-8 shadow-sm sticky top-24">
+                  <div className="space-y-2 text-center md:text-left">
+                    <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Active Routine</span>
+                    <h3 className="text-2xl font-bold text-white">{plan.today.title}</h3>
                   </div>
-                  <div className="space-y-4 pt-4 border-t border-white/5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">Duration</span>
-                      <span className="text-sm font-bold italic">{plan.today.duration}</span>
+                  <div className="space-y-4 pt-6 border-t border-white/5">
+                    <div className="flex justify-between">
+                      <span className="text-xs text-white/40">Duration</span>
+                      <span className="text-xs font-bold text-white">{plan.today.duration}</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">Volume</span>
-                      <span className="text-sm font-bold italic">{plan.today.exercises?.length || 0} Units</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">Window</span>
-                      <span className="text-sm font-bold italic">{plan.today.recommendedTime || "ANYTIME"}</span>
+                    <div className="flex justify-between">
+                      <span className="text-xs text-white/40">Exercises</span>
+                      <span className="text-xs font-bold text-white">{plan.today.exercises?.length || 0}</span>
                     </div>
                   </div>
                   <button
                     onClick={() => startWorkout()}
-                    className="w-full py-5 bg-white text-black font-black uppercase italic tracking-widest text-xs rounded-2xl hover:bg-purple-500 hover:text-white transition-all shadow-xl active:scale-[0.98]"
+                    className="w-full py-4 bg-white text-black font-bold text-sm rounded-xl hover:bg-purple-600 hover:text-white transition-all shadow-lg active:scale-[0.98]"
                   >
-                    Execute Protocol ➔
+                    Start Workout ➔
                   </button>
                 </div>
               </div>
               <div className="lg:col-span-3 space-y-6">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-1 h-6 bg-blue-600 rounded-full"></div>
-                  <h3 className="text-xl font-black italic uppercase tracking-tight">Sequence Analysis</h3>
-                </div>
+                <h3 className="text-sm font-bold text-white/30 uppercase tracking-[0.2em] px-2 mb-4">Exercises</h3>
                 {plan.today.exercises?.map((ex, idx) => (
-                  <div key={ex.id} className="group bg-[#111114] border border-white/5 p-8 rounded-[40px] hover:border-blue-500/30 transition-all shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/20 group-hover:bg-blue-500 transition-colors"></div>
-                    <div className="flex flex-col md:flex-row gap-8 items-start relative z-10">
-                      <div className="text-5xl font-black italic text-white/5 group-hover:text-blue-500/10 transition-colors leading-none pt-2">
+                  <div key={ex.id} className="group bg-[#111114] border border-white/5 p-8 rounded-[32px] hover:border-purple-500/30 transition-all shadow-sm">
+                    <div className="flex flex-col md:flex-row gap-8 items-start">
+                      <div className="text-4xl font-bold text-white/5 group-hover:text-purple-500/20 transition-colors shrink-0">
                         {String(idx + 1).padStart(2, '0')}
                       </div>
-                      <div className="flex-1 space-y-6">
+                      <div className="flex-1 space-y-4">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                          <div className="space-y-1">
-                            <h4 className="text-2xl font-black italic uppercase tracking-tight group-hover:text-blue-400 transition-colors">{ex.name}</h4>
-                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Target: Muscular Evolution</p>
-                          </div>
-                          <div className="flex gap-3">
-                            <div className="bg-white/5 border border-white/5 px-4 py-2 rounded-xl text-center min-w-[80px]">
-                              <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Sets</p>
-                              <p className="text-sm font-black italic">{ex.sets}</p>
+                          <h4 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">{ex.name}</h4>
+                          <div className="flex gap-2">
+                            <div className="bg-white/5 px-4 py-2 rounded-xl text-center min-w-[70px]">
+                              <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Sets</p>
+                              <p className="text-sm font-bold text-white">{ex.sets}</p>
                             </div>
-                            <div className="bg-white/5 border border-white/5 px-4 py-2 rounded-xl text-center min-w-[80px]">
-                              <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Reps</p>
-                              <p className="text-sm font-black italic">{ex.reps}</p>
+                            <div className="bg-white/5 px-4 py-2 rounded-xl text-center min-w-[70px]">
+                              <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Reps</p>
+                              <p className="text-sm font-bold text-white">{ex.reps}</p>
                             </div>
-                            <div className="bg-white/5 border border-white/5 px-4 py-2 rounded-xl text-center min-w-[80px]">
-                              <p className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Rest</p>
-                              <p className="text-sm font-black italic text-blue-400">{ex.rest}</p>
+                            <div className="bg-white/5 px-4 py-2 rounded-xl text-center min-w-[70px]">
+                              <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Rest</p>
+                              <p className="text-sm font-bold text-purple-400">{ex.rest}</p>
                             </div>
                           </div>
                         </div>
-                        <p className="text-sm text-white/40 font-medium leading-relaxed max-w-3xl">
+                        <p className="text-sm text-white/40 leading-relaxed font-medium">
                           {ex.description}
                         </p>
                         <button
                           onClick={() => startWorkout(ex)}
-                          className="flex items-center gap-2 text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] hover:text-white transition-colors"
+                          className="text-[11px] font-bold text-purple-400 uppercase tracking-widest hover:text-white transition-colors"
                         >
-                          View Tactical Analysis ➔
+                          View Guide ➔
                         </button>
                       </div>
                     </div>
@@ -194,35 +174,29 @@ function Workouts() {
               </div>
             </>
           ) : activeTab === "week" && plan?.week ? (
-            <div className="lg:col-span-4 space-y-6">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-1 h-6 bg-purple-600 rounded-full"></div>
-                <h3 className="text-xl font-black italic uppercase tracking-tight">Macro Cycle Overview</h3>
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {plan.week.map((item, idx) => {
-                  const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
-                  const isToday = item.day === todayName;
-                  return (
-                    <div key={idx} className={`bg-[#111114] border p-8 rounded-[40px] space-y-6 shadow-2xl transition-all ${isToday ? 'border-purple-500 shadow-purple-500/10' : 'border-white/5 hover:border-white/20'}`}>
-                      <div className="flex justify-between items-start">
-                        <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${isToday ? 'text-purple-400' : 'text-white/20'}`}>
-                          {item.day}
-                        </span>
-                        {isToday && <span className="bg-purple-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Today</span>}
-                      </div>
-                      <div className="space-y-2 min-h-[80px]">
-                        <h4 className="text-xl font-black italic uppercase tracking-tighter leading-tight">{item.title}</h4>
-                        <p className={`text-[10px] font-black uppercase tracking-widest ${item.status === 'Rest Day' ? 'text-blue-400' : 'text-white/20'}`}>{item.status}</p>
-                      </div>
-                      <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                        <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">{item.duration}</span>
-                        <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">{item.exercises || 0} Units</span>
-                      </div>
+            <div className="lg:col-span-4 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {plan.week.map((item, idx) => {
+                const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+                const isToday = item.day === todayName;
+                return (
+                  <div key={idx} className={`bg-[#111114] border p-8 rounded-[32px] space-y-6 shadow-sm transition-all ${isToday ? 'border-purple-500 bg-white/[0.02]' : 'border-white/5 hover:border-white/10'}`}>
+                    <div className="flex justify-between items-start">
+                      <span className={`text-[10px] font-bold uppercase tracking-widest ${isToday ? 'text-purple-400' : 'text-white/20'}`}>
+                        {item.day}
+                      </span>
+                      {isToday && <span className="bg-purple-500/20 text-purple-400 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-widest">Today</span>}
                     </div>
-                  );
-                })}
-              </div>
+                    <div className="space-y-1 min-h-[60px]">
+                      <h4 className="text-lg font-bold text-white/90 leading-tight">{item.title}</h4>
+                      <p className={`text-[10px] font-bold uppercase tracking-widest ${item.status === 'Rest Day' ? 'text-blue-400' : 'text-white/20'}`}>{item.status}</p>
+                    </div>
+                    <div className="pt-6 border-t border-white/5 flex items-center justify-between text-[10px] font-bold text-white/20 uppercase tracking-widest">
+                      <span>{item.duration}</span>
+                      <span>{item.exercises || 0} Units</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           ) : null}
         </div>
