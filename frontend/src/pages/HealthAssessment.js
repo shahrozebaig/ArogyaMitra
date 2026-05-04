@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+
 function HealthAssessment() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -16,9 +17,11 @@ function HealthAssessment() {
     allergies: "",
     medical_conditions: "",
   });
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -43,12 +46,6 @@ function HealthAssessment() {
           medical_conditions: form.medical_conditions
         })
       ]);
-      await API.post("/progress/update", {
-        weight: parseFloat(form.weight),
-        calories_burned: 0,
-        workout_completed: 0,
-        healthy_meals_count: 0
-      });
       navigate("/dashboard");
     } catch (err) {
       console.error("Failed to generate plans:", err);
@@ -58,53 +55,57 @@ function HealthAssessment() {
       setLoading(false);
     }
   };
+
   return (
-    <div className="max-w-4xl mx-auto pb-24 px-6 md:px-10 space-y-12 animate-fade-in">
-      <div className="pt-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-b border-white/5 pb-12">
+    <div className="max-w-4xl mx-auto pb-24 px-4 md:px-8 space-y-12 animate-fade-in">
+      <div className="pt-8 md:pt-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-b border-white/5 pb-10">
         <div className="space-y-3">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white uppercase italic">
             Health <span className="text-purple-500">Assessment</span>
           </h1>
-          <p className="text-sm text-white/40 font-medium">
-            Complete your profile to generate your personalized training and nutrition plan.
+          <p className="text-sm md:text-base text-white/40 font-medium">
+            Personalizing your training and nutrition architecture.
           </p>
         </div>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-10">
-        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-8 md:p-10 space-y-8 shadow-sm">
-          <div className="space-y-1 border-b border-white/5 pb-6">
-            <h3 className="text-xl font-bold text-white">Physical Metrics</h3>
-            <p className="text-[11px] font-bold text-white/20 uppercase tracking-widest">Base Measurements</p>
+
+      <form onSubmit={handleSubmit} className="space-y-8 md:space-y-12">
+        {/* Physical Metrics Section */}
+        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-6 md:p-10 space-y-8 shadow-xl">
+          <div className="space-y-2 border-b border-white/5 pb-6">
+            <h3 className="text-xl md:text-2xl font-bold text-white uppercase italic tracking-tight">Physical Metrics</h3>
+            <p className="text-xs font-bold text-white/20 uppercase tracking-widest">Base Physiological Data</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
             {[
-              { label: 'Age', name: 'age', placeholder: '', type: 'number' },
-              { label: 'Height (cm)', name: 'height', placeholder: '', type: 'number' },
-              { label: 'Weight (kg)', name: 'weight', placeholder: '', type: 'number' }
+              { label: 'Age (Years)', name: 'age', type: 'number' },
+              { label: 'Height (cm)', name: 'height', type: 'number' },
+              { label: 'Weight (kg)', name: 'weight', type: 'number' }
             ].map(field => (
-              <div key={field.name} className="space-y-2">
-                <label className="text-[11px] font-bold text-white/20 uppercase tracking-widest pl-1">{field.label}</label>
+              <div key={field.name} className="space-y-3">
+                <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">{field.label}</label>
                 <input
                   name={field.name}
                   type={field.type}
-                  placeholder={field.placeholder}
                   onChange={handleChange}
                   required
-                  className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3.5 text-sm font-semibold text-white focus:outline-none focus:border-purple-500/50 focus:bg-white/[0.04] transition-all"
+                  className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 focus:bg-white/[0.05] transition-all"
                 />
               </div>
             ))}
           </div>
         </div>
-        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-8 md:p-10 space-y-8 shadow-sm">
-          <div className="space-y-1 border-b border-white/5 pb-6">
-            <h3 className="text-xl font-bold text-white">Fitness Goals</h3>
-            <p className="text-[11px] font-bold text-white/20 uppercase tracking-widest">Target & Experience</p>
+
+        {/* Fitness Goals Section */}
+        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-6 md:p-10 space-y-8 shadow-xl">
+          <div className="space-y-2 border-b border-white/5 pb-6">
+            <h3 className="text-xl md:text-2xl font-bold text-white uppercase italic tracking-tight">Fitness Architecture</h3>
+            <p className="text-xs font-bold text-white/20 uppercase tracking-widest">Targets & Experience Level</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-white/20 uppercase tracking-widest pl-1">Primary Goal</label>
-              <select name="fitness_goal" onChange={handleChange} required className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3.5 text-sm font-semibold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Primary Objective</label>
+              <select name="fitness_goal" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
                 <option value="" className="bg-[#111114]">Select Goal</option>
                 <option value="Weight Loss" className="bg-[#111114]">Weight Loss</option>
                 <option value="Muscle Gain" className="bg-[#111114]">Muscle Gain</option>
@@ -112,9 +113,9 @@ function HealthAssessment() {
                 <option value="Endurance" className="bg-[#111114]">Endurance</option>
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-white/20 uppercase tracking-widest pl-1">Experience Level</label>
-              <select name="fitness_level" onChange={handleChange} required className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3.5 text-sm font-semibold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Experience Level</label>
+              <select name="fitness_level" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
                 <option value="" className="bg-[#111114]">Select Level</option>
                 <option value="Beginner" className="bg-[#111114]">Beginner</option>
                 <option value="Intermediate" className="bg-[#111114]">Intermediate</option>
@@ -123,60 +124,64 @@ function HealthAssessment() {
             </div>
           </div>
         </div>
-        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-8 md:p-10 space-y-8 shadow-sm">
-          <div className="space-y-1 border-b border-white/5 pb-6">
-            <h3 className="text-xl font-bold text-white">Lifestyle & Preferences</h3>
-            <p className="text-[11px] font-bold text-white/20 uppercase tracking-widest">Environment & Dietary Info</p>
+
+        {/* Lifestyle & Health Section */}
+        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-6 md:p-10 space-y-8 shadow-xl">
+          <div className="space-y-2 border-b border-white/5 pb-6">
+            <h3 className="text-xl md:text-2xl font-bold text-white uppercase italic tracking-tight">Lifestyle & Health</h3>
+            <p className="text-xs font-bold text-white/20 uppercase tracking-widest">Dietary & Environment Preferences</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-white/20 uppercase tracking-widest pl-1">Workout Location</label>
-              <select name="workout_location" onChange={handleChange} required className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3.5 text-sm font-semibold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Environment</label>
+              <select name="workout_location" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
                 <option value="" className="bg-[#111114]">Select Location</option>
                 <option value="Home" className="bg-[#111114]">Home</option>
                 <option value="Gym" className="bg-[#111114]">Gym</option>
                 <option value="Outdoor" className="bg-[#111114]">Outdoor</option>
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-white/20 uppercase tracking-widest pl-1">Dietary Preference</label>
-              <select name="dietary_preference" onChange={handleChange} required className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3.5 text-sm font-semibold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Dietary Preference</label>
+              <select name="dietary_preference" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
                 <option value="Vegetarian" className="bg-[#111114]">Vegetarian</option>
                 <option value="Non-Vegetarian" className="bg-[#111114]">Non-Vegetarian</option>
                 <option value="Vegan" className="bg-[#111114]">Vegan</option>
               </select>
             </div>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-white/20 uppercase tracking-widest pl-1">Allergies (Optional)</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Allergies (Optional)</label>
               <textarea
                 name="allergies"
-                placeholder=""
+                placeholder="e.g., Peanuts, Dairy..."
                 onChange={handleChange}
-                className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3.5 text-sm font-semibold text-white focus:outline-none focus:border-purple-500/50 h-32 resize-none"
+                className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 h-32 resize-none"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-white/20 uppercase tracking-widest pl-1">Medical Conditions (Optional)</label>
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Medical Conditions (Optional)</label>
               <textarea
                 name="medical_conditions"
-                placeholder=""
+                placeholder="e.g., Asthma, Knee Pain..."
                 onChange={handleChange}
-                className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3.5 text-sm font-semibold text-white focus:outline-none focus:border-purple-500/50 h-32 resize-none"
+                className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 h-32 resize-none"
               />
             </div>
           </div>
         </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-6 bg-white text-black rounded-2xl font-bold text-lg hover:bg-purple-500 hover:text-white transition-all shadow-lg disabled:opacity-50"
+          className="w-full py-6 bg-white text-black rounded-[24px] font-bold text-lg uppercase tracking-widest hover:bg-purple-600 hover:text-white transition-all shadow-2xl active:scale-95 disabled:opacity-50"
         >
-          {loading ? "Personalizing your plans..." : "Generate My AI Plans ➔"}
+          {loading ? "Initializing Intelligence..." : "Generate AI Plans ➔"}
         </button>
       </form>
     </div>
   );
 }
+
 export default HealthAssessment;
