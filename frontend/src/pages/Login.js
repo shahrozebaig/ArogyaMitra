@@ -2,122 +2,111 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
-
+import "./AuthPages.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
-
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await API.post("/auth/login", { email, password });
       setUser(res.data.user);
       navigate("/dashboard");
     } catch {
-      alert("Invalid credentials");
+      alert("Invalid credentials. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
-    <div className="min-h-screen bg-[#050507] flex overflow-hidden">
-      {/* Left Panel: Desktop Only */}
-      <div className="hidden lg:flex w-1/2 relative flex-col justify-between p-20 bg-[#0f0f12] border-r border-white/5">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-luminosity"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050507]/60 to-[#050507]"></div>
-        
-        <Link to="/" className="relative z-10 flex items-center gap-3">
-          <div className="w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center font-black text-2xl italic shadow-2xl">A</div>
-          <span className="text-2xl font-black italic tracking-tighter uppercase text-white">ArogyaMitra</span>
+    <div className="auth-root">
+      <div className="auth-left">
+        <div className="auth-left-blob auth-left-blob-1" />
+        <div className="auth-left-blob auth-left-blob-2" />
+        <Link to="/" className="auth-left-logo">
+          <img src="/Logo.png" alt="ArogyaMitra" className="auth-left-logo-img" style={{ background: '#fff', borderRadius: 12, padding: 4 }} />
+          <div>
+            <div className="auth-left-logo-name">ArogyaMitra</div>
+            <div className="auth-left-logo-sub">Your AI Health Companion</div>
+          </div>
         </Link>
-        
-        <div className="relative z-10 space-y-8">
-          <h2 className="text-7xl xl:text-8xl font-black uppercase italic tracking-tighter leading-[0.9]">
-            Scientific <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-500">Excellence</span>
+        <div className="auth-left-content">
+          <h2 className="auth-left-title">
+            Your Health Journey<br />
+            <span className="auth-left-title-green">Starts Here.</span>
           </h2>
-          <p className="text-white/30 max-w-sm text-lg font-medium leading-relaxed italic">
-            Synchronize your biological data with our advanced neural performance architect.
+          <p className="auth-left-desc">
+            AI-driven workout planning, nutrition guidance and real-time health coaching — all in one intelligent platform.
           </p>
         </div>
-        
-        <div className="relative z-10 flex gap-10 text-xs font-black uppercase tracking-[0.4em] text-white/10">
-          <span>Precision</span>
-          <span>Metabolism</span>
-          <span>Evolution</span>
+        <div className="auth-left-footer">
+          <div className="auth-feature-pill">🏋️ AI Workout Plans</div>
+          <div className="auth-feature-pill">🥗 Smart Nutrition</div>
+          <div className="auth-feature-pill">💬 AROMI Coach</div>
         </div>
       </div>
-
-      {/* Right Panel: Responsive Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-purple-600/5 blur-[100px] rounded-full pointer-events-none"></div>
-        
-        <div className="w-full max-w-md space-y-12 relative z-10">
-          <div className="space-y-3 text-center lg:text-left">
-            {/* Mobile Logo */}
-            <div className="flex lg:hidden justify-center mb-8">
-              <div className="w-16 h-16 bg-white text-black rounded-[24px] flex items-center justify-center font-black text-3xl italic shadow-2xl">A</div>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight italic uppercase text-white">Access Portal</h1>
-            <p className="text-white/40 font-bold uppercase tracking-widest text-xs">Initialize session synchronization.</p>
+      <div className="auth-right">
+        <div className="auth-form-card">
+          <Link to="/" className="auth-mobile-logo">
+            <img src="/Logo.png" alt="ArogyaMitra" style={{ width: 36, height: 36, objectFit: "contain" }} />
+            <span className="auth-left-logo-name" style={{ fontSize: "1rem" }}>ArogyaMitra</span>
+          </Link>
+          <div className="auth-form-header">
+            <h1 className="auth-form-title">Welcome Back 👋</h1>
+            <p className="auth-form-sub">Sign in to continue your health journey</p>
           </div>
-
-          <form onSubmit={handleLogin} className="space-y-8">
-            <div className="space-y-6">
-              <div className="space-y-3 group">
-                <label className="text-xs font-black text-white/20 uppercase tracking-[0.3em] group-focus-within:text-purple-500 transition-colors pl-1">Identity Identifier</label>
+          <form onSubmit={handleLogin} className="auth-form">
+            <div className="auth-field">
+              <label className="auth-label">Email Address</label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                className="auth-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="auth-field">
+              <div className="auth-label-row">
+                <label className="auth-label">Password</label>
+                <button type="button" className="auth-forgot">Forgot password?</button>
+              </div>
+              <div className="auth-input-wrap">
                 <input
-                  type="email"
-                  placeholder="Neural Mail"
-                  className="w-full bg-white/[0.03] border border-white/5 rounded-[20px] px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition-all placeholder:text-white/10"
-                  onChange={(e) => setEmail(e.target.value)}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  className="auth-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-              </div>
-              <div className="space-y-3 group">
-                <div className="flex justify-between items-center px-1">
-                  <label className="text-xs font-black text-white/20 uppercase tracking-[0.3em] group-focus-within:text-purple-500 transition-colors">Access Key</label>
-                  <button type="button" className="text-[10px] font-black text-white/10 uppercase tracking-[0.2em] hover:text-white transition-colors">Recover</button>
-                </div>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Secret Key"
-                    className="w-full bg-white/[0.03] border border-white/5 rounded-[20px] px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition-all placeholder:text-white/10"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "Secure" : "Reveal"}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="auth-eye"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
               </div>
             </div>
-
-            <button
-              type="submit"
-              className="w-full py-6 bg-white text-black font-black uppercase italic tracking-[0.2em] text-xs rounded-[20px] hover:bg-purple-600 hover:text-white transition-all shadow-2xl active:scale-95"
-            >
-              Initialize Access ➔
+            <button type="submit" className="auth-submit-btn" disabled={loading}>
+              {loading ? "Signing in..." : "Sign In →"}
             </button>
           </form>
-
-          <p className="text-center text-xs font-bold text-white/20 uppercase tracking-[0.3em]">
-            New Prospect?{" "}
-            <Link to="/register" className="text-white hover:text-purple-400 transition-colors decoration-1 underline-offset-4 underline">
-              Begin Selection
-            </Link>
+          <p className="auth-switch">
+            Don't have an account?{" "}
+            <Link to="/register" className="auth-switch-link">Create one free</Link>
           </p>
         </div>
       </div>
+
     </div>
   );
 }
-
 export default Login;
