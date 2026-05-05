@@ -1,81 +1,68 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import "./WorkoutComplete.css";
 function WorkoutComplete() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const stats = state || {
-    calories: 14,
-    sets: 3,
-    minutes: 4,
-    intensity: 0
-  };
+  const stats = state || { calories: 14, sets: 3, minutes: 4, intensity: 0 };
+  const achievements = [
+    "Improved cardiovascular endurance",
+    "Built muscle strength and tone",
+    "Boosted metabolism for the day",
+    "Enhanced energy levels",
+    "Progressed towards your fitness goals",
+  ];
   return (
-    <div className="min-h-[80vh] flex items-center justify-center animate-fade-in px-4">
-      <div className="glass-card p-8 md:p-12 max-w-2xl w-full text-center space-y-10 relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full"></div>
-        <div className="relative z-10 space-y-4">
-          <div className="text-6xl animate-bounce">🎉</div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white">
-            Workout Complete!
-          </h1>
-          <p className="text-white/60 text-lg">
-            Amazing effort today! You crushed it! 💪
-          </p>
+    <div className="wc-root">
+      <div className="wc-card">
+        <div className="wc-blob wc-blob-1" />
+        <div className="wc-blob wc-blob-2" />
+        <div className="wc-hero">
+          <div className="wc-trophy">🏆</div>
+          <h1 className="wc-title">Workout Complete!</h1>
+          <p className="wc-subtitle">Amazing effort today! You absolutely crushed it! 💪</p>
         </div>
-        <div className="relative z-10 grid grid-cols-2 gap-4">
-          <div className="bg-orange-500/10 border border-orange-500/20 p-6 rounded-3xl flex flex-col items-center justify-center space-y-2 group hover:bg-orange-500/20 transition-all">
-            <p className="text-4xl font-black text-orange-400">{stats.calories}</p>
-            <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 flex items-center gap-1">
-              Calories Burned 🔥
-            </p>
+        <div className="wc-stats">
+          <div className="wc-stat wc-stat-orange">
+            <span className="wc-stat-icon">🔥</span>
+            <span className="wc-stat-num">{stats.calories}</span>
+            <span className="wc-stat-lbl">Calories Burned</span>
           </div>
-          <div className="bg-green-500/10 border border-green-500/20 p-6 rounded-3xl flex flex-col items-center justify-center space-y-2 group hover:bg-green-500/20 transition-all">
-            <p className="text-4xl font-black text-green-400">{stats.sets}</p>
-            <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 flex items-center gap-1">
-              Sets Completed ✅
-            </p>
+          <div className="wc-stat wc-stat-green">
+            <span className="wc-stat-icon">✅</span>
+            <span className="wc-stat-num">{stats.sets}</span>
+            <span className="wc-stat-lbl">Sets Completed</span>
           </div>
-          <div className="bg-blue-500/10 border border-blue-500/20 p-6 rounded-3xl flex flex-col items-center justify-center space-y-2 group hover:bg-blue-500/20 transition-all">
-            <p className="text-4xl font-black text-blue-400">{stats.minutes}</p>
-            <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 flex items-center gap-1">
-              Minutes Worked 🦾
-            </p>
+          <div className="wc-stat wc-stat-blue">
+            <span className="wc-stat-icon">⏱</span>
+            <span className="wc-stat-num">{stats.minutes}</span>
+            <span className="wc-stat-lbl">Minutes Worked</span>
           </div>
-          <div className="bg-purple-500/10 border border-purple-500/20 p-6 rounded-3xl flex flex-col items-center justify-center space-y-2 group hover:bg-purple-500/20 transition-all">
-            <p className="text-4xl font-black text-purple-400">{stats.intensity}%</p>
-            <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 flex items-center gap-1">
-              Average Intensity 🚀
-            </p>
+          <div className="wc-stat wc-stat-purple">
+            <span className="wc-stat-icon">🚀</span>
+            <span className="wc-stat-num">{stats.intensity}%</span>
+            <span className="wc-stat-lbl">Avg Intensity</span>
           </div>
         </div>
-        <div className="relative z-10 glass-card p-6 text-left space-y-4 bg-white/5">
-          <h3 className="flex items-center gap-2 font-bold text-lg">
-            <span className="text-yellow-400">🏆</span>
-            What You Achieved Today
-          </h3>
-          <ul className="space-y-2 text-sm text-white/60">
-            <li className="flex items-center gap-3">
-              <span className="text-green-400">✓</span> Improved cardiovascular endurance
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="text-green-400">✓</span> Built muscle strength and tone
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="text-green-400">✓</span> Boosted metabolism for the day
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="text-green-400">✓</span> Enhanced energy levels
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="text-green-400">✓</span> Progressed towards your fitness goals
-            </li>
+        <div className="wc-achievements">
+          <h3 className="wc-ach-title">🏅 What You Achieved Today</h3>
+          <ul className="wc-ach-list">
+            {achievements.map((item, i) => (
+              <li key={i} className="wc-ach-item">
+                <span className="wc-ach-check">✓</span>
+                {item}
+              </li>
+            ))}
           </ul>
         </div>
-        <button
-          onClick={() => navigate("/workouts")}
-          className="relative z-10 w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-black py-4 rounded-2xl text-lg hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-orange-500/20"
-        >
-          Keep Going! 🚀
-        </button>
+        <div className="wc-actions">
+          <button className="wc-btn-primary" onClick={() => navigate("/workouts")}>
+            Keep Going! 🚀
+          </button>
+          <button className="wc-btn-secondary" onClick={() => navigate("/dashboard")}>
+            Back to Dashboard
+          </button>
+        </div>
+
       </div>
     </div>
   );
