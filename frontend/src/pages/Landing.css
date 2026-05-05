@@ -43,17 +43,22 @@
 }
 
 .lp-logo-img {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 5px;
+  border: 1.5px solid #f3f4f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .lp-logo-name {
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 900;
   color: #166534;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
 }
 
 .lp-logo-sub {
