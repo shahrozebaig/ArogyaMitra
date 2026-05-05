@@ -20,26 +20,6 @@ contributions linked to fitness achievements.
 
 ---
 
-## System Architecture
-```mermaid
-graph TD
-    User((User)) -->|Interacts| ReactApp[React Frontend]
-    ReactApp -->|REST API| FastAPI[FastAPI Backend]
-    
-    subgraph "Internal Processing"
-        FastAPI -->|Queries| SQLite[(SQLite DB)]
-        FastAPI -->|Analysis| Groq[Groq/Gemini AI]
-        ReactApp -->|Computer Vision| MediaPipe[MediaPipe Tracking]
-    end
-    
-    subgraph "External Integrations"
-        FastAPI -->|Video Sync| YouTube[YouTube API]
-        ReactApp -->|Shopping| BigBasket[BigBasket Integration]
-    end
-```
-
----
-
 ## Technology Stack
 
 | Component | Technology | Description |

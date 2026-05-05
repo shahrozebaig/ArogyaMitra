@@ -1,5 +1,3 @@
-# Arogya Mitra
-
 ## Project Work Flow
 
 ### Milestone 1: Environment Setup and Project Initialization
@@ -48,6 +46,21 @@
 
 ## Project Structure
 ![Project Structure](frontend/public/Strucuture.png)
+
+---
+
+## Pre-requisites & Local Setup
+
+| Step | Requirement | Action / Command |
+| :--- | :--- | :--- |
+| **1** | **Python Environment** | Install Python 3.10+ and create a virtual environment. |
+| **2** | **Node.js Environment** | Install Node.js 18+ (includes npm 9+). |
+| **3** | **Database Setup** | SQLite: Installed automatically during the first backend run. |
+| **4** | **Backend Config** | Create `.env` inside `/backend` with required API keys. |
+| **5** | **Frontend Config** | Create `.env` inside `/frontend` with `REACT_APP_API_URL=http://localhost:3000`. |
+| **6** | **Backend Launch** | `venv\Scripts\activate`<br>`pip install -r requirements.txt`<br>`uvicorn main:app --reload` |
+| **7** | **Frontend Launch** | `npm install`<br>`npm start` |
+| **8** | **Verification** | **API Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)<br>**Frontend:** [http://localhost:3000](http://localhost:3000) |
 
 ---
 
@@ -107,7 +120,7 @@
 3. Go to **"Credentials"** → **"+ Create Credentials"** → **"OAuth client ID"**.
 4. Configure the **Consent Screen** (External, fill basic info).
 5. Application type: **Web application**.
-6. Add redirect URI: `http://localhost:8000/auth/google/callback`.
+6. Add redirect URI: `http://localhost:3000/auth/google/callback`.
 7. Click **Create**.
 8. Copy the **Client ID** and **Client Secret**.
 9. Paste in your `.env` file:
