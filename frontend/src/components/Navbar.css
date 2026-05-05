@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+.nb-root {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+}
+
+.nb-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.nb-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nb-logo-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.nb-logo-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #166534;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.nb-logo-sub {
+  font-size: 0.58rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.nb-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nb-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.nb-link:hover {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.nb-link-active {
+  background: #f0fdf4;
+  color: #166534 !important;
+  font-weight: 700;
+}
+
+.nb-link-icon {
+  font-size: 0.9rem;
+}
+
+.nb-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.nb-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: opacity 0.18s;
+}
+
+.nb-profile:hover {
+  opacity: 0.8;
+}
+
+.nb-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #166534, #22c55e);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nb-username {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.nb-divider {
+  width: 1px;
+  height: 24px;
+  background: #e5e7eb;
+}
+
+.nb-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.nb-logout:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+@media (max-width: 900px) {
+  .nb-links {
+    display: none;
+  }
+
+  .nb-username {
+    display: none;
+  }
+
+  .nb-logo-sub {
+    display: none;
+  }
+}

@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.lp-root {
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+  color: #111827;
+}
+
+.lp-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+.lp-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.lp-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.lp-logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.lp-logo-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #166534;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.lp-logo-sub {
+  font-size: 0.62rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.lp-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.lp-nav-link {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0 0 3px 0;
+  position: relative;
+  transition: color 0.18s;
+}
+
+.lp-nav-link:hover {
+  color: #166534;
+}
+
+.lp-nav-active {
+  color: #166534 !important;
+  font-weight: 700;
+}
+
+.lp-nav-active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: #22c55e;
+  border-radius: 2px;
+}
+
+.lp-get-started {
+  background: #166534;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 11px 28px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 4px 14px rgba(22, 101, 52, 0.28);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lp-get-started:hover {
+  background: #15803d;
+  box-shadow: 0 6px 22px rgba(22, 101, 52, 0.4);
+  transform: translateY(-1px);
+}
+
+.lp-section {
+  width: 100%;
+  display: block;
+  line-height: 0;
+}
+
+.lp-section-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .lp-nav-inner {
+    padding: 0 1.5rem;
+  }
+
+  .lp-nav-links {
+    display: none;
+  }
+
+  .lp-logo-name {
+    font-size: 1rem;
+  }
+}
