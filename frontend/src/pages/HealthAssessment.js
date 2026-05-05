@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
-
+import "./HealthAssessment.css";
 function HealthAssessment() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -17,11 +17,9 @@ function HealthAssessment() {
     allergies: "",
     medical_conditions: "",
   });
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -55,133 +53,101 @@ function HealthAssessment() {
       setLoading(false);
     }
   };
-
   return (
-    <div className="max-w-4xl mx-auto pb-24 px-4 md:px-8 space-y-12 animate-fade-in">
-      <div className="pt-8 md:pt-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-b border-white/5 pb-10">
-        <div className="space-y-3">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white uppercase italic">
-            Health <span className="text-purple-500">Assessment</span>
-          </h1>
-          <p className="text-sm md:text-base text-white/40 font-medium">
-            Personalizing your training and nutrition architecture.
-          </p>
-        </div>
+    <div className="ha-root">
+      <div className="ha-header">
+        <h1 className="ha-title">🏥 Health <span className="ha-title-green">Assessment</span></h1>
+        <p className="ha-subtitle">Let's build your personalized AI training and nutrition architecture.</p>
       </div>
-
-      <form onSubmit={handleSubmit} className="space-y-8 md:space-y-12">
-        {/* Physical Metrics Section */}
-        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-6 md:p-10 space-y-8 shadow-xl">
-          <div className="space-y-2 border-b border-white/5 pb-6">
-            <h3 className="text-xl md:text-2xl font-bold text-white uppercase italic tracking-tight">Physical Metrics</h3>
-            <p className="text-xs font-bold text-white/20 uppercase tracking-widest">Base Physiological Data</p>
+      <form onSubmit={handleSubmit} className="ha-form">
+        <div className="ha-card">
+          <div className="ha-card-title-row">
+            <h3 className="ha-card-title">Physical Metrics</h3>
+            <p className="ha-card-subtitle">Basic physiological data</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
-            {[
-              { label: 'Age (Years)', name: 'age', type: 'number' },
-              { label: 'Height (cm)', name: 'height', type: 'number' },
-              { label: 'Weight (kg)', name: 'weight', type: 'number' }
-            ].map(field => (
-              <div key={field.name} className="space-y-3">
-                <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">{field.label}</label>
-                <input
-                  name={field.name}
-                  type={field.type}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 focus:bg-white/[0.05] transition-all"
-                />
-              </div>
-            ))}
+          <div className="ha-inputs-grid">
+            <div className="ha-input-group">
+              <label className="ha-label">Age (Years)</label>
+              <input name="age" type="number" onChange={handleChange} required className="ha-input" placeholder="e.g. 25" />
+            </div>
+            <div className="ha-input-group">
+              <label className="ha-label">Height (CM)</label>
+              <input name="height" type="number" onChange={handleChange} required className="ha-input" placeholder="e.g. 175" />
+            </div>
+            <div className="ha-input-group">
+              <label className="ha-label">Weight (KG)</label>
+              <input name="weight" type="number" onChange={handleChange} required className="ha-input" placeholder="e.g. 70" />
+            </div>
           </div>
         </div>
-
-        {/* Fitness Goals Section */}
-        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-6 md:p-10 space-y-8 shadow-xl">
-          <div className="space-y-2 border-b border-white/5 pb-6">
-            <h3 className="text-xl md:text-2xl font-bold text-white uppercase italic tracking-tight">Fitness Architecture</h3>
-            <p className="text-xs font-bold text-white/20 uppercase tracking-widest">Targets & Experience Level</p>
+        <div className="ha-card">
+          <div className="ha-card-title-row">
+            <h3 className="ha-card-title">Fitness Architecture</h3>
+            <p className="ha-card-subtitle">Goals & Experience level</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Primary Objective</label>
-              <select name="fitness_goal" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
-                <option value="" className="bg-[#111114]">Select Goal</option>
-                <option value="Weight Loss" className="bg-[#111114]">Weight Loss</option>
-                <option value="Muscle Gain" className="bg-[#111114]">Muscle Gain</option>
-                <option value="Stay Fit" className="bg-[#111114]">Stay Fit</option>
-                <option value="Endurance" className="bg-[#111114]">Endurance</option>
+          <div className="ha-inputs-grid">
+            <div className="ha-input-group">
+              <label className="ha-label">Primary Goal</label>
+              <select name="fitness_goal" onChange={handleChange} required className="ha-select">
+                <option value="">Select Goal</option>
+                <option value="Weight Loss">Weight Loss</option>
+                <option value="Muscle Gain">Muscle Gain</option>
+                <option value="Stay Fit">Stay Fit</option>
+                <option value="Endurance">Endurance</option>
               </select>
             </div>
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Experience Level</label>
-              <select name="fitness_level" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
-                <option value="" className="bg-[#111114]">Select Level</option>
-                <option value="Beginner" className="bg-[#111114]">Beginner</option>
-                <option value="Intermediate" className="bg-[#111114]">Intermediate</option>
-                <option value="Advanced" className="bg-[#111114]">Advanced</option>
+            <div className="ha-input-group">
+              <label className="ha-label">Experience Level</label>
+              <select name="fitness_level" onChange={handleChange} required className="ha-select">
+                <option value="">Select Level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
               </select>
             </div>
           </div>
         </div>
-
-        {/* Lifestyle & Health Section */}
-        <div className="bg-[#111114] border border-white/5 rounded-[32px] p-6 md:p-10 space-y-8 shadow-xl">
-          <div className="space-y-2 border-b border-white/5 pb-6">
-            <h3 className="text-xl md:text-2xl font-bold text-white uppercase italic tracking-tight">Lifestyle & Health</h3>
-            <p className="text-xs font-bold text-white/20 uppercase tracking-widest">Dietary & Environment Preferences</p>
+        <div className="ha-card">
+          <div className="ha-card-title-row">
+            <h3 className="ha-card-title">Lifestyle & Health</h3>
+            <p className="ha-card-subtitle">Preferences & Conditions</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Environment</label>
-              <select name="workout_location" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
-                <option value="" className="bg-[#111114]">Select Location</option>
-                <option value="Home" className="bg-[#111114]">Home</option>
-                <option value="Gym" className="bg-[#111114]">Gym</option>
-                <option value="Outdoor" className="bg-[#111114]">Outdoor</option>
+          <div className="ha-inputs-grid" style={{ marginBottom: '1.5rem' }}>
+            <div className="ha-input-group">
+              <label className="ha-label">Workout Environment</label>
+              <select name="workout_location" onChange={handleChange} required className="ha-select">
+                <option value="">Select Location</option>
+                <option value="Home">Home</option>
+                <option value="Gym">Gym</option>
+                <option value="Outdoor">Outdoor</option>
               </select>
             </div>
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Dietary Preference</label>
-              <select name="dietary_preference" onChange={handleChange} required className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 appearance-none cursor-pointer">
-                <option value="Vegetarian" className="bg-[#111114]">Vegetarian</option>
-                <option value="Non-Vegetarian" className="bg-[#111114]">Non-Vegetarian</option>
-                <option value="Vegan" className="bg-[#111114]">Vegan</option>
+            <div className="ha-input-group">
+              <label className="ha-label">Dietary Preference</label>
+              <select name="dietary_preference" onChange={handleChange} required className="ha-select">
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Non-Vegetarian">Non-Vegetarian</option>
+                <option value="Vegan">Vegan</option>
               </select>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Allergies (Optional)</label>
-              <textarea
-                name="allergies"
-                placeholder="e.g., Peanuts, Dairy..."
-                onChange={handleChange}
-                className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 h-32 resize-none"
-              />
+          <div className="ha-inputs-grid">
+            <div className="ha-input-group">
+              <label className="ha-label">Allergies (Optional)</label>
+              <textarea name="allergies" onChange={handleChange} className="ha-textarea" placeholder="e.g. Peanuts, Dairy..." />
             </div>
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-white/30 uppercase tracking-widest pl-1">Medical Conditions (Optional)</label>
-              <textarea
-                name="medical_conditions"
-                placeholder="e.g., Asthma, Knee Pain..."
-                onChange={handleChange}
-                className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 h-32 resize-none"
-              />
+            <div className="ha-input-group">
+              <label className="ha-label">Medical Conditions (Optional)</label>
+              <textarea name="medical_conditions" onChange={handleChange} className="ha-textarea" placeholder="e.g. Asthma, Knee pain..." />
             </div>
           </div>
         </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-6 bg-white text-black rounded-[24px] font-bold text-lg uppercase tracking-widest hover:bg-purple-600 hover:text-white transition-all shadow-2xl active:scale-95 disabled:opacity-50"
-        >
-          {loading ? "Initializing Intelligence..." : "Generate AI Plans ➔"}
+        <button type="submit" disabled={loading} className="ha-submit-btn">
+          {loading ? "Generating Your AI Plans..." : "Generate AI Plans ➔"}
         </button>
+
       </form>
     </div>
   );
 }
-
 export default HealthAssessment;
