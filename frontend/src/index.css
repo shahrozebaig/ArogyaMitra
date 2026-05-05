@@ -4,12 +4,12 @@
 
 @layer base {
   body {
-    @apply bg-[#0f111a] text-white;
+    @apply bg-white text-gray-900;
     font-family: 'Inter', sans-serif;
   }
   select option {
-    background: #1a1c2e;
-    color: white;
+    background: #fff;
+    color: #111827;
   }
 }
 
