@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
-
+import "./AuthPages.css";
 function Register() {
   const [formData, setFormData] = useState({
     name: "",
@@ -11,153 +11,164 @@ function Register() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleRegister = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
+    setLoading(true);
     try {
       await API.post("/auth/register", formData);
       alert("Account created successfully!");
       navigate("/login");
     } catch {
-      alert("Registration failed");
+      alert("Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
-    <div className="min-h-screen bg-[#050507] flex overflow-hidden">
-      {/* Left Panel: Desktop Only */}
-      <div className="hidden lg:flex w-1/2 relative flex-col justify-between p-20 bg-[#0f0f12] border-r border-white/5">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-luminosity"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050507]/60 to-[#050507]"></div>
-        
-        <Link to="/" className="relative z-10 flex items-center gap-3">
-          <div className="w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center font-black text-2xl italic shadow-2xl">A</div>
-          <span className="text-2xl font-black italic tracking-tighter uppercase text-white">ArogyaMitra</span>
+    <div className="auth-root">
+      <div className="auth-left">
+        <div className="auth-left-blob auth-left-blob-1" />
+        <div className="auth-left-blob auth-left-blob-2" />
+        <Link to="/" className="auth-left-logo">
+          <img src="/Logo.png" alt="ArogyaMitra" className="auth-left-logo-img" style={{ background: '#fff', borderRadius: 12, padding: 4 }} />
+          <div>
+            <div className="auth-left-logo-name">ArogyaMitra</div>
+            <div className="auth-left-logo-sub">Your AI Health Companion</div>
+          </div>
         </Link>
-        
-        <div className="relative z-10 space-y-8">
-          <h2 className="text-7xl xl:text-8xl font-black uppercase italic tracking-tighter leading-[0.9]">
-            Begin Your <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-500">Evolution</span>
+        <div className="auth-left-content">
+          <h2 className="auth-left-title">
+            Join 10,000+<br />
+            <span className="auth-left-title-green">Health Achievers.</span>
           </h2>
-          <p className="text-white/30 max-w-sm text-lg font-medium leading-relaxed italic">
-            Join the elite circle architecting their biological future through precision intelligence.
+          <p className="auth-left-desc">
+            Get your personalized AI health plan, track your nutrition, workouts and progress — all in one place.
           </p>
+          <div className="auth-steps">
+            <div className="auth-step">
+              <div className="auth-step-num">1</div>
+              <div>
+                <div className="auth-step-title">Create your profile</div>
+                <div className="auth-step-sub">Tell us about your health goals</div>
+              </div>
+            </div>
+            <div className="auth-step">
+              <div className="auth-step-num">2</div>
+              <div>
+                <div className="auth-step-title">Get your AI plan</div>
+                <div className="auth-step-sub">Personalized workout & nutrition</div>
+              </div>
+            </div>
+            <div className="auth-step">
+              <div className="auth-step-num">3</div>
+              <div>
+                <div className="auth-step-title">Achieve your goals</div>
+                <div className="auth-step-sub">Track progress with AROMI AI coach</div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div className="relative z-10 flex gap-10 text-xs font-black uppercase tracking-[0.4em] text-white/10">
-          <span>Discipline</span>
-          <span>Optimization</span>
-          <span>Legacy</span>
+        <div className="auth-left-footer">
+          <div className="auth-feature-pill">✅ Free to get started</div>
+          <div className="auth-feature-pill">🔒 100% Secure</div>
+          <div className="auth-feature-pill">🤖 AI-Powered</div>
         </div>
       </div>
-
-      {/* Right Panel: Responsive Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative overflow-y-auto">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-purple-600/5 blur-[100px] rounded-full pointer-events-none"></div>
-        
-        <div className="w-full max-w-md space-y-12 relative z-10 py-12 md:py-0">
-          <div className="space-y-3 text-center lg:text-left">
-            {/* Mobile Logo */}
-            <div className="flex lg:hidden justify-center mb-8">
-              <div className="w-16 h-16 bg-white text-black rounded-[24px] flex items-center justify-center font-black text-3xl italic shadow-2xl">A</div>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight italic uppercase text-white">Enroll Profile</h1>
-            <p className="text-white/40 font-bold uppercase tracking-widest text-xs">Initialize candidate registration.</p>
+      <div className="auth-right">
+        <div className="auth-form-card">
+          <Link to="/" className="auth-mobile-logo">
+            <img src="/Logo.png" alt="ArogyaMitra" style={{ width: 36, height: 36, objectFit: "contain" }} />
+            <span className="auth-left-logo-name" style={{ fontSize: "1rem" }}>ArogyaMitra</span>
+          </Link>
+          <div className="auth-form-header">
+            <h1 className="auth-form-title">Create Account 🌱</h1>
+            <p className="auth-form-sub">Start your AI health journey today — it's free</p>
           </div>
-
-          <form onSubmit={handleRegister} className="space-y-6">
-            <div className="space-y-6">
-              <div className="space-y-3 group">
-                <label className="text-xs font-black text-white/20 uppercase tracking-[0.3em] group-focus-within:text-purple-500 transition-colors pl-1">Candidate Name</label>
+          <form onSubmit={handleRegister} className="auth-form">
+            <div className="auth-field">
+              <label className="auth-label">Full Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your full name"
+                className="auth-input"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="auth-field">
+              <label className="auth-label">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                className="auth-input"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="auth-field">
+              <label className="auth-label">Password</label>
+              <div className="auth-input-wrap">
                 <input
-                  type="text"
-                  name="name"
-                  placeholder="Full Legal Name"
-                  className="w-full bg-white/[0.03] border border-white/5 rounded-[20px] px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition-all placeholder:text-white/10"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create a strong password"
+                  className="auth-input"
                   onChange={handleChange}
                   required
                 />
-              </div>
-              <div className="space-y-3 group">
-                <label className="text-xs font-black text-white/20 uppercase tracking-[0.3em] group-focus-within:text-purple-500 transition-colors pl-1">Digital Identity</label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Primary Email"
-                  className="w-full bg-white/[0.03] border border-white/5 rounded-[20px] px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition-all placeholder:text-white/10"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-3 group relative">
-                  <label className="text-xs font-black text-white/20 uppercase tracking-[0.3em] group-focus-within:text-purple-500 transition-colors pl-1">Access Key</label>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Create Key"
-                    className="w-full bg-white/[0.03] border border-white/5 rounded-[20px] px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition-all placeholder:text-white/10"
-                    onChange={handleChange}
-                    required
-                  />
-                  <button 
-                    type="button"
-                    className="absolute right-6 bottom-4 text-[10px] font-black text-white/20 hover:text-white transition-colors"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
-                <div className="space-y-3 group relative">
-                  <label className="text-xs font-black text-white/20 uppercase tracking-[0.3em] group-focus-within:text-purple-500 transition-colors pl-1">Verify Key</label>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    placeholder="Verify Key"
-                    className="w-full bg-white/[0.03] border border-white/5 rounded-[20px] px-6 py-4 text-base font-bold text-white focus:outline-none focus:border-purple-500/50 transition-all placeholder:text-white/10"
-                    onChange={handleChange}
-                    required
-                  />
-                  <button 
-                    type="button"
-                    className="absolute right-6 bottom-4 text-[10px] font-black text-white/20 hover:text-white transition-colors"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="auth-eye"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
               </div>
             </div>
-
-            <button
-              type="submit"
-              className="w-full py-6 bg-white text-black font-black uppercase italic tracking-[0.2em] text-xs rounded-[20px] hover:bg-purple-600 hover:text-white transition-all shadow-2xl active:scale-95"
-            >
-              Initialize Profile ➔
+            <div className="auth-field">
+              <label className="auth-label">Confirm Password</label>
+              <div className="auth-input-wrap">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Repeat your password"
+                  className="auth-input"
+                  onChange={handleChange}
+                  required
+                />
+                <button
+                  type="button"
+                  className="auth-eye"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
+            </div>
+            <button type="submit" className="auth-submit-btn" disabled={loading}>
+              {loading ? "Creating account..." : "Create Account →"}
             </button>
           </form>
-
-          <p className="text-center text-xs font-bold text-white/20 uppercase tracking-[0.3em]">
-            Existing Member?{" "}
-            <Link to="/login" className="text-white hover:text-purple-400 transition-colors decoration-1 underline-offset-4 underline">
-              Access Vault
-            </Link>
+          <p className="auth-switch">
+            Already have an account?{" "}
+            <Link to="/login" className="auth-switch-link">Sign in</Link>
           </p>
         </div>
       </div>
+
     </div>
   );
 }
-
 export default Register;
