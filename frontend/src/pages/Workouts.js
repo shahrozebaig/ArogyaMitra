@@ -1,3 +1,4 @@
+import { Dumbbell, Sparkles, Clock, Play, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
@@ -24,9 +25,9 @@ function Workouts() {
       const profileRes = await API.get("/health/profile");
       const profile = profileRes.data;
       const res = await API.post("/workout/generate", {
-        goal: profile?.goal || "Muscle Gain",
-        location: "Home",
-        duration: parseInt(profile?.daily_commitment) || 45,
+        goal: profile?.fitness_goal || "Muscle Gain",
+        location: profile?.workout_location || "Home",
+        duration: 30, // Default duration
         fitness_level: profile?.fitness_level || "Beginner",
       });
       if (res.data?.plan_json) setPlan(JSON.parse(res.data.plan_json));
@@ -43,7 +44,7 @@ function Workouts() {
     <div className="wo-root">
       <div className="wo-header">
         <div>
-          <h1 className="wo-title">💪 Workout Plan</h1>
+          <h1 className="wo-title"><Dumbbell className="wo-title-icon" /> Workout Plan</h1>
           <p className="wo-subtitle">Your personalized AI-generated training schedule.</p>
         </div>
         <div className="wo-header-actions">
@@ -60,7 +61,7 @@ function Workouts() {
           <button className="wo-generate-btn" onClick={generatePlan} disabled={loading}>
             {loading
               ? <span className="wo-spinner" />
-              : "✨"
+              : <Sparkles size={18} />
             }
             Generate New Plan
           </button>
@@ -73,13 +74,13 @@ function Workouts() {
         </div>
       ) : !plan ? (
         <div className="wo-empty">
-          <div className="wo-empty-icon">🏋️</div>
+          <div className="wo-empty-icon"><Dumbbell size={64} /></div>
           <h2 className="wo-empty-title">No Workout Plan Yet</h2>
           <p className="wo-empty-desc">
             Complete your health assessment, then generate your personalized AI workout plan.
           </p>
           <button className="wo-cta-btn" onClick={generatePlan}>
-            ✨ Generate My Plan
+            <Sparkles size={18} /> Generate My Plan
           </button>
         </div>
       ) : activeTab === "today" && plan?.today ? (
@@ -90,16 +91,16 @@ function Workouts() {
               <h2 className="wo-sidebar-title">{plan.today.title}</h2>
               <div className="wo-sidebar-stats">
                 <div className="wo-sidebar-stat">
-                  <span className="wo-sidebar-stat-lbl">⏱ Duration</span>
+                  <span className="wo-sidebar-stat-lbl"><Clock size={14} /> Duration</span>
                   <span className="wo-sidebar-stat-val">{plan.today.duration}</span>
                 </div>
                 <div className="wo-sidebar-stat">
-                  <span className="wo-sidebar-stat-lbl">🏃 Exercises</span>
+                  <span className="wo-sidebar-stat-lbl"><Play size={14} /> Exercises</span>
                   <span className="wo-sidebar-stat-val">{plan.today.exercises?.length || 0}</span>
                 </div>
               </div>
               <button className="wo-start-btn" onClick={() => startWorkout()}>
-                Start Session →
+                Start Session <ArrowRight size={18} />
               </button>
             </div>
           </div>
@@ -127,7 +128,7 @@ function Workouts() {
                     </div>
                     <p className="wo-exercise-desc">{ex.description}</p>
                     <button className="wo-exercise-link" onClick={() => startWorkout(ex)}>
-                      View Technique Guide →
+                      View Technique Guide <ArrowRight size={14} />
                     </button>
                   </div>
                 </div>
@@ -153,8 +154,8 @@ function Workouts() {
                   <p className={`wo-day-status ${item.status === "Rest Day" ? "wo-rest" : ""}`}>{item.status}</p>
                 </div>
                 <div className="wo-day-footer">
-                  <span>⏱ {item.duration}</span>
-                  <span>🏃 {item.exercises || 0} exercises</span>
+                  <span><Clock size={14} /> {item.duration}</span>
+                  <span><Play size={14} /> {item.exercises || 0}</span>
                 </div>
               </div>
             );
