@@ -1,3 +1,4 @@
+import { Utensils, Sparkles, ShoppingCart, Check, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import API from "../api/axios";
 import "./Nutrition.css";
@@ -20,9 +21,12 @@ function Nutrition() {
     try {
       const profileRes = await API.get("/health/profile");
       const profile = profileRes.data;
-      const calories = profile?.goal === "Weight Loss" ? 1600 : profile?.goal === "Muscle Gain" ? 2800 : 2100;
       const res = await API.post("/nutrition/generate", {
-        calories,
+        age: profile?.age || 25,
+        height: profile?.height || 170,
+        weight: profile?.weight || 70,
+        fitness_goal: profile?.fitness_goal || "Stay Fit",
+        fitness_level: profile?.fitness_level || "Beginner",
         diet_type: profile?.dietary_preference || "Vegetarian",
         allergies: profile?.allergies || "None",
         medical_conditions: profile?.medical_conditions || "None",
@@ -65,13 +69,12 @@ function Nutrition() {
   };
   const handleBuy = (item) => window.open(`https://www.bigbasket.com/ps/?q=${encodeURIComponent(item)}`, "_blank");
   const todayName = new Date().toLocaleDateString("en-US", { weekday: "long" });
-  const completedMeals = plan?.today?.filter((m) => m.completed).length || 0;
-  const totalMeals = plan?.today?.length || 0;
+
   return (
     <div className="nt-root">
       <div className="nt-header">
         <div>
-          <h1 className="nt-title">🥗 Nutrition Plan</h1>
+          <h1 className="nt-title"><Utensils className="nt-title-icon" /> Nutrition Plan</h1>
           <p className="nt-subtitle">Your AI-personalized daily meal strategy.</p>
         </div>
         <div className="nt-header-actions">
@@ -85,22 +88,12 @@ function Nutrition() {
             ))}
           </div>
           <button className="nt-generate-btn" onClick={generatePlan} disabled={loading}>
-            {loading ? <span className="nt-spinner" /> : "✨"}
+            {loading ? <span className="nt-spinner" /> : <Sparkles size={18} />}
             Generate Plan
           </button>
         </div>
       </div>
-      {plan?.today && activeTab === "today" && (
-        <div className="nt-progress-bar-wrap">
-          <div className="nt-progress-bar-info">
-            <span>Today's Meals</span>
-            <span className="nt-progress-bar-count">{completedMeals} / {totalMeals} completed</span>
-          </div>
-          <div className="nt-progress-track">
-            <div className="nt-progress-fill" style={{ width: `${totalMeals ? (completedMeals / totalMeals) * 100 : 0}%` }} />
-          </div>
-        </div>
-      )}
+
       {loading ? (
         <div className="nt-loading">
           <div className="nt-spinner-lg" />
@@ -108,13 +101,12 @@ function Nutrition() {
         </div>
       ) : !plan ? (
         <div className="nt-empty">
-          <div className="nt-empty-icon">🍱</div>
+          <div className="nt-empty-icon"><Utensils size={64} /></div>
           <h2 className="nt-empty-title">No Nutrition Plan Yet</h2>
           <p className="nt-empty-desc">Generate your personalized AI meal plan based on your health profile.</p>
-          <button className="nt-cta-btn" onClick={generatePlan}>✨ Generate My Plan</button>
+          <button className="nt-cta-btn" onClick={generatePlan}><Sparkles size={18} /> Generate My Plan</button>
         </div>
       ) : (
-
         <>
           {activeTab === "today" && plan?.today && (
             <div className="nt-meals-grid">
@@ -129,9 +121,7 @@ function Nutrition() {
                       className={`nt-check-btn ${meal.completed ? "nt-check-done" : ""}`}
                       onClick={() => handleMealComplete(i)}
                     >
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                      </svg>
+                      <Check size={16} />
                     </button>
                   </div>
                   <h4 className={`nt-meal-name ${meal.completed ? "nt-meal-name-done" : ""}`}>{meal.name}</h4>
@@ -205,7 +195,7 @@ function Nutrition() {
           {activeTab === "shopping" && plan?.shoppingList && (
             <div className="nt-shopping">
               <div className="nt-shopping-header">
-                <span className="nt-shopping-title">🛒 Shopping List</span>
+                <span className="nt-shopping-title"><ShoppingCart size={20} /> Shopping List</span>
                 <span className="nt-shopping-count">
                   {plan.shoppingList.filter((i) => i.bought).length} / {plan.shoppingList.length} items
                 </span>
@@ -215,16 +205,12 @@ function Nutrition() {
                   <div key={i} className={`nt-shop-item ${item.bought ? "nt-shop-done" : ""}`}>
                     <div className="nt-shop-left" onClick={() => toggleShoppingItem(i)}>
                       <div className={`nt-shop-check ${item.bought ? "nt-shop-check-done" : ""}`}>
-                        {item.bought && (
-                          <svg width="12" height="12" fill="none" stroke="white" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
+                        {item.bought && <Check size={12} strokeWidth={3} color="white" />}
                       </div>
                       <span className={`nt-shop-name ${item.bought ? "nt-shop-name-done" : ""}`}>{item.name}</span>
                     </div>
                     <button className="nt-buy-btn" onClick={() => handleBuy(item.name)}>
-                      Buy →
+                      Buy <ArrowRight size={14} />
                     </button>
                   </div>
                 ))}
