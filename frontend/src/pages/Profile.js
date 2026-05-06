@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { User as UserIcon } from "lucide-react";
 import useUserStore from "../store/userStore";
 import API from "../api/axios";
 import "./Profile.css";
@@ -68,7 +69,7 @@ function Profile() {
     <div className="pr-root">
       <div className="pr-header">
         <div>
-          <h1 className="pr-title">👤 My <span className="pr-title-green">Account</span></h1>
+          <h1 className="pr-title"><UserIcon className="pr-icon" size={32} /> My <span className="pr-title-green">Account</span></h1>
           <p className="pr-subtitle">Manage your personal settings and health profile.</p>
         </div>
       </div>
@@ -82,16 +83,6 @@ function Profile() {
           <div className="pr-info-wrap">
             <h2 className="pr-name">{formData.name || "User Name"}</h2>
             <p className="pr-email">{formData.email}</p>
-          </div>
-          <div className="pr-stats-row">
-            <div className="pr-stat">
-              <span className="pr-stat-val">24</span>
-              <span className="pr-stat-lbl">Completed</span>
-            </div>
-            <div className="pr-stat">
-              <span className="pr-stat-val">92%</span>
-              <span className="pr-stat-lbl">Consistency</span>
-            </div>
           </div>
         </div>
         <div className="pr-card-form">
