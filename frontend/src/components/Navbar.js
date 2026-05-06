@@ -1,3 +1,4 @@
+import { LayoutDashboard, Dumbbell, Utensils, LineChart, Bot, LogOut } from "lucide-react";
 import useUserStore from "../store/userStore";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
@@ -11,11 +12,11 @@ function Navbar() {
     navigate("/");
   };
   const navLinks = [
-    { name: "Dashboard", path: "/dashboard", icon: "🏠" },
-    { name: "Workouts", path: "/workouts", icon: "💪" },
-    { name: "Nutrition", path: "/nutrition", icon: "🥗" },
-    { name: "Progress", path: "/progress", icon: "📈" },
-    { name: "AI Coach", path: "/ai-coach", icon: "🤖" },
+    { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={18} /> },
+    { name: "Workouts", path: "/workouts", icon: <Dumbbell size={18} /> },
+    { name: "Nutrition", path: "/nutrition", icon: <Utensils size={18} /> },
+    { name: "Progress", path: "/progress", icon: <LineChart size={18} /> },
+    { name: "AI Coach", path: "/ai-coach", icon: <Bot size={18} /> },
   ];
   return (
     <div className="nb-root">
@@ -51,10 +52,7 @@ function Navbar() {
           </Link>
           <div className="nb-divider" />
           <button className="nb-logout" onClick={handleLogout} title="Logout">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
+            <LogOut size={18} />
             Logout
           </button>
         </div>
