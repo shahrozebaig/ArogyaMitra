@@ -1,3 +1,4 @@
+import { Activity, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
@@ -56,7 +57,7 @@ function HealthAssessment() {
   return (
     <div className="ha-root">
       <div className="ha-header">
-        <h1 className="ha-title">🏥 Health <span className="ha-title-green">Assessment</span></h1>
+        <h1 className="ha-title"><Activity className="ha-icon" size={32} /> Health <span className="ha-title-green">Assessment</span></h1>
         <p className="ha-subtitle">Let's build your personalized AI training and nutrition architecture.</p>
       </div>
       <form onSubmit={handleSubmit} className="ha-form">
@@ -93,7 +94,6 @@ function HealthAssessment() {
                 <option value="Weight Loss">Weight Loss</option>
                 <option value="Muscle Gain">Muscle Gain</option>
                 <option value="Stay Fit">Stay Fit</option>
-                <option value="Endurance">Endurance</option>
               </select>
             </div>
             <div className="ha-input-group">
@@ -143,7 +143,7 @@ function HealthAssessment() {
           </div>
         </div>
         <button type="submit" disabled={loading} className="ha-submit-btn">
-          {loading ? "Generating Your AI Plans..." : "Generate AI Plans ➔"}
+          {loading ? "Generating Your AI Plans..." : <><Sparkles size={18} /> Generate AI Plans</>}
         </button>
 
       </form>
