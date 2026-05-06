@@ -1,3 +1,4 @@
+import { Bot, SendHorizontal } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
@@ -15,7 +16,7 @@ function AICoach() {
     return "Good evening";
   };
   useEffect(() => {
-    const greetingText = `${getGreeting()}, ${user?.name?.split(' ')[0] || "there"}! I'm your AI Coach. How can I help you reach your fitness goals today? 🏃‍♂️`;
+    const greetingText = `${getGreeting()}, ${user?.name?.split(' ')[0] || "there"}! I'm your AI Coach. How can I help you reach your fitness goals today?`;
     setMessages([
       {
         sender: "ai",
@@ -70,7 +71,7 @@ function AICoach() {
           {messages.map((msg, i) => (
             <div key={i} className={`ac-msg-row ${msg.sender === "user" ? "ac-msg-row-user" : "ac-msg-row-ai"}`}>
               <div className={`ac-avatar ${msg.sender === "user" ? "ac-avatar-user" : "ac-avatar-ai"}`}>
-                {msg.sender === "user" ? (user?.name?.charAt(0) || "U") : "🤖"}
+                {msg.sender === "user" ? (user?.name?.charAt(0) || "U") : <Bot size={20} />}
               </div>
               <div>
                 <div className={`ac-bubble ${msg.sender === "user" ? "ac-bubble-user" : "ac-bubble-ai"}`}>
@@ -116,9 +117,7 @@ function AICoach() {
               onClick={() => handleSend()}
               disabled={loading || !input.trim()}
             >
-              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
+              <SendHorizontal size={20} />
             </button>
           </div>
           <p className="ac-disclaimer">
