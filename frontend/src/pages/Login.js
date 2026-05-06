@@ -1,3 +1,4 @@
+import { Dumbbell, Utensils, MessageSquare, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
@@ -45,9 +46,9 @@ function Login() {
           </p>
         </div>
         <div className="auth-left-footer">
-          <div className="auth-feature-pill">🏋️ AI Workout Plans</div>
-          <div className="auth-feature-pill">🥗 Smart Nutrition</div>
-          <div className="auth-feature-pill">💬 AROMI Coach</div>
+          <div className="auth-feature-pill"><Dumbbell size={16} /> AI Workout Plans</div>
+          <div className="auth-feature-pill"><Utensils size={16} /> Smart Nutrition</div>
+          <div className="auth-feature-pill"><MessageSquare size={16} /> AROMI Coach</div>
         </div>
       </div>
       <div className="auth-right">
@@ -57,7 +58,7 @@ function Login() {
             <span className="auth-left-logo-name" style={{ fontSize: "1rem" }}>ArogyaMitra</span>
           </Link>
           <div className="auth-form-header">
-            <h1 className="auth-form-title">Welcome Back 👋</h1>
+            <h1 className="auth-form-title">Welcome Back</h1>
             <p className="auth-form-sub">Sign in to continue your health journey</p>
           </div>
           <form onSubmit={handleLogin} className="auth-form">
@@ -91,12 +92,12 @@ function Login() {
                   className="auth-eye"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
             <button type="submit" className="auth-submit-btn" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In →"}
+              {loading ? "Signing in..." : <><span style={{marginRight: '8px'}}>Sign In</span> <ArrowRight size={18} /></>}
             </button>
           </form>
           <p className="auth-switch">
