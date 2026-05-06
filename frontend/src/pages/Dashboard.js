@@ -89,24 +89,30 @@ function Dashboard() {
               <div className="db-plans-grid">
                 {tasks.workout && (
                   <Link to="/workouts" className="db-plan-card db-plan-workout">
-                    <div className="db-plan-icon"><Dumbbell /></div>
-                    <div>
-                      <div className="db-plan-tag">Workout Plan</div>
-                      <div className="db-plan-name">Training Routine</div>
-                      <div className="db-plan-desc">Your personalized strength & conditioning plan for today.</div>
+                    <div className="db-plan-main">
+                      <div className="db-plan-icon"><Dumbbell /></div>
+                      <div className="db-plan-info">
+                        <div className="db-plan-tag">Workout Plan</div>
+                        <div className="db-plan-name">Training Routine</div>
+                      </div>
                     </div>
-                    <div className="db-plan-arrow">Start <ArrowRight size={16} /></div>
+                    <div className="db-plan-action">
+                      Start <ArrowRight size={16} />
+                    </div>
                   </Link>
                 )}
                 {tasks.nutrition && (
                   <Link to="/nutrition" className="db-plan-card db-plan-nutrition">
-                    <div className="db-plan-icon"><Utensils /></div>
-                    <div>
-                      <div className="db-plan-tag">Nutrition Plan</div>
-                      <div className="db-plan-name">Meal Strategy</div>
-                      <div className="db-plan-desc">Customized meals with macros and nutrition targets.</div>
+                    <div className="db-plan-main">
+                      <div className="db-plan-icon"><Utensils /></div>
+                      <div className="db-plan-info">
+                        <div className="db-plan-tag">Nutrition Plan</div>
+                        <div className="db-plan-name">Meal Strategy</div>
+                      </div>
                     </div>
-                    <div className="db-plan-arrow">View <ArrowRight size={16} /></div>
+                    <div className="db-plan-action">
+                      View <ArrowRight size={16} />
+                    </div>
                   </Link>
                 )}
               </div>
