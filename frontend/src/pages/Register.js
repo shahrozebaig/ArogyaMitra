@@ -1,3 +1,4 @@
+import { CheckCircle2, Lock, Bot, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
@@ -79,9 +80,9 @@ function Register() {
           </div>
         </div>
         <div className="auth-left-footer">
-          <div className="auth-feature-pill">✅ Free to get started</div>
-          <div className="auth-feature-pill">🔒 100% Secure</div>
-          <div className="auth-feature-pill">🤖 AI-Powered</div>
+          <div className="auth-feature-pill"><CheckCircle2 size={16} /> Free to get started</div>
+          <div className="auth-feature-pill"><Lock size={16} /> 100% Secure</div>
+          <div className="auth-feature-pill"><Bot size={16} /> AI-Powered</div>
         </div>
       </div>
       <div className="auth-right">
@@ -91,7 +92,7 @@ function Register() {
             <span className="auth-left-logo-name" style={{ fontSize: "1rem" }}>ArogyaMitra</span>
           </Link>
           <div className="auth-form-header">
-            <h1 className="auth-form-title">Create Account 🌱</h1>
+            <h1 className="auth-form-title">Create Account</h1>
             <p className="auth-form-sub">Start your AI health journey today — it's free</p>
           </div>
           <form onSubmit={handleRegister} className="auth-form">
@@ -133,7 +134,7 @@ function Register() {
                   className="auth-eye"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
@@ -153,12 +154,12 @@ function Register() {
                   className="auth-eye"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? "🙈" : "👁️"}
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
             <button type="submit" className="auth-submit-btn" disabled={loading}>
-              {loading ? "Creating account..." : "Create Account →"}
+              {loading ? "Creating account..." : <><span style={{marginRight: '8px'}}>Create Account</span> <ArrowRight size={18} /></>}
             </button>
           </form>
           <p className="auth-switch">
