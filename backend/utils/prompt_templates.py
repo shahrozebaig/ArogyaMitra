@@ -94,6 +94,20 @@ def nutrition_prompt(data: dict) -> str:
 def chat_prompt(message: str, context: str = "Fitness") -> str:
     persona = "AROMI, a smart, adaptive AI health companion" if context == "AROMI" else "an expert AI Assistant"
     focus = "overall health, wellness, and lifestyle" if context == "AROMI" else "nutrition preparation and exercise guidance"
+    if context == "Nutrition Assistant":
+        return f"""
+        You are a professional chef and nutritionist.
+        Provide a detailed recipe for: "{message}".
+        
+        STRICT RULES:
+        1. Return ONLY a valid JSON object.
+        2. Format: {{"steps": "1. step one\\n2. step two...", "video_id": "YOUTUBE_ID_OR_EMPTY"}}
+        3. Provide a REAL, popular YouTube Video ID for a high-quality tutorial of this specific dish.
+        4. CRITICAL: If you do not have a specific, verified, and popular Video ID for this exact dish, leave the "video_id" field EMPTY (""). 
+        5. Do not use placeholders like "REAL_YOUTUBE_ID". If unsure, use "".
+        6. Do not include any other text, markdown, or code blocks.
+        """
+
     return f"""
     You are {persona}. 
     Your primary focus is {focus}.
