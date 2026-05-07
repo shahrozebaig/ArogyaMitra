@@ -7,6 +7,7 @@
     @apply bg-white text-gray-900;
     font-family: 'Inter', sans-serif;
   }
+
   select option {
     background: #fff;
     color: #111827;
@@ -24,7 +25,7 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-2.5 rounded-xl font-medium transition-all duration-300 hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] active:scale-95;
+    @apply bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-2.5 rounded-xl font-medium transition-all duration-300 hover:shadow-[0_0_20px_rgba(124, 58, 237, 0.4)] active:scale-95;
   }
 
 
