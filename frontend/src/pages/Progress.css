@@ -84,45 +84,51 @@
 .pg-card {
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 24px;
-  padding: 1.5rem 1.8rem;
+  border-radius: 20px;
+  padding: 0.8rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pg-card-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  transition: box-shadow 0.2s, border-color 0.2s, transform 0.18s;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  width: 100%;
 }
 
 .pg-card:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  border-color: #bbf7d0;
-  transform: translateY(-2px);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .pg-card-left {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  flex: 1;
 }
 
 
 .pg-time-box {
-  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  min-width: 90px;
+  text-align: center;
 }
 
 .pg-date {
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
   color: #9ca3af;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   margin-bottom: 2px;
 }
 
 .pg-time {
-  font-size: 1.15rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: #111827;
 }
@@ -222,23 +228,23 @@
 }
 
 .pg-stat-box {
-  text-align: right;
-  min-width: 120px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .pg-stat-lbl {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #9ca3af;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 2px;
-  display: block;
 }
 
 .pg-stat-val {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 900;
+  white-space: nowrap;
 }
 
 .pg-stat-val-cal {
@@ -261,13 +267,16 @@
 .pg-resume-btn {
   background: #166534;
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  padding: 10px 20px;
-  border-radius: 12px;
+  padding: 8px 16px;
+  border-radius: 100px;
   border: none;
   cursor: pointer;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   box-shadow: 0 4px 12px rgba(22, 101, 52, 0.2);
   transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
