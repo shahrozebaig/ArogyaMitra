@@ -2,12 +2,15 @@ import { Dumbbell, Sparkles, Clock, Play, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import useToastStore from "../store/toastStore";
 import "./Workouts.css";
 function Workouts() {
   const [plan, setPlan] = useState(null);
   const [activeTab, setActiveTab] = useState("today");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const addToast = useToastStore((state) => state.addToast);
+  
   useEffect(() => { fetchPlan(); }, []);
   const fetchPlan = async () => {
     setLoading(true);
@@ -30,8 +33,14 @@ function Workouts() {
         duration: 30, // Default duration
         fitness_level: profile?.fitness_level || "Beginner",
       });
-      if (res.data?.plan_json) setPlan(JSON.parse(res.data.plan_json));
-    } catch (err) { console.error("Generation error:", err); }
+      if (res.data?.plan_json) {
+        setPlan(JSON.parse(res.data.plan_json));
+        addToast("Successfully generated AI plans!");
+      }
+    } catch (err) { 
+      console.error("Generation error:", err);
+      addToast("Failed to generate plan.", "error");
+    }
     finally { setLoading(false); }
   };
   const startWorkout = (exercise = null) => {
