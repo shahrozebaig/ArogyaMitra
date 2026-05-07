@@ -2,9 +2,11 @@ import { Activity, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import useToastStore from "../store/toastStore";
 import "./HealthAssessment.css";
 function HealthAssessment() {
   const navigate = useNavigate();
+  const addToast = useToastStore((state) => state.addToast);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     age: "",
@@ -45,10 +47,11 @@ function HealthAssessment() {
           medical_conditions: form.medical_conditions
         })
       ]);
+      addToast("Successfully generated AI plans!");
       navigate("/dashboard");
     } catch (err) {
       console.error("Failed to generate plans:", err);
-      alert("Assessment saved, but plan generation failed. You can try generating from the dashboard.");
+      addToast("Assessment saved, but plan generation failed.", "error");
       navigate("/dashboard");
     } finally {
       setLoading(false);
