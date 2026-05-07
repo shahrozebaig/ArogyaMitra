@@ -12,9 +12,12 @@ import WorkoutComplete from "./pages/WorkoutComplete";
 import AICoach from "./pages/AICoach";
 import Profile from "./pages/Profile";
 import MainLayout from "./layout/MainLayout";
+import ToastContainer from "./components/ToastContainer";
+
 function App() {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
