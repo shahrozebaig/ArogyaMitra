@@ -1,13 +1,16 @@
-import { Utensils, Sparkles, ShoppingCart, Check, ArrowRight } from "lucide-react";
+import { Utensils, Sparkles, ShoppingCart, Check, ArrowRight, X, Play } from "lucide-react";
 import { useState, useEffect } from "react";
 import API from "../api/axios";
+import useToastStore from "../store/toastStore";
 import "./Nutrition.css";
 function Nutrition() {
   const [plan, setPlan] = useState(null);
   const [activeTab, setActiveTab] = useState("today");
   const [loading, setLoading] = useState(false);
-  const [instructions, setInstructions] = useState({});
   const [loadingInstructions, setLoadingInstructions] = useState({});
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const addToast = useToastStore((state) => state.addToast);
+  
   useEffect(() => { fetchPlan(); }, []);
   const fetchPlan = async () => {
     try {
@@ -31,25 +34,34 @@ function Nutrition() {
         allergies: profile?.allergies || "None",
         medical_conditions: profile?.medical_conditions || "None",
       });
-      if (res.data?.plan_json) setPlan(JSON.parse(res.data.plan_json));
-    } catch (err) { console.error(err); }
+      if (res.data?.plan_json) {
+        setPlan(JSON.parse(res.data.plan_json));
+        addToast("Successfully generated AI plans!");
+      }
+    } catch (err) { 
+      console.error(err); 
+      addToast("Failed to generate plan.", "error");
+    }
     finally { setLoading(false); }
   };
   const fetchCookingInstructions = async (mealName, index) => {
-    if (instructions[index]) {
-      setInstructions((p) => { const n = { ...p }; delete n[index]; return n; });
-      return;
-    }
     setLoadingInstructions((p) => ({ ...p, [index]: true }));
     try {
       const res = await API.post("/aromi/chat", {
-        message: `Provide step-by-step cooking instructions for: ${mealName}. Respond ONLY in plain-text points starting with 1. 2. 3. etc. No symbols, no intro.`,
+        message: mealName,
         context: "Nutrition Assistant",
       });
-      setInstructions((p) => ({ ...p, [index]: res.data.reply }));
+      let data;
+      try {
+        data = JSON.parse(res.data.reply);
+      } catch {
+        data = { steps: res.data.reply, video_id: "" };
+      }
+      setSelectedRecipe({ ...data, name: mealName });
     } catch { }
     finally { setLoadingInstructions((p) => ({ ...p, [index]: false })); }
   };
+
   const handleMealComplete = async (i) => {
     try {
       const updated = { ...plan };
@@ -149,22 +161,15 @@ function Nutrition() {
                     ))}
                   </div>
                   <button
-                    className={`nt-instructions-toggle ${instructions[i] ? "nt-instructions-open" : ""}`}
+                    className="nt-instructions-toggle"
                     onClick={() => fetchCookingInstructions(meal.name, i)}
                     disabled={loadingInstructions[i]}
                   >
                     {loadingInstructions[i]
-                      ? <><span className="nt-spinner nt-spinner-sm" /> Loading...</>
-                      : instructions[i]
-                        ? "▲ Hide Preparation Steps"
-                        : "▼ View Preparation Steps"
+                      ? <><span className="nt-spinner nt-spinner-sm" /> Analyzing...</>
+                      : <><Play size={14} /> View Preparation Steps</>
                     }
                   </button>
-                  {instructions[i] && (
-                    <div className="nt-instructions-box">
-                      <p className="nt-instructions-text">{instructions[i]}</p>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -218,6 +223,34 @@ function Nutrition() {
             </div>
           )}
         </>
+      )}
+      {selectedRecipe && (
+        <div className="nt-modal-overlay" onClick={() => setSelectedRecipe(null)}>
+          <div className="nt-modal nt-modal-simple" onClick={(e) => e.stopPropagation()}>
+            <div className="nt-modal-header">
+              <div className="nt-header-left">
+                <h2 className="nt-modal-title">{selectedRecipe.name}</h2>
+                <button
+                  className="nt-yt-btn"
+                  onClick={() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(selectedRecipe.name + " recipe")}`, "_blank")}
+                >
+                  <Play size={14} /> Search Tutorial on YouTube
+                </button>
+              </div>
+              <button className="nt-modal-close-simple" onClick={() => setSelectedRecipe(null)}><X /></button>
+            </div>
+            <div className="nt-modal-content-simple">
+              <div className="nt-modal-steps">
+                <h3>Preparation Steps</h3>
+                <div className="nt-steps-text">
+                  {selectedRecipe.steps.split('\n').map((step, idx) => (
+                    <p key={idx}>{step}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
