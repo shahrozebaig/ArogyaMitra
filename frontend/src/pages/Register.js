@@ -2,6 +2,7 @@ import { CheckCircle2, Lock, Bot, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
+import useToastStore from "../store/toastStore";
 import "./AuthPages.css";
 function Register() {
   const [formData, setFormData] = useState({
@@ -15,22 +16,24 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const addToast = useToastStore((state) => state.addToast);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleRegister = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      addToast("Passwords do not match", "error");
       return;
     }
     setLoading(true);
     try {
       await API.post("/auth/register", formData);
-      alert("Account created successfully!");
+      addToast("Account created successfully!");
       navigate("/login");
     } catch {
-      alert("Registration failed. Please try again.");
+      addToast("Registration failed. Please try again.", "error");
     } finally {
       setLoading(false);
     }
@@ -159,7 +162,7 @@ function Register() {
               </div>
             </div>
             <button type="submit" className="auth-submit-btn" disabled={loading}>
-              {loading ? "Creating account..." : <><span style={{marginRight: '8px'}}>Create Account</span> <ArrowRight size={18} /></>}
+              {loading ? "Creating account..." : <><span style={{ marginRight: '8px' }}>Create Account</span> <ArrowRight size={18} /></>}
             </button>
           </form>
           <p className="auth-switch">
