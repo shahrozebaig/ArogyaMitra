@@ -3,7 +3,9 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
+import useToastStore from "../store/toastStore";
 import "./AuthPages.css";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,15 +13,17 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
+  const addToast = useToastStore((state) => state.addToast);
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const res = await API.post("/auth/login", { email, password });
       setUser(res.data.user);
+      addToast("Logged in successfully!");
       navigate("/dashboard");
     } catch {
-      alert("Invalid credentials. Please try again.");
+      addToast("Invalid credentials. Please try again.", "error");
     } finally {
       setLoading(false);
     }
@@ -97,7 +101,7 @@ function Login() {
               </div>
             </div>
             <button type="submit" className="auth-submit-btn" disabled={loading}>
-              {loading ? "Signing in..." : <><span style={{marginRight: '8px'}}>Sign In</span> <ArrowRight size={18} /></>}
+              {loading ? "Signing in..." : <><span style={{ marginRight: '8px' }}>Sign In</span> <ArrowRight size={18} /></>}
             </button>
           </form>
           <p className="auth-switch">
