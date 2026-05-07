@@ -1,3 +1,4 @@
+import { Bot, Pause, Play, ArrowRight, Check, ChevronLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../api/axios";
@@ -86,7 +87,7 @@ function WorkoutSession() {
       <div className="ws-topbar">
         <div className="ws-topbar-left">
           <button className="ws-exit-btn" onClick={() => navigate("/workouts")}>
-            ← Exit Session
+            <ChevronLeft size={18} style={{ marginRight: '4px' }} /> Exit Session
           </button>
           <div className="ws-topbar-divider" />
           <div>
@@ -152,7 +153,7 @@ function WorkoutSession() {
               <div className="ws-camera-badge">Conf: {aiConfidence}%</div>
             </div>
             <div className="ws-ai-feedback">
-              🤖 {aiFeedback}
+              <Bot size={18} style={{ marginRight: '8px', color: 'var(--primary)' }} /> {aiFeedback}
             </div>
             {!isRunning && reps === 0 && (
               <div className="ws-camera-overlay">
@@ -197,10 +198,10 @@ function WorkoutSession() {
                 className={`ws-btn-main ${isRunning ? "ws-btn-pause" : "ws-btn-start"}`}
                 onClick={() => setIsRunning(!isRunning)}
               >
-                {isRunning ? "⏸ Pause" : "▶ Start Session"}
+                {isRunning ? <><Pause size={20} /> Pause</> : <><Play size={20} /> Start Session</>}
               </button>
               <button className="ws-btn-next" onClick={nextExercise}>
-                {currentIndex < exercises.length - 1 ? "Next Exercise →" : "Finish Workout ✓"}
+                {currentIndex < exercises.length - 1 ? <><span style={{marginRight: '8px'}}>Next Exercise</span> <ArrowRight size={18} /></> : <><span style={{marginRight: '8px'}}>Finish Workout</span> <Check size={18} /></>}
               </button>
             </div>
           </div>
