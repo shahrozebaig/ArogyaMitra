@@ -45,6 +45,9 @@
   color: #6b7280;
   cursor: pointer;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   transition: background 0.18s, color 0.18s;
 }
 
@@ -453,40 +456,6 @@
   gap: 8px;
 }
 
-.ws-btn-main {
-  width: 100%;
-  padding: 13px;
-  border-radius: 12px;
-  border: none;
-  font-size: 0.88rem;
-  font-weight: 800;
-  cursor: pointer;
-  font-family: inherit;
-  transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
-}
-
-.ws-btn-start {
-  background: #166534;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(22, 101, 52, 0.3);
-}
-
-.ws-btn-start:hover {
-  background: #15803d;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(22, 101, 52, 0.4);
-}
-
-.ws-btn-pause {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #e5e7eb;
-}
-
-.ws-btn-pause:hover {
-  background: #e5e7eb;
-}
-
 .ws-btn-next {
   width: 100%;
   padding: 11px;
@@ -498,11 +467,31 @@
   font-weight: 700;
   cursor: pointer;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   transition: background 0.18s;
 }
 
 .ws-btn-next:hover {
   background: #dcfce7;
+}
+
+.ws-btn-main {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
 }
 
 
