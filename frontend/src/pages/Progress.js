@@ -1,3 +1,4 @@
+import { LineChart, BarChart3, Utensils, Dumbbell, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
@@ -58,7 +59,7 @@ function Progress() {
     <div className="pg-root">
       <div className="pg-header">
         <div>
-          <h1 className="pg-title">📈 Progress <span className="pg-title-green">Tracking</span></h1>
+          <h1 className="pg-title"><LineChart className="pg-title-icon" /> Progress <span className="pg-title-green">Tracking</span></h1>
           <p className="pg-subtitle">Monitoring your physiological evolution and daily consistency.</p>
         </div>
       </div>
@@ -73,7 +74,7 @@ function Progress() {
           </div>
         ) : records.length === 0 ? (
           <div className="pg-empty">
-            <div className="pg-empty-icon">📊</div>
+            <div className="pg-empty-icon"><BarChart3 size={48} /></div>
             <h3 className="pg-empty-title">No Activity Data</h3>
             <p className="pg-empty-desc">Start a workout or log a meal to see your progress here.</p>
           </div>
@@ -88,8 +89,8 @@ function Progress() {
               const isExpanded = expandedId === record.id;
               const showExerciseList = !isMeal && plan?.today?.exercises;
               return (
-                <div key={i} className="pg-card" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                <div key={i} className="pg-card">
+                  <div className="pg-card-main">
                     <div className="pg-card-left">
                       <div className="pg-time-box">
                         <p className="pg-date">{dateStr}</p>
@@ -98,14 +99,14 @@ function Progress() {
                       <div className="pg-divider"></div>
                       <div className="pg-info">
                         <div className={`pg-icon-wrap ${isInProgress ? 'pg-icon-in-progress' : ''}`}>
-                          {isMeal ? "🥗" : "🏋️"}
+                          {isMeal ? <Utensils size={18} /> : <Dumbbell size={18} />}
                         </div>
                         <div className="pg-details">
                           <div className="pg-card-title-row">
                             <h4 className="pg-card-title">
-                              {isMeal ? "Nutrient Map Sync" : isInProgress ? "Session Pending" : "Objective Complete"}
+                              {isMeal ? "Nutrient Map Sync" : isInProgress ? "Workout in Progress" : "Workout Finished"}
                             </h4>
-                            {isInProgress && <span className="pg-badge-ip">In Progress</span>}
+                            {isInProgress && <span className="pg-badge-ip">Active Now</span>}
                           </div>
                           <p className="pg-id">Module ID: #{record.id.toString().slice(-4)}</p>
                           {showExerciseList && (
@@ -113,7 +114,7 @@ function Progress() {
                               className="pg-toggle-details"
                               onClick={() => setExpandedId(isExpanded ? null : record.id)}
                             >
-                              {isExpanded ? "▲ Hide Exercises" : "▼ Show Exercises"}
+                              {isExpanded ? "▲ Hide Checklist" : "▼ View Checklist"}
                             </button>
                           )}
                         </div>
@@ -123,44 +124,52 @@ function Progress() {
                       <div className="pg-stat-box">
                         {record.calories_burned > 0 ? (
                           <>
-                            <span className="pg-stat-lbl">Metabolic Cost</span>
+                            <span className="pg-stat-lbl">Energy Expended</span>
                             <p className="pg-stat-val pg-stat-val-cal">-{record.calories_burned} kcal</p>
                           </>
                         ) : isMeal ? (
                           <>
-                            <span className="pg-stat-lbl">Portion Units</span>
+                            <span className="pg-stat-lbl">Nutrition Units</span>
                             <p className="pg-stat-val pg-stat-val-meal">+{record.healthy_meals_count} Units</p>
                           </>
                         ) : (
                           <>
-                            <span className="pg-stat-lbl">Current Status</span>
+                            <span className="pg-stat-lbl">Current State</span>
                             <p className={`pg-stat-val pg-stat-val-status ${isInProgress ? 'pg-stat-val-ip' : ''}`}>
-                              {record.status}
+                              {isInProgress ? "In Progress" : "Finished"}
                             </p>
                           </>
                         )}
                       </div>
                       {isInProgress && (
                         <button onClick={() => handleResume(record)} className="pg-resume-btn">
-                          Resume →
+                          Resume Session <ArrowRight size={16} />
                         </button>
                       )}
                     </div>
                   </div>
                   {isExpanded && showExerciseList && (
                     <div className="pg-exercise-details">
-                      <h5 className="pg-section-title" style={{ fontSize: '0.8rem', opacity: 0.6 }}>Exercise Checklist</h5>
                       <div className="pg-ex-list">
                         {plan.today.exercises.map((ex, idx) => {
-                          const isDone = idx < record.workout_completed;
-                          const isCurrent = idx === record.workout_completed && isInProgress;
+                          let statusLabel = "Pending";
+                          let statusClass = "pg-ex-status-pending";
+                          
+                          if (!isInProgress && idx < record.workout_completed) {
+                            statusLabel = "Completed ✓";
+                            statusClass = "pg-ex-status-done";
+                          } else if (isInProgress && idx === record.workout_completed) {
+                            statusLabel = "Active Now";
+                            statusClass = "pg-ex-status-active";
+                          }
+
                           return (
                             <div key={idx} className="pg-ex-item">
                               <span className="pg-ex-name">
                                 {idx + 1}. {ex.name}
                               </span>
-                              <span className={`pg-ex-status ${isDone ? 'pg-ex-status-done' : 'pg-ex-status-pending'}`}>
-                                {isDone ? "Completed ✓" : isCurrent ? "Active Now" : "Pending"}
+                              <span className={`pg-ex-status ${statusClass}`}>
+                                {statusLabel}
                               </span>
                             </div>
                           );
