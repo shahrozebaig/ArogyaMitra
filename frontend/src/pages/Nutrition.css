@@ -404,7 +404,9 @@
   font-family: inherit;
   padding: 0;
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   transition: opacity 0.18s;
 }
@@ -491,31 +493,43 @@
 }
 
 .nt-week-meals {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 8px;
   flex: 1;
 }
 
 .nt-week-meal {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .nt-week-meal-type {
-  font-size: 0.58rem;
-  font-weight: 700;
-  color: #9ca3af;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #166534;
+  padding: 3px 10px;
+  background: #dcfce7;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
+  min-width: 80px;
 }
 
 .nt-week-meal-name {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #374151;
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 
@@ -655,5 +669,155 @@
 
   .nt-macros {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Modal Styles */
+.nt-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.nt-modal-simple {
+  width: 100%;
+  max-width: 700px;
+  max-height: 85vh;
+  border-radius: 28px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nt-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem 2.5rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.nt-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.nt-modal-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -0.03em;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.nt-yt-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1.5px solid #bbf7d0;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.2s;
+}
+
+.nt-yt-btn:hover {
+  background: #166534;
+  color: #fff;
+  border-color: #166534;
+}
+
+.nt-modal-close-simple {
+  background: #f3f4f6;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.nt-modal-close-simple:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.nt-modal-content-simple {
+  padding: 2rem 2.5rem 3rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.nt-modal-steps h3 {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #166534;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+.nt-steps-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.nt-steps-text p {
+  font-size: 1.05rem;
+  color: #374151;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+@keyframes modalScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .nt-modal-simple {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .nt-modal-header {
+    padding: 1.5rem;
+  }
+
+  .nt-modal-content-simple {
+    padding: 1.5rem;
   }
 }
