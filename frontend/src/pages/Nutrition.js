@@ -10,7 +10,6 @@ function Nutrition() {
   const [loadingInstructions, setLoadingInstructions] = useState({});
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const addToast = useToastStore((state) => state.addToast);
-  
   useEffect(() => { fetchPlan(); }, []);
   const fetchPlan = async () => {
     try {
@@ -38,8 +37,8 @@ function Nutrition() {
         setPlan(JSON.parse(res.data.plan_json));
         addToast("Successfully generated AI plans!");
       }
-    } catch (err) { 
-      console.error(err); 
+    } catch (err) {
+      console.error(err);
       addToast("Failed to generate plan.", "error");
     }
     finally { setLoading(false); }
@@ -61,7 +60,6 @@ function Nutrition() {
     } catch { }
     finally { setLoadingInstructions((p) => ({ ...p, [index]: false })); }
   };
-
   const handleMealComplete = async (i) => {
     try {
       const updated = { ...plan };
@@ -81,7 +79,6 @@ function Nutrition() {
   };
   const handleBuy = (item) => window.open(`https://www.bigbasket.com/ps/?q=${encodeURIComponent(item)}`, "_blank");
   const todayName = new Date().toLocaleDateString("en-US", { weekday: "long" });
-
   return (
     <div className="nt-root">
       <div className="nt-header">
@@ -105,7 +102,6 @@ function Nutrition() {
           </button>
         </div>
       </div>
-
       {loading ? (
         <div className="nt-loading">
           <div className="nt-spinner-lg" />
