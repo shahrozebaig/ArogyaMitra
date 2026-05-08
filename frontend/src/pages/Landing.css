@@ -809,8 +809,13 @@
 }
 
 @media (max-width: 768px) {
+  .lp-nav {
+    height: 70px;
+  }
+
   .lp-nav-inner {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
+    height: 70px;
   }
 
   .lp-nav-links {
@@ -818,7 +823,24 @@
   }
 
   .lp-logo-name {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .lp-logo-sub {
+    display: none;
+  }
+
+  .lp-nav-actions {
+    gap: 0.75rem;
+  }
+
+  .lp-btn-get-started {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .lp-login-btn {
+    font-size: 0.85rem;
   }
 
   .hero-v2 {
@@ -826,6 +848,7 @@
     min-height: 100vh;
     padding: 40px 0;
   }
+
 
   .hero-main {
     grid-template-columns: 1fr;
