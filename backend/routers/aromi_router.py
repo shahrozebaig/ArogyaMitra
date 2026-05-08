@@ -1,24 +1,23 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from database import get_db
 from schemas.chat_schema import ChatRequest, ChatResponse
 from services.groq_service import generate_response
 from utils.prompt_templates import chat_prompt
-router = APIRouter()
 from services.workout_service import generate_workout
 from services.nutrition_service import generate_nutrition
+from utils.jwt_handler import get_current_user_id
+router = APIRouter()
 @router.post("/chat", response_model=ChatResponse)
-def chat(data: ChatRequest, db: Session = Depends(get_db)):
-    user_id = 1
+async def chat(data: ChatRequest, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
     msg = data.message.lower()
     if "create" in msg or "generate" in msg or "plan" in msg:
-        generate_workout(db, user_id, {
+        await generate_workout(db, user_id, {
             "goal": "Balanced", 
             "fitness_level": "Intermediate",
             "location": "Home",
             "duration": 30
         })
-        generate_nutrition(db, user_id, {
+        await generate_nutrition(db, user_id, {
             "calories": 2000,
             "diet_type": "Vegetarian",
             "allergies": "None"
