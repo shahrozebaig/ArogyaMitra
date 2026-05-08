@@ -1,11 +1,9 @@
-from sqlalchemy.orm import Session
 import datetime
-from models.workout_model import WorkoutPlan
 from services.groq_service import generate_response
 from services.youtube_service import get_exercise_video
 from utils.prompt_templates import workout_prompt
 import json
-def generate_workout(db: Session, user_id: int, data: dict):
+async def generate_workout(db, user_id: str, data: dict):
     prompt = workout_prompt(data)
     ai_response = generate_response(prompt)
     clean_json = ai_response.strip()
@@ -21,15 +19,15 @@ def generate_workout(db: Session, user_id: int, data: dict):
         for exercise in plan["today"].get("exercises", []):
             video = get_exercise_video(exercise.get("name", "exercise"))
             exercise["video"] = video
-    workout = WorkoutPlan(
-        user_id=user_id,
-        title="7 Day Workout Plan",
-        goal=data.get("goal"),
-        duration=data.get("duration"),
-        plan_json=json.dumps(plan),
-        created_at=datetime.date.today().isoformat()
-    )
-    db.add(workout)
-    db.commit()
-    db.refresh(workout)
-    return workout
+    workout_doc = {
+        "user_id": user_id,
+        "title": "7 Day Workout Plan",
+        "goal": data.get("goal"),
+        "duration": data.get("duration"),
+        "plan_json": json.dumps(plan),
+        "created_at": datetime.date.today().isoformat()
+    }
+    result = await db.workouts.insert_one(workout_doc)
+    workout_doc["id"] = str(result.inserted_id)
+    if "_id" in workout_doc: workout_doc.pop("_id")
+    return workout_doc
