@@ -187,7 +187,11 @@ function AICoach() {
             <Menu size={20} />
           </button>
           <h2 className="ac-current-title">{activeSession.title}</h2>
-          <div style={{ width: 40 }}></div> {/* spacer */}
+          <button className="ac-menu-btn" onClick={(e) => {
+            if(window.confirm('Delete this conversation?')) deleteSession(e, activeId);
+          }}>
+            <Trash2 size={18} color="#ef4444" />
+          </button>
         </div>
         <div ref={scrollRef} className="ac-messages custom-scrollbar" style={{ position: 'relative', zIndex: 1 }}>
           {activeSession.messages.map((msg, i) => (

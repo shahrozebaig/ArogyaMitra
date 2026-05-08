@@ -1,7 +1,8 @@
 .ac-root {
   font-family: 'Inter', sans-serif;
   background: #111827;
-  height: calc(100vh - 68px);
+  height: calc(100vh - 68px); /* Fallback for older browsers */
+  height: calc(100dvh - 68px);
   display: flex;
   overflow: hidden;
 }
@@ -269,10 +270,10 @@
 
 .ac-input-wrapper {
   position: relative;
-  background: #1f2937;
+  background: #2f3336; /* Darker grey closer to chatgpt */
   border: 1px solid #374151;
-  border-radius: 16px;
-  padding: 6px;
+  border-radius: 50px;
+  padding: 4px 8px 4px 16px;
   transition: all 0.2s;
   display: flex;
   align-items: center;
@@ -302,10 +303,10 @@
 .ac-send-btn {
   width: 36px;
   height: 36px;
-  background: #166534;
+  background: #166534; /* Green accent */
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
