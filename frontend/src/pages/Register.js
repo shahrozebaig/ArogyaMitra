@@ -1,4 +1,4 @@
-import { CheckCircle2, Lock, Bot, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { CheckCircle2, Lock, Bot, Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
@@ -15,9 +15,7 @@ function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
   const addToast = useToastStore((state) => state.addToast);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -41,8 +39,6 @@ function Register() {
   return (
     <div className="auth-root">
       <div className="auth-left">
-        <div className="auth-left-blob auth-left-blob-1" />
-        <div className="auth-left-blob auth-left-blob-2" />
         <Link to="/" className="auth-left-logo">
           <img src="/Logo.png" alt="ArogyaMitra" className="auth-left-logo-img" style={{ background: '#fff', borderRadius: 12, padding: 4 }} />
           <div>
@@ -58,27 +54,27 @@ function Register() {
           <p className="auth-left-desc">
             Get your personalized AI health plan, track your nutrition, workouts and progress — all in one place.
           </p>
-          <div className="auth-steps">
-            <div className="auth-step">
-              <div className="auth-step-num">1</div>
-              <div>
-                <div className="auth-step-title">Create your profile</div>
-                <div className="auth-step-sub">Tell us about your health goals</div>
-              </div>
+        </div>
+        <div className="auth-steps">
+          <div className="auth-step">
+            <div className="auth-step-num">1</div>
+            <div>
+              <div className="auth-step-title">Create your profile</div>
+              <div className="auth-step-sub">Tell us about your health goals</div>
             </div>
-            <div className="auth-step">
-              <div className="auth-step-num">2</div>
-              <div>
-                <div className="auth-step-title">Get your AI plan</div>
-                <div className="auth-step-sub">Personalized workout & nutrition</div>
-              </div>
+          </div>
+          <div className="auth-step">
+            <div className="auth-step-num">2</div>
+            <div>
+              <div className="auth-step-title">Get your AI plan</div>
+              <div className="auth-step-sub">Personalized workout & nutrition</div>
             </div>
-            <div className="auth-step">
-              <div className="auth-step-num">3</div>
-              <div>
-                <div className="auth-step-title">Achieve your goals</div>
-                <div className="auth-step-sub">Track progress with AROMI AI coach</div>
-              </div>
+          </div>
+          <div className="auth-step">
+            <div className="auth-step-num">3</div>
+            <div>
+              <div className="auth-step-title">Achieve your goals</div>
+              <div className="auth-step-sub">Track progress with AROMI AI coach</div>
             </div>
           </div>
         </div>
@@ -90,9 +86,12 @@ function Register() {
       </div>
       <div className="auth-right">
         <div className="auth-form-card">
+          <Link to="/" className="auth-back-btn">
+            <ArrowLeft size={16} /> Back to Home
+          </Link>
           <Link to="/" className="auth-mobile-logo">
-            <img src="/Logo.png" alt="ArogyaMitra" style={{ width: 36, height: 36, objectFit: "contain" }} />
-            <span className="auth-left-logo-name" style={{ fontSize: "1rem" }}>ArogyaMitra</span>
+            <img src="/Logo.png" alt="ArogyaMitra" style={{ width: 48, height: 48, objectFit: "contain", background: '#fff', borderRadius: 12, padding: 4, border: '1px solid #f3f4f6', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
+            <span className="auth-mobile-logo-name">ArogyaMitra</span>
           </Link>
           <div className="auth-form-header">
             <h1 className="auth-form-title">Create Account</h1>
