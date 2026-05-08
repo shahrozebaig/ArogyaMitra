@@ -11,10 +11,9 @@ class HealthCreate(BaseModel):
     dietary_preference: str | None = "Vegetarian"
     allergies: str | None = None
     medical_conditions: str | None = None
-
 class HealthResponse(BaseModel):
-    id: int
-    user_id: int
+    id: str
+    user_id: str
     age: int | None = 0
     height: float | None = 0.0
     weight: float | None = 0.0
@@ -27,4 +26,4 @@ class HealthResponse(BaseModel):
     allergies: str | None = None
     medical_conditions: str | None = None
     class Config:
-        from_attributes = True
+        from_attributes = True
