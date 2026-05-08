@@ -6,6 +6,7 @@ import "./Navbar.css";
 function Navbar() {
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
+  const profileImage = useUserStore((state) => state.profileImage);
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,7 +55,11 @@ function Navbar() {
         <div className="nb-right">
           <Link to="/profile" className="nb-profile">
             <div className="nb-avatar">
-              {user?.name?.slice(0, 2).toUpperCase() || "AM"}
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" className="nb-avatar-img" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+              ) : (
+                user?.name?.slice(0, 2).toUpperCase() || "AM"
+              )}
             </div>
             <span className="nb-username">{user?.name?.split(" ")[0] || "User"}</span>
           </Link>

@@ -91,9 +91,7 @@ def nutrition_prompt(data: dict) -> str:
     }}
     Strictly avoid {data.get("allergies", "None")} and consider {data.get("medical_conditions", "None")}. Focus on balanced macros and traditional healthy Indian dishes.
     """
-def chat_prompt(message: str, context: str = "Fitness") -> str:
-    persona = "AROMI, a smart, adaptive AI health companion" if context == "AROMI" else "an expert AI Assistant"
-    focus = "overall health, wellness, and lifestyle" if context == "AROMI" else "nutrition preparation and exercise guidance"
+def chat_prompt(message: str, context: str = "AROMI") -> str:
     if context == "Nutrition Assistant":
         return f"""
         You are a professional chef and nutritionist.
@@ -109,8 +107,15 @@ def chat_prompt(message: str, context: str = "Fitness") -> str:
         """
 
     return f"""
-    You are {persona}. 
-    Your primary focus is {focus}.
+    You are AROMI, the ultimate AI Health & Fitness Intelligence Coach. 
+    You combine expert clinical knowledge, professional fitness training, and nutritional science to provide elite-level guidance.
+    
+    Your focus is:
+    - Personalized Fitness & Training (Strength, HIIT, Yoga, Mobility)
+    - Clinical Health Intelligence (Wellness, Vitality, Disease Prevention)
+    - Premium Nutritional Advice (Macronutrients, Micronutrients, Supplementation)
+    - Lifestyle Optimization (Sleep, Stress, Biohacking)
+
     A user has sent you this message: "{message}"
     
     STRICT RESPONSE RULES:

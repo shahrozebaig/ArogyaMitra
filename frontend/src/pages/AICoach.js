@@ -1,4 +1,4 @@
-import { Bot, SendHorizontal, Trash2, Plus, MessageSquare, Menu, X, MoreHorizontal } from "lucide-react";
+import { Bot, SendHorizontal, Trash2, Plus, MessageSquare, Menu, X, MoreHorizontal, Volume2, VolumeX } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
@@ -6,6 +6,8 @@ import useToastStore from "../store/toastStore";
 import "./AICoach.css";
 function AICoach() {
   const user = useUserStore((state) => state.user);
+  const profileImage = useUserStore((state) => state.profileImage);
+  const preferredVoice = useUserStore((state) => state.preferredVoice);
   const addToast = useToastStore((state) => state.addToast);
   const [sessions, setSessions] = useState(() => {
     const saved = localStorage.getItem('arogya_chat_sessions');
@@ -16,10 +18,31 @@ function AICoach() {
   });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [menuOpenId, setMenuOpenId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const scrollRef = useRef(null);
+
+  const speakText = (text) => {
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Find the preferred voice if set
+    if (preferredVoice) {
+      const voices = window.speechSynthesis.getVoices();
+      const selectedVoice = voices.find(v => v.voiceURI === preferredVoice);
+      if (selectedVoice) utterance.voice = selectedVoice;
+    }
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -27,6 +50,35 @@ function AICoach() {
     if (hour < 17) return "Good afternoon";
     return "Good evening";
   };
+  const animateAiMessage = (sessionId, fullText) => {
+    let currentText = "";
+    let i = 0;
+    const speed = 25; 
+
+    const type = () => {
+      if (i < fullText.length) {
+        currentText += fullText.charAt(i);
+        setSessions(prev => prev.map(s => {
+          if (s.id === sessionId) {
+            const updatedMessages = [...s.messages];
+            const lastMsg = updatedMessages[updatedMessages.length - 1];
+            if (lastMsg && lastMsg.sender === 'ai') {
+              updatedMessages[updatedMessages.length - 1] = {
+                ...lastMsg,
+                text: currentText
+              };
+            }
+            return { ...s, messages: updatedMessages };
+          }
+          return s;
+        }));
+        i++;
+        setTimeout(type, speed);
+      }
+    };
+    type();
+  };
+
   useEffect(() => {
     if (sessions.length === 0 && user) {
       const newId = Date.now().toString();
@@ -36,13 +88,16 @@ function AICoach() {
         title: "New Conversation",
         messages: [{
           sender: "ai",
-          text: greetingText,
+          text: "", // Start empty for typing effect
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }],
         timestamp: Date.now()
       };
       setSessions([initialSession]);
       setActiveId(newId);
+      
+      // Start typing effect after a small delay
+      setTimeout(() => animateAiMessage(newId, greetingText), 500);
     }
   }, [user, sessions.length]);
   useEffect(() => {
@@ -54,7 +109,6 @@ function AICoach() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [activeId, sessions]);
-  const activeSession = sessions.find(s => s.id === activeId) || sessions[0];
   const createNewChat = () => {
     const newId = Date.now().toString();
     const greetingText = `${getGreeting()}! Starting a new session. How can I assist you now?`;
@@ -63,7 +117,7 @@ function AICoach() {
       title: "New Conversation",
       messages: [{
         sender: "ai",
-        text: greetingText,
+        text: "",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }],
       timestamp: Date.now()
@@ -71,6 +125,9 @@ function AICoach() {
     setSessions(prev => [newSession, ...prev]);
     setActiveId(newId);
     if (window.innerWidth <= 768) setSidebarOpen(false);
+    
+    // Start typing effect
+    setTimeout(() => animateAiMessage(newId, greetingText), 300);
   };
   const deleteSession = (e, id) => {
     e.stopPropagation();
@@ -80,6 +137,7 @@ function AICoach() {
       setActiveId(filtered.length > 0 ? filtered[0].id : null);
     }
   };
+  const activeSession = sessions.find(s => s.id === activeId) || sessions[0];
   const handleSend = async (textOverride = null) => {
     const textToSend = textOverride || input;
     if (!textToSend.trim() || loading || !activeId) return;
@@ -103,25 +161,28 @@ function AICoach() {
     setInput("");
     setLoading(true);
     try {
-      const res = await API.post("/aromi/chat", {
+      const res = await API.post("/coach/chat", {
         message: textToSend,
-        context: "Fitness"
+        context: "AROMI"
       });
+      
+      const fullText = res.data.reply;
       const aiReply = {
         sender: "ai",
-        text: res.data.reply,
+        text: "",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
+
       setSessions(prev => prev.map(s => {
-        if (s.id === activeId) {
-          return { ...s, messages: [...s.messages, aiReply] };
-        }
+        if (s.id === activeId) return { ...s, messages: [...s.messages, aiReply] };
         return s;
       }));
+
+
+      animateAiMessage(activeId, fullText);
     } catch (err) {
       console.error("Chat error:", err);
       addToast("Failed to get response from AI Coach.", "error");
-    } finally {
       setLoading(false);
     }
   };
@@ -228,11 +289,26 @@ function AICoach() {
           {activeSession.messages.map((msg, i) => (
             <div key={i} className={`ac-msg-row ${msg.sender === "user" ? "ac-msg-row-user" : "ac-msg-row-ai"}`}>
               <div className={`ac-avatar ${msg.sender === "user" ? "ac-avatar-user" : "ac-avatar-ai"}`}>
-                {msg.sender === "user" ? (user?.name?.charAt(0) || "U") : <Bot size={20} />}
+                {msg.sender === "user" ? (
+                  profileImage ? (
+                    <img src={profileImage} alt="User" style={{ width: '100%', height: '100%', borderRadius: '12px', objectFit: 'cover' }} />
+                  ) : (
+                    user?.name?.charAt(0) || "U"
+                  )
+                ) : <Bot size={20} />}
               </div>
               <div className="ac-msg-body">
                 <div className={`ac-bubble ${msg.sender === "user" ? "ac-bubble-user" : "ac-bubble-ai"}`}>
                   <p className="whitespace-pre-wrap">{msg.text}</p>
+                  {msg.sender === "ai" && msg.text && (
+                    <button 
+                      className={`ac-speak-btn ${isSpeaking ? 'ac-speak-btn-active' : ''}`} 
+                      onClick={() => speakText(msg.text)}
+                      title={isSpeaking ? "Stop listening" : "Listen to response"}
+                    >
+                      {isSpeaking ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                    </button>
+                  )}
                 </div>
                 <span className="ac-time">{msg.time}</span>
               </div>
@@ -249,7 +325,7 @@ function AICoach() {
           <div className="ac-input-wrapper">
             <input
               type="text"
-              placeholder="Ask your AI Coach anything..."
+              placeholder="Message..."
               className="ac-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}

@@ -10,11 +10,10 @@
 
 .ws-root {
   font-family: 'Inter', sans-serif;
-  background: #f0fdf4;
+  background: transparent;
   min-height: 100vh;
   padding: 1.2rem 2rem 3rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .ws-topbar {
@@ -182,18 +181,30 @@
 }
 
 
-.ws-grid {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 1.2rem;
-  align-items: start;
-}
-
-
-.ws-left {
+.ws-content-layout {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+}
+
+.ws-layout-row {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.ws-row-visuals {
+  grid-template-columns: 1fr 1fr;
+}
+
+.ws-row-controls {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .ws-row-visuals,
+  .ws-row-controls {
+    grid-template-columns: 1fr;
+  }
 }
 
 
@@ -208,27 +219,38 @@
 .ws-video-wrapper {
   aspect-ratio: 16/9;
   background: #111;
+  position: relative;
 }
 
 .ws-video-wrapper iframe {
   display: block;
 }
 
-.ws-video-info {
-  padding: 1rem 1.3rem;
+.ws-video-overlay-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  max-width: 200px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
 }
 
 .ws-video-title {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  color: #111827;
-  margin-bottom: 4px;
+  color: #22c55e;
+  margin-bottom: 2px;
 }
 
 .ws-video-desc {
-  font-size: 0.75rem;
-  color: #6b7280;
-  line-height: 1.6;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
 }
 
 
@@ -375,28 +397,31 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 20px;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   text-align: center;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ws-ctrl-label {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
   color: #9ca3af;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .ws-timer {
-  font-size: 4rem;
+  font-size: 2.5rem;
   font-weight: 900;
   color: #166534;
   letter-spacing: -0.04em;
   line-height: 1;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   font-variant-numeric: tabular-nums;
   transition: color 0.3s;
 }
@@ -595,13 +620,7 @@
 
 
 @media (max-width: 1024px) {
-  .ws-grid {
-    grid-template-columns: 1fr;
-  }
 
-  .ws-right {
-    order: -1;
-  }
 }
 
 @media (max-width: 640px) {

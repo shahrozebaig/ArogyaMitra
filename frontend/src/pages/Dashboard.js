@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import useUserStore from "../store/userStore";
 import API from "../api/axios";
 import { Link } from "react-router-dom";
-import AromiChat from "../components/AromiChat";
 import "./Dashboard.css";
 function Dashboard() {
   const user = useUserStore((state) => state.user);
@@ -129,7 +128,6 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <AromiChat />
     </>
   );
 }

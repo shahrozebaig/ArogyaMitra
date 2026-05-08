@@ -3,24 +3,46 @@ import { User as UserIcon, Trash2, Camera } from "lucide-react";
 import useUserStore from "../store/userStore";
 import useToastStore from "../store/toastStore";
 import API from "../api/axios";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "../utils/cropImage";
 import "./Profile.css";
 function Profile() {
   const addToast = useToastStore((state) => state.addToast);
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
+  const profileImage = useUserStore((state) => state.profileImage);
+  const setProfileImage = useUserStore((state) => state.setProfileImage);
+  const preferredVoice = useUserStore((state) => state.preferredVoice);
+  const setPreferredVoice = useUserStore((state) => state.setPreferredVoice);
   const fileInputRef = useRef(null);
+  const [voices, setVoices] = useState([]);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: user?.name || "",
+    email: user?.email || "",
     age: "",
     height: "",
     weight: ""
   });
-  const [profileImage, setProfileImage] = useState(() => {
-    return localStorage.getItem('arogya_profile_image') || null;
-  });
+
+  const [imageToCrop, setImageToCrop] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [showCropModal, setShowCropModal] = useState(false);
+  useEffect(() => {
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      setVoices(availableVoices);
+    };
+    loadVoices();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
+
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!user) return;
       try {
         const res = await API.get("/health/profile");
         if (res.data) {
@@ -45,12 +67,32 @@ function Profile() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setProfileImage(base64String);
-        localStorage.setItem('arogya_profile_image', base64String);
+      reader.onload = () => {
+        setImageToCrop(reader.result);
+        setCrop({ x: 0, y: 0 });
+        setZoom(1);
+        setShowCropModal(true);
       };
       reader.readAsDataURL(file);
+    }
+    // Reset input so same file can be selected again
+    e.target.value = null;
+  };
+
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const handleSaveCrop = async () => {
+    try {
+      const croppedImage = await getCroppedImg(imageToCrop, croppedAreaPixels);
+      setProfileImage(croppedImage);
+      if (fileInputRef.current) fileInputRef.current.value = null;
+      setShowCropModal(false);
+      setImageToCrop(null);
+    } catch (e) {
+      console.error(e);
+      addToast("Failed to crop image", "error");
     }
   };
   const [showResetModal, setShowResetModal] = useState(false);
@@ -216,6 +258,40 @@ function Profile() {
                 placeholder="e.g. 70"
               />
             </div>
+            <div className="pr-input-group">
+              <label className="pr-label">AI Coach Voice (Male/Female)</label>
+              <select 
+                className="pr-input" 
+                value={preferredVoice || ""} 
+                onChange={(e) => setPreferredVoice(e.target.value)}
+                style={{ background: '#374151', color: '#fff', cursor: 'pointer' }}
+              >
+                <option value="">Default System Voice</option>
+                {voices
+                  .filter(v => {
+                    const l = v.lang.toLowerCase();
+                    return l.startsWith('en') || l.startsWith('hi') || l.startsWith('te');
+                  })
+                  .map((v) => {
+                    let langLabel = "English";
+                    if (v.lang.startsWith('hi')) langLabel = "Hindi";
+                    if (v.lang.startsWith('te')) langLabel = "Telugu";
+                    
+                    const name = v.name.toLowerCase();
+                    let gender = "";
+                    if (name.includes("female") || name.includes("zira") || name.includes("hazel") || name.includes("susan") || name.includes("heera")) gender = "Woman";
+                    else if (name.includes("male") || name.includes("david") || name.includes("mark") || name.includes("ravi") || name.includes("hemant")) gender = "Man";
+                    
+                    const finalLabel = gender ? `${langLabel} (${gender}) - ${v.name}` : `${langLabel} - ${v.name}`;
+
+                    return (
+                      <option key={v.voiceURI} value={v.voiceURI}>
+                        {finalLabel}
+                      </option>
+                    );
+                  })
+                }              </select>
+            </div>
           </div>
           <div className="pr-actions">
             <button onClick={handleUpdateProfile} className="pr-save-btn">
@@ -227,6 +303,43 @@ function Profile() {
           </div>
         </div>
       </div>
+      {showCropModal && (
+        <div className="pr-modal-overlay">
+          <div className="pr-modal pr-crop-modal">
+            <h3 className="pr-modal-title">Adjust Profile Picture</h3>
+            <div className="pr-crop-container">
+              <Cropper
+                image={imageToCrop}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+              />
+            </div>
+            <div className="pr-crop-controls">
+              <div className="pr-zoom-slider-wrap">
+                <label className="pr-label">Zoom</label>
+                <input
+                  type="range"
+                  value={zoom}
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  aria-labelledby="Zoom"
+                  onChange={(e) => setZoom(e.target.value)}
+                  className="pr-zoom-slider"
+                />
+              </div>
+              <div className="pr-modal-actions">
+                <button className="pr-modal-cancel" onClick={() => setShowCropModal(false)}>Cancel</button>
+                <button className="pr-modal-confirm" onClick={handleSaveCrop}>Save Image</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

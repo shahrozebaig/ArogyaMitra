@@ -8,11 +8,9 @@
 
 .wo-root {
   font-family: 'Inter', sans-serif;
-  background: #f0fdf4;
+  background: transparent;
   min-height: calc(100vh - 68px);
   padding: 2rem 2.5rem 4rem;
-  max-width: 1300px;
-  margin: 0 auto;
   width: 100%;
 }
 
@@ -31,6 +29,9 @@
   color: #111827;
   letter-spacing: -0.035em;
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .wo-subtitle {
@@ -48,7 +49,7 @@
 
 .wo-tabs {
   display: flex;
-  background: #fff;
+  background: #f0fdf9;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 3px;
@@ -69,14 +70,14 @@
 }
 
 .wo-tab-active {
-  background: #166534;
+  background: #1e40af;
   color: #fff;
-  box-shadow: 0 2px 8px rgba(22, 101, 52, 0.25);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
 }
 
 .wo-tab:not(.wo-tab-active):hover {
   background: #f0fdf4;
-  color: #166534;
+  color: #1e40af;
 }
 
 .wo-generate-btn {
@@ -84,7 +85,7 @@
   align-items: center;
   gap: 6px;
   padding: 9px 20px;
-  background: #fff;
+  background: #f0fdf9;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   font-size: 0.82rem;
@@ -98,7 +99,7 @@
 .wo-generate-btn:hover:not(:disabled) {
   background: #f0fdf4;
   border-color: #22c55e;
-  color: #166534;
+  color: #1e40af;
 }
 
 .wo-generate-btn:disabled {
@@ -151,7 +152,7 @@
   gap: 12px;
   min-height: 420px;
   text-align: center;
-  background: #fff;
+  background: #f0fdf9;
   border: 2px dashed #d1fae5;
   border-radius: 24px;
   padding: 3rem;
@@ -259,8 +260,8 @@
 .wo-start-btn {
   width: 100%;
   padding: 12px;
-  background: #fff;
-  color: #166534;
+  background: #f0fdf9;
+  color: #1e40af;
   font-size: 0.88rem;
   font-weight: 800;
   border: none;
@@ -296,7 +297,7 @@
 }
 
 .wo-exercise-card {
-  background: #fff;
+  background: #f0fdf9;
   border: 1px solid #e5e7eb;
   border-radius: 18px;
   padding: 1.3rem 1.5rem;
@@ -315,7 +316,8 @@
 .wo-exercise-num {
   font-size: 1.8rem;
   font-weight: 900;
-  color: #d1fae5;
+  color: #1e40af;
+  opacity: 0.25;
   line-height: 1;
   min-width: 40px;
   flex-shrink: 0;
@@ -378,7 +380,7 @@
 }
 
 .wo-stat-pill-green .wo-stat-pill-val {
-  color: #166534;
+  color: #1e40af;
 }
 
 .wo-exercise-desc {
@@ -393,7 +395,7 @@
   border: none;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #166534;
+  color: #1e40af;
   cursor: pointer;
   font-family: inherit;
   padding: 0;
@@ -414,7 +416,7 @@
 }
 
 .wo-day-card {
-  background: #fff;
+  background: #f0fdf9;
   border: 1px solid #e5e7eb;
   border-radius: 18px;
   padding: 1.2rem;
@@ -430,9 +432,9 @@
 }
 
 .wo-day-card-today {
-  border-color: #22c55e;
-  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-  box-shadow: 0 4px 16px rgba(22, 197, 94, 0.12);
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.12);
 }
 
 .wo-day-top {
@@ -450,7 +452,7 @@
 }
 
 .wo-day-name-today {
-  color: #166534;
+  color: #1e40af;
 }
 
 .wo-day-abbr {

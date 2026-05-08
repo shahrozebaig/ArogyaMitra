@@ -39,7 +39,7 @@ function Nutrition() {
         weight: profile?.weight || 70,
         fitness_goal: profile?.fitness_goal || "Stay Fit",
         fitness_level: profile?.fitness_level || "Beginner",
-        diet_type: profile?.dietary_preference || "Vegetarian",
+        diet_type: (profile?.dietary_preference || "Vegetarian") + ". IMPORTANT INSTRUCTION: For the afternoon snack, you MUST provide a combination of a healthy solid Snack AND a healthy Drink/Beverage.",
         allergies: profile?.allergies || "None",
         medical_conditions: profile?.medical_conditions || "None",
       });
@@ -56,7 +56,7 @@ function Nutrition() {
   const fetchCookingInstructions = async (mealName, index) => {
     setLoadingInstructions((p) => ({ ...p, [index]: true }));
     try {
-      const res = await API.post("/aromi/chat", {
+      const res = await API.post("/coach/chat", {
         message: mealName,
         context: "Nutrition Assistant",
       });
@@ -192,7 +192,7 @@ function Nutrition() {
                     <div className="nt-week-meals">
                       {item.meals.map((meal, j) => (
                         <div key={j} className="nt-week-meal">
-                          <span className="nt-week-meal-type">{["Breakfast", "Lunch", "Dinner", "Snack"][j]}</span>
+                          <span className="nt-week-meal-type">{["Breakfast", "Lunch", "Snacks + Drinks", "Dinner", "Late Snack"][j] || "Snack"}</span>
                           <span className="nt-week-meal-name">{meal}</span>
                         </div>
                       ))}

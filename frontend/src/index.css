@@ -4,7 +4,9 @@
 
 @layer base {
   body {
-    @apply bg-white text-gray-900;
+    @apply text-gray-900;
+    background: linear-gradient(135deg, #fffbeb, #fff7ed);
+    background-attachment: fixed;
     font-family: 'Inter', sans-serif;
   }
 

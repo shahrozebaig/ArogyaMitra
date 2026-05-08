@@ -1,5 +1,5 @@
 import { Bot, Pause, Play, ArrowRight, Check, ChevronLeft } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import CameraTracker from "../components/CameraTracker";
@@ -7,11 +7,35 @@ import "./WorkoutSession.css";
 function WorkoutSession() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const exercises = state?.exercises || [];
+  const exercises = useMemo(() => state?.exercises || [], [state?.exercises]);
   const initialIndex = exercises.findIndex((ex) => ex.id === state?.currentExerciseId);
   const [currentIndex, setCurrentIndex] = useState(initialIndex !== -1 ? initialIndex : 0);
   const exercise = exercises[currentIndex];
-  const [timeRemaining, setTimeRemaining] = useState(60);
+  const parseDuration = (ex) => {
+    if (!ex) return 60;
+    if (ex.duration) {
+      const dur = ex.duration;
+      if (typeof dur === 'number') return dur;
+      const clean = String(dur).toLowerCase();
+      if (clean.includes('min')) return (parseInt(clean) || 0) * 60;
+      if (clean.includes('s')) return parseInt(clean) || 60;
+      const parsed = parseInt(clean);
+      if (!isNaN(parsed)) return parsed;
+    }
+    
+    // Fallback: Realistic calculation based on sets and reps
+    const sets = parseInt(ex.sets) || 3;
+    const repsStr = String(ex.reps || "12");
+    const reps = parseInt(repsStr.split('-')[0]) || 12;
+    const restStr = String(ex.rest || "60");
+    const rest = parseInt(restStr) || 60;
+    
+    // Calculation: (Sets * Reps * 4 seconds per rep) + (Sets-1 * Rest seconds)
+    const time = (sets * reps * 4) + ((sets - 1) * rest);
+    return Math.max(time, 60); // Minimum 1 minute
+  };
+
+  const [timeRemaining, setTimeRemaining] = useState(() => parseDuration(exercise));
   const [isRunning, setIsRunning] = useState(false);
   const [reps, setReps] = useState(0);
   const [setsLeft, setSetsLeft] = useState(exercise?.sets || 3);
@@ -43,6 +67,15 @@ function WorkoutSession() {
     }
     return () => clearInterval(interval);
   }, [isRunning, timeRemaining]);
+  useEffect(() => {
+    if (exercise) {
+      setTimeRemaining(parseDuration(exercise));
+      setReps(0);
+      setSetsLeft(exercise.sets || 3);
+      setIsRunning(false);
+    }
+  }, [currentIndex, exercises, exercise]);
+
   const formatTime = (s) =>
     `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
   const nextExercise = async () => {
@@ -57,10 +90,6 @@ function WorkoutSession() {
     } catch { }
     if (!isLast) {
       setCurrentIndex((p) => p + 1);
-      setTimeRemaining(60);
-      setReps(0);
-      setSetsLeft(exercises[currentIndex + 1].sets || 3);
-      setIsRunning(false);
     } else {
       navigate("/workout-complete", {
         state: {
@@ -117,26 +146,9 @@ function WorkoutSession() {
           />
         ))}
       </div>
-      <div className="ws-grid">
-        <div className="ws-left">
-          <div className="ws-video-card">
-            <div className="ws-video-wrapper">
-              <iframe
-                width="100%" height="100%"
-                src={getYouTubeEmbedUrl(exercise?.video)}
-                title={exercise?.name}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-            <div className="ws-video-info">
-              <h3 className="ws-video-title">{exercise?.name}</h3>
-              <p className="ws-video-desc">
-                {exercise?.description || "Follow the demonstration for correct form and technique."}
-              </p>
-            </div>
-          </div>
+      <div className="ws-content-layout">
+        {/* ROW 1: VISUALS */}
+        <div className="ws-layout-row ws-row-visuals">
           <div className="ws-camera-card">
             <CameraTracker
               isActive={isRunning}
@@ -161,20 +173,29 @@ function WorkoutSession() {
               </div>
             )}
           </div>
-          <div className="ws-progress-card">
-            <div className="ws-progress-header">
-              <span className="ws-progress-label">Rep Progress</span>
-              <span className="ws-progress-pct">{exerciseProgress}%</span>
-            </div>
-            <div className="ws-progress-track">
-              <div className="ws-progress-fill" style={{ width: `${exerciseProgress}%` }} />
-            </div>
-            <div className="ws-progress-text">
-              {reps} of {targetReps} target reps
+
+          <div className="ws-video-card">
+            <div className="ws-video-wrapper">
+              <iframe
+                width="100%" height="100%"
+                src={getYouTubeEmbedUrl(exercise?.video)}
+                title={exercise?.name}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+              <div className="ws-video-overlay-info">
+                <h3 className="ws-video-title">{exercise?.name}</h3>
+                <p className="ws-video-desc">
+                  {exercise?.description || "Follow demonstration form."}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        <div className="ws-right">
+
+        {/* ROW 2: CONTROLS & QUEUE */}
+        <div className="ws-layout-row ws-row-controls">
           <div className="ws-control-card">
             <span className="ws-ctrl-label">Time Remaining</span>
             <div className={`ws-timer ${timeRemaining <= 10 ? "ws-timer-warning" : ""}`}>
@@ -205,25 +226,33 @@ function WorkoutSession() {
               </button>
             </div>
           </div>
-          <div className="ws-tip-card">
-            <div className="ws-tip-icon">💡</div>
-            <div>
-              <div className="ws-tip-label">Technique Tip</div>
-              <p className="ws-tip-text">
-                Maintain consistent tension through the full range of motion. Breathe out on exertion.
-              </p>
-            </div>
-          </div>
+
           <div className="ws-queue-card">
             <div className="ws-queue-label">Exercise Queue</div>
-            {exercises.map((ex, i) => (
-              <div key={i} className={`ws-queue-item ${i === currentIndex ? "ws-queue-active" : i < currentIndex ? "ws-queue-done" : ""}`}>
-                <span className="ws-queue-num">{String(i + 1).padStart(2, "0")}</span>
-                <span className="ws-queue-name">{ex.name}</span>
-                {i < currentIndex && <span className="ws-queue-check">✓</span>}
-                {i === currentIndex && <span className="ws-queue-now">Now</span>}
-              </div>
-            ))}
+            <div className="ws-queue-list custom-scrollbar">
+              {exercises.map((ex, i) => (
+                <div key={i} className={`ws-queue-item ${i === currentIndex ? "ws-queue-active" : i < currentIndex ? "ws-queue-done" : ""}`}>
+                  <span className="ws-queue-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="ws-queue-name">{ex.name}</span>
+                  {i < currentIndex && <span className="ws-queue-check">✓</span>}
+                  {i === currentIndex && <span className="ws-queue-now">Now</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ROW 3: PROGRESS */}
+        <div className="ws-progress-card">
+          <div className="ws-progress-header">
+            <span className="ws-progress-label">Rep Progress</span>
+            <span className="ws-progress-pct">{exerciseProgress}%</span>
+          </div>
+          <div className="ws-progress-track">
+            <div className="ws-progress-fill" style={{ width: `${exerciseProgress}%` }} />
+          </div>
+          <div className="ws-progress-text">
+            {reps} of {targetReps} target reps
           </div>
         </div>
       </div>
