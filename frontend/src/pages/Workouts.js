@@ -10,7 +10,7 @@ function Workouts() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const addToast = useToastStore((state) => state.addToast);
-  
+
   useEffect(() => { fetchPlan(); }, []);
   const fetchPlan = async () => {
     setLoading(true);
@@ -37,7 +37,7 @@ function Workouts() {
         setPlan(JSON.parse(res.data.plan_json));
         addToast("Successfully generated AI plans!");
       }
-    } catch (err) { 
+    } catch (err) {
       console.error("Generation error:", err);
       addToast("Failed to generate plan.", "error");
     }
