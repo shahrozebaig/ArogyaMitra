@@ -1,11 +1,12 @@
 from utils.password_handler import hash_password, verify_password
 from utils.jwt_handler import create_access_token
 async def register_user(db, name: str, email: str, password: str):
+    email = email.strip().lower()
     existing_user = await db.users.find_one({"email": email})
     if existing_user:
         return None
     new_user = {
-        "name": name,
+        "name": name.strip(),
         "email": email,
         "password": hash_password(password)
     }
@@ -15,6 +16,7 @@ async def register_user(db, name: str, email: str, password: str):
     return new_user
 from fastapi import HTTPException
 async def login_user(db, email: str, password: str):
+    email = email.strip().lower()
     user = await db.users.find_one({"email": email})
     if not user:
         raise HTTPException(status_code=404, detail="Account not found")
