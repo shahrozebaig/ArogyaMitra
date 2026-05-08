@@ -14,7 +14,7 @@
 | :--- | :--- |
 | **Activity 2.1** | Develop secure authentication endpoints for login and registration. |
 | **Activity 2.2** | Create modular routers for all backend features. |
-| **Activity 2.3** | Implement database models for workouts, nutrition, progress, and health. |
+| **Activity 2.3** | Implement MongoDB collections for workouts, nutrition, progress, and health. |
 | **Activity 2.4** | Add service-layer logic for workout, nutrition, and analytics processing. |
 
 ### Milestone 3: AI Integration with Groq, YouTube, and External APIs
@@ -52,15 +52,17 @@
 - Install all dependencies
 - Create `.env` file with API keys
 
-### STEP 2: Database Setup (Storage)
-- Configure SQLite connection
-- Create `database.py`
+### STEP 2: Database Setup (MongoDB Atlas)
+- Configure MongoDB connection (Atlas)
+- Set up `database.py` with Motor (Async Driver)
 - Test connection
 
-### STEP 3: Database Models (Tables)
-- Create **User** table
-- Create **Health Assessment** table
-- Create **Workout, Nutrition, Progress, Chat** tables
+
+### STEP 3: MongoDB Collections
+- Create **Users** collection
+- Create **Health Profiles** collection
+- Create **Workouts, Nutrition, Progress** collections
+
 
 ### STEP 4: Pydantic Schemas (Data Validation)
 - Define what data shape comes **IN** and goes **OUT**
@@ -121,14 +123,13 @@
 ![Project Structure](frontend/public/Strucuture.png)
 
 ---
-
 ## Pre-requisites & Local Setup
 
 | Step | Requirement | Action / Command |
 | :--- | :--- | :--- |
 | **1** | **Python Environment** | Install Python 3.10+ and create a virtual environment. |
 | **2** | **Node.js Environment** | Install Node.js 18+ (includes npm 9+). |
-| **3** | **Database Setup** | SQLite: Installed automatically during the first backend run. |
+| **3** | **Database Setup** | MongoDB: Connect via MongoDB Atlas (Cloud) or Local MongoDB. |
 | **4** | **Backend Config** | Create `.env` inside `/backend` with required API keys. |
 | **5** | **Frontend Config** | Create `.env` inside `/frontend` with `REACT_APP_API_URL=http://localhost:3000`. |
 | **6** | **Backend Launch** | `venv\Scripts\activate`<br>`pip install -r requirements.txt`<br>`uvicorn main:app --reload` |
@@ -145,6 +146,8 @@
 | **YouTube** | [Google Cloud Console](https://console.cloud.google.com) | Exercise video retrieval |
 | **Spoonacular** | [spoonacular.com/food-api](https://spoonacular.com/food-api) | Recipe & Nutrition data (Optional) |
 | **Google Calendar** | [Google Cloud Console](https://console.cloud.google.com) | Workout schedule synchronization (Optional) |
+| **MongoDB Atlas** | [mongodb.com/atlas](https://www.mongodb.com/cloud/atlas) | Cloud NoSQL database for scalable storage |
+
 
 ---
 
@@ -201,3 +204,26 @@
    GOOGLE_CLIENT_ID=
    GOOGLE_CLIENT_SECRET=
    ```
+
+### 5️⃣ 🗄️ MONGODB ATLAS SETUP
+1. Go to **MongoDB Atlas** website and create/login to your account.
+2. Click **Create** → choose **Free Shared Cluster**.
+3. Select your preferred cloud provider and region.
+4. Wait until the cluster is created successfully.
+5. Go to **Security** → **Database Access**.
+6. Click **Add New Database User**.
+7. Create a username and password for the database.
+8. Go to **Network Access** → click **Add IP Address**.
+9. Add `0.0.0.0/0` to allow access from anywhere.
+10. Go to **Clusters** → click **Connect**.
+11. Choose **Drivers**.
+12. Select **Python** as the driver.
+13. Copy the generated connection string:
+   `mongodb+srv://username:password@cluster.mongodb.net/`
+14. Paste it into your `.env` file:
+   ```makefile
+   MONGO_URL=
+   ```
+15. Install MongoDB packages:
+   `pip install pymongo motor`
+16. Restart your backend server after updating the environment variables.

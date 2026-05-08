@@ -26,7 +26,7 @@ contributions linked to fitness achievements.
 | :--- | :--- | :--- |
 | **Frontend** | React.js | Core UI library. |
 | **Backend** | Python / FastAPI | Asynchronous high-performance API. |
-| **Database** | SQLite | Relational data persistence. |
+| **Database** | MongoDB (Atlas) | Scalable NoSQL cloud database. |
 | **AI Engine** | Groq / Google Gemini | Powering AROMI Coach & Plan Generation. |
 | **Vision Tracking** | MediaPipe | Real-time exercise rep counting. |
 
@@ -60,13 +60,22 @@ contributions linked to fitness achievements.
 | `YOUTUBE_API_KEY` | `Optional` | API Key for workout video fetching. |
 | `JWT_SECRET_KEY` | `Generated` | Secret key for token encryption. |
 | `JWT_ALGORITHM` | `HS256` | Hashing algorithm for auth tokens. |
+| `MONGO_URL` | `Required` | Connection string for MongoDB Atlas. |
 
 ---
+
+## Why MongoDB Atlas?
+
+We migrated from SQLite to MongoDB Atlas to solve critical data persistence and scalability challenges. On cloud platforms like Render, SQLite databases are reset every time the server restarts, causing all user data to be lost. By switching to MongoDB Atlas (a cloud NoSQL database), we ensured that user profiles, workout plans, and health data are stored permanently and securely. MongoDB’s flexible document structure also allows us to handle complex AI-generated JSON plans much more efficiently than traditional SQL tables, making the application faster and more reliable for production use.
+
+---
+
 
 ## Conclusion
 
 ArogyaMitra successfully brings together AI intelligence, personalized fitness planning, and modern wellness principles into a unified, user-friendly platform. By integrating Groq’s advanced LLaMA model, the system generates tailored workout routines, nutrition plans, and real-time adaptive coaching that respond dynamically to each user’s lifestyle, preferences, and health conditions. This ensures that every individual receives a fitness experience that is not only effective but also safe, relevant, and deeply personalized.
 
-The platform’s modular architecture built with FastAPI, React, SQLAlchemy, YouTube API, Spoonacular, and Google Calendar creates a smooth and interactive end-to-end experience. Users can explore structured workout plans, follow guided exercise videos, maintain healthy eating habits, track their progress, and receive instant assistance from AROMI, the AI wellness coach. The inclusion of a charity-based gamification system adds motivation and a sense of social contribution, enhancing user engagement and consistency.
+The platform’s modular architecture built with FastAPI, React, MongoDB (Motor), YouTube API, Spoonacular, and Google Calendar creates a smooth and interactive end-to-end experience. Users can explore structured workout plans, follow guided exercise videos, maintain healthy eating habits, track their progress, and receive instant assistance from AROMI, the AI wellness coach. The inclusion of a charity-based gamification system adds motivation and a sense of social contribution, enhancing user engagement and consistency.
+
 
 Through its seamless combination of technology, AI-driven insights, and holistic health features, ArogyaMitra stands as a complete wellness ecosystem designed to support long-term fitness transformation. The project demonstrates how intelligent systems can meaningfully improve personal health journeys by offering adaptive, real-time guidance and empowering users to build sustainable habits. As a scalable and future-ready platform, ArogyaMitra lays the foundation for advanced health innovations, such as wearable integrations, real-time analytics, and AI-assisted coaching at a global scale.

@@ -5,8 +5,8 @@ graph TD
     ReactApp -->|REST API| FastAPI[FastAPI Backend]
     
     subgraph "Internal Processing"
-        FastAPI -->|Queries| SQLite[(SQLite DB)]
-        FastAPI -->|Analysis| Groq[Groq/Gemini AI]
+        FastAPI -->|Queries| MongoDB[(MongoDB Atlas)]
+        FastAPI -->|Analysis| Groq[Groq AI]
         ReactApp -->|Computer Vision| MediaPipe[MediaPipe Tracking]
     end
     
@@ -29,7 +29,7 @@ graph TD
     E --> F{Feature Logic}
     
     F -->|Workout/Nutrition| G[Groq AI Service]
-    F -->|Data Management| H[SQLAlchemy / SQLite]
+    F -->|Data Management| H[Motor / MongoDB]
     F -->|External Media| I[YouTube / Spoonacular APIs]
     
     G --> J[AI Response Parser]
@@ -74,41 +74,60 @@ graph TD
 ## Database Relationship Diagram (ERD)
 ```mermaid
 erDiagram
-    USER ||--o| HEALTH_ASSESSMENT : "has"
-    USER ||--o{ WORKOUT_PLAN : "generates"
-    USER ||--o{ NUTRITION_PLAN : "generates"
-    USER ||--o{ PROGRESS_LOG : "records"
-    USER ||--o{ CHAT_HISTORY : "interacts"
+    users ||--o| health_profiles : "has"
+    users ||--o{ workouts : "generates"
+    users ||--o{ nutrition : "generates"
+    users ||--o{ progress : "records"
 
-    USER {
-        int id PK
+    users {
+        string id PK
+        string name
         string email
-        string password_hash
-        string full_name
+        string password
     }
 
-    HEALTH_ASSESSMENT {
-        int id PK
-        int user_id FK
-        float weight
+    health_profiles {
+        string id PK
+        string user_id FK
+        int age
         float height
+        float weight
+        string gender
         string fitness_goal
+        string fitness_level
+        string workout_location
     }
 
-    WORKOUT_PLAN {
-        int id PK
-        int user_id FK
-        json plan_details
-        datetime created_at
+    workouts {
+        string id PK
+        string user_id FK
+        string title
+        string goal
+        int duration
+        string plan_json
+        string created_at
     }
 
-    PROGRESS_LOG {
-        int id PK
-        int user_id FK
+    nutrition {
+        string id PK
+        string user_id FK
+        int calories
+        string diet_type
+        string plan_json
+        string created_at
+    }
+
+    progress {
+        string id PK
+        string user_id FK
+        float weight
         float calories_burned
-        string activity_status
-        datetime date
+        int workout_completed
+        string status
+        string created_at
     }
+
+
 ```
 
 ---
