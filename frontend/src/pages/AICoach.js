@@ -2,9 +2,11 @@ import { Bot, SendHorizontal, Trash2, Plus, MessageSquare, Menu, X } from "lucid
 import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
+import useToastStore from "../store/toastStore";
 import "./AICoach.css";
 function AICoach() {
   const user = useUserStore((state) => state.user);
+  const addToast = useToastStore((state) => state.addToast);
   const [sessions, setSessions] = useState(() => {
     const saved = localStorage.getItem('arogya_chat_sessions');
     return saved ? JSON.parse(saved) : [];
@@ -173,14 +175,14 @@ function AICoach() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          opacity: 0.1,
+          opacity: 0.05,
           pointerEvents: 'none',
           zIndex: 0,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center'
         }}>
-          <img src="/Logo.png" alt="" style={{ width: '300px', height: '300px', objectFit: 'contain' }} />
+          <img src="/Logo.png" alt="" style={{ width: '180px', height: '180px', objectFit: 'contain' }} />
         </div>
 
         <div className="ac-top-bar" style={{ position: 'relative', zIndex: 1 }}>
