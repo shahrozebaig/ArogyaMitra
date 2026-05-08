@@ -76,7 +76,6 @@ function Profile() {
       addToast("Update failed. Please check your data.", "error");
     }
   };
-
   const confirmResetAccount = async () => {
     try {
       await API.post("/health/reset");
@@ -86,10 +85,13 @@ function Profile() {
       console.error("Reset failed:", err);
     }
   };
-
   const confirmDeleteAccount = async () => {
     try {
-      await API.delete("/auth/delete");
+      if (!user?.id) {
+        addToast("Error: User ID not found.", "error");
+        return;
+      }
+      await API.delete(`/auth/delete?user_id=${user.id}`);
       addToast("Your account has been deleted.");
       logout();
       window.location.href = "/";
@@ -98,10 +100,8 @@ function Profile() {
       addToast("Could not delete account. Please try again later.", "error");
     }
   };
-
   return (
     <div className="pr-root">
-      {/* Custom Reset Modal */}
       {showResetModal && (
         <div className="pr-modal-overlay">
           <div className="pr-modal">
@@ -114,8 +114,6 @@ function Profile() {
           </div>
         </div>
       )}
-
-      {/* Custom Delete Modal */}
       {showDeleteModal && (
         <div className="pr-modal-overlay">
           <div className="pr-modal">
@@ -128,7 +126,6 @@ function Profile() {
           </div>
         </div>
       )}
-
       <div className="pr-header">
         <div className="pr-header-left">
           <h1 className="pr-title"><UserIcon className="pr-icon" size={32} /> My <span className="pr-title-green">Account</span></h1>
