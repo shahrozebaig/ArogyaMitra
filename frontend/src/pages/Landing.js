@@ -54,7 +54,7 @@ function Landing() {
         className="hero-v2"
         style={{
           backgroundImage: "url('/Full.png')",
-          backgroundSize: "100% 100%",
+          backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat"
         }}
@@ -62,7 +62,7 @@ function Landing() {
         <div className="hero-container">
           <div className="hero-main">
             <div className="hero-text-side">
-              <h1 className="hero-title" style={{ fontSize: '3rem' }}>
+              <h1 className="hero-title">
                 Your Health.<br />
                 Your Plan.<br />
                 <span className="text-green">Your AI Companion.</span>
@@ -78,7 +78,7 @@ function Landing() {
                   <Heart size={16} fill="#ef4444" color="#ef4444" x="142" y="12" />
                 </svg>
               </div>
-              <p className="hero-subtitle" style={{ fontSize: '1rem', marginBottom: '1.5rem' }}>
+              <p className="hero-subtitle">
                 AI-driven workout planning, nutrition guidance and real-time health coaching — all in one intelligent platform.
               </p>
               <div className="hero-features-list">

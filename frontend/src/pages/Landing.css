@@ -270,11 +270,19 @@
 .hero-text-side .hero-title {
   color: #ffffff !important;
   text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .hero-text-side .hero-subtitle {
   color: rgba(255, 255, 255, 0.9) !important;
   text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 90%;
 }
 
 .hero-text-side h4 {
@@ -811,5 +819,44 @@
 
   .lp-logo-name {
     font-size: 1rem;
+  }
+
+  .hero-v2 {
+    height: auto;
+    min-height: 100vh;
+    padding: 40px 0;
+  }
+
+  .hero-main {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .hero-text-side .hero-title {
+    font-size: 2.8rem;
+  }
+
+  .hero-text-side .hero-subtitle {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .hero-features-list {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .features-grid-v2 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .how-steps-v2 {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .how-steps-v2::before {
+    display: none;
   }
 }

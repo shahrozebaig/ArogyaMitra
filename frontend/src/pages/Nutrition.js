@@ -112,7 +112,6 @@ function Nutrition() {
           <div className="nt-empty-icon"><Utensils size={64} /></div>
           <h2 className="nt-empty-title">No Nutrition Plan Yet</h2>
           <p className="nt-empty-desc">Generate your personalized AI meal plan based on your health profile.</p>
-          <button className="nt-cta-btn" onClick={generatePlan}><Sparkles size={18} /> Generate My Plan</button>
         </div>
       ) : (
         <>

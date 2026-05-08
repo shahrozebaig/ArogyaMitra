@@ -88,9 +88,6 @@ function Workouts() {
           <p className="wo-empty-desc">
             Complete your health assessment, then generate your personalized AI workout plan.
           </p>
-          <button className="wo-cta-btn" onClick={generatePlan}>
-            <Sparkles size={18} /> Generate My Plan
-          </button>
         </div>
       ) : activeTab === "today" && plan?.today ? (
         <div className="wo-today-grid">

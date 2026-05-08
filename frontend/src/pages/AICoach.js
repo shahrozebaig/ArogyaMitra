@@ -14,7 +14,7 @@ function AICoach() {
   });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const scrollRef = useRef(null);
 
   const getGreeting = () => {
@@ -66,6 +66,7 @@ function AICoach() {
     };
     setSessions(prev => [newSession, ...prev]);
     setActiveId(newId);
+    if (window.innerWidth <= 768) setSidebarOpen(false);
   };
   const deleteSession = (e, id) => {
     e.stopPropagation();
@@ -139,7 +140,10 @@ function AICoach() {
             <div
               key={s.id}
               className={`ac-history-item ${s.id === activeId ? 'ac-history-item-active' : ''}`}
-              onClick={() => setActiveId(s.id)}
+              onClick={() => {
+                setActiveId(s.id);
+                if (window.innerWidth <= 768) setSidebarOpen(false);
+              }}
             >
               <MessageSquare size={16} className="ac-history-icon" />
               <span className="ac-history-title">{s.title}</span>
