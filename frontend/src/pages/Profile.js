@@ -13,7 +13,6 @@ function Profile() {
     name: "",
     email: "",
     age: "",
-    gender: "Male",
     height: "",
     weight: ""
   });
@@ -29,7 +28,6 @@ function Profile() {
             name: user?.name || "",
             email: user?.email || "",
             age: String(res.data.age) || "",
-            gender: res.data.gender || "Male",
             height: String(res.data.height) || "",
             weight: String(res.data.weight) || ""
           });
@@ -64,7 +62,6 @@ function Profile() {
         age: parseInt(formData.age) || 0,
         height: parseFloat(formData.height) || 0,
         weight: parseFloat(formData.weight) || 0,
-        gender: formData.gender,
         fitness_goal: user?.fitness_goal || "Stay Fit",
         fitness_level: user?.fitness_level || "Beginner",
         workout_location: user?.workout_location || "Home",
@@ -196,19 +193,6 @@ function Profile() {
                 className="pr-input"
                 placeholder="e.g. 25"
               />
-            </div>
-            <div className="pr-input-group">
-              <label className="pr-label">Gender</label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="pr-input"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
             </div>
             <div className="pr-input-group">
               <label className="pr-label">Height (CM)</label>

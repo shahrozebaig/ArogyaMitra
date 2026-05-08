@@ -27,6 +27,14 @@ function Workouts() {
     try {
       const profileRes = await API.get("/health/profile");
       const profile = profileRes.data;
+
+      // Check if assessment is completed
+      if (!profile || !profile.age || !profile.height || !profile.weight) {
+        addToast("Please complete your Health Assessment first!", "warning");
+        navigate("/health");
+        return;
+      }
+
       const res = await API.post("/workout/generate", {
         goal: profile?.fitness_goal || "Muscle Gain",
         location: profile?.workout_location || "Home",

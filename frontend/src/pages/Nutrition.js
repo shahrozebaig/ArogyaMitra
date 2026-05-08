@@ -1,5 +1,6 @@
 import { Utensils, Sparkles, ShoppingCart, Check, ArrowRight, X, Play } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import useToastStore from "../store/toastStore";
 import "./Nutrition.css";
@@ -9,6 +10,7 @@ function Nutrition() {
   const [loading, setLoading] = useState(false);
   const [loadingInstructions, setLoadingInstructions] = useState({});
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const navigate = useNavigate();
   const addToast = useToastStore((state) => state.addToast);
   useEffect(() => { fetchPlan(); }, []);
   const fetchPlan = async () => {
@@ -23,6 +25,14 @@ function Nutrition() {
     try {
       const profileRes = await API.get("/health/profile");
       const profile = profileRes.data;
+
+      // Check if assessment is completed
+      if (!profile || !profile.age || !profile.height || !profile.weight) {
+        addToast("Please complete your Health Assessment first!", "warning");
+        navigate("/health");
+        return;
+      }
+
       const res = await API.post("/nutrition/generate", {
         age: profile?.age || 25,
         height: profile?.height || 170,
