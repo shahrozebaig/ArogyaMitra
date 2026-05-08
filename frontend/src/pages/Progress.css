@@ -410,20 +410,43 @@
 }
 
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .pg-root {
-    padding: 1rem 1rem 4rem;
+    padding: 1rem 1rem 5rem;
   }
 
   .pg-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .pg-card-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
   }
 
   .pg-card-left {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+    width: 100%;
+  }
+
+  .pg-card-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+    width: 100%;
+    padding-top: 1.2rem;
+    border-top: 1px solid #f3f4f6;
+  }
+
+  .pg-time-box {
+    text-align: left;
+    width: 100%;
   }
 
   .pg-divider {
@@ -433,23 +456,14 @@
   .pg-info {
     width: 100%;
   }
-}
-
-@media (max-width: 1024px) {
-  .pg-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .pg-card-right {
-    width: 100%;
-    justify-content: space-between;
-    border-top: 1px solid #f3f4f6;
-    padding-top: 1rem;
-  }
 
   .pg-stat-box {
-    text-align: left;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pg-resume-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
