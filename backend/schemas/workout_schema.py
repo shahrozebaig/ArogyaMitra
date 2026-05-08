@@ -6,8 +6,8 @@ class WorkoutGenerateRequest(BaseModel):
     fitness_level: str
     medical_conditions: str | None = None
 class WorkoutResponse(BaseModel):
-    id: int
-    user_id: int
+    id: str
+    user_id: str
     title: str
     goal: str
     duration: int
