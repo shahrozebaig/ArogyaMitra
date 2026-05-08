@@ -10,8 +10,8 @@ class NutritionGenerateRequest(BaseModel):
     allergies: str | None = None
     medical_conditions: str | None = None
 class NutritionResponse(BaseModel):
-    id: int
-    user_id: int
+    id: str
+    user_id: str
     calories: int
     diet_type: str
     plan_json: str
