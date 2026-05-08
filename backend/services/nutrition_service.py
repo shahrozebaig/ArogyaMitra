@@ -1,10 +1,8 @@
-from sqlalchemy.orm import Session
-from models.nutrition_model import NutritionPlan
+import datetime
 from services.groq_service import generate_response
 from utils.prompt_templates import nutrition_prompt
 import json
-import datetime
-def generate_nutrition(db: Session, user_id: int, data: dict):
+async def generate_nutrition(db, user_id: str, data: dict):
     prompt = nutrition_prompt(data)
     ai_response = generate_response(prompt)
     clean_json = ai_response.strip()
@@ -21,14 +19,14 @@ def generate_nutrition(db: Session, user_id: int, data: dict):
             "week": [{"day": "Monday", "meals": ["Poha", "Dal Tadka", "Roti"], "today": True}],
             "shoppingList": []
         }
-    nutrition = NutritionPlan(
-        user_id=user_id,
-        calories=data.get("calories", 2000),
-        diet_type=data.get("diet_type", "Vegetarian"),
-        plan_json=json.dumps(plan),
-        created_at=datetime.date.today().isoformat()
-    )
-    db.add(nutrition)
-    db.commit()
-    db.refresh(nutrition)
-    return nutrition
+    nutrition_doc = {
+        "user_id": user_id,
+        "calories": data.get("calories", 2000),
+        "diet_type": data.get("diet_type", "Vegetarian"),
+        "plan_json": json.dumps(plan),
+        "created_at": datetime.date.today().isoformat()
+    }
+    result = await db.nutrition.insert_one(nutrition_doc)
+    nutrition_doc["id"] = str(result.inserted_id)
+    if "_id" in nutrition_doc: nutrition_doc.pop("_id")
+    return nutrition_doc
