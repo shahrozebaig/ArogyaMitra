@@ -116,6 +116,7 @@ function AICoach() {
       }));
     } catch (err) {
       console.error("Chat error:", err);
+      addToast("Failed to get response from AI Coach.", "error");
     } finally {
       setLoading(false);
     }

@@ -18,7 +18,7 @@ function Login() {
     setLoading(true);
     try {
       const res = await API.post("/auth/login", { email, password });
-      setUser(res.data.user);
+      setUser(res.data.user, res.data.token);
       addToast("Logged in successfully!");
       navigate("/dashboard");
     } catch (err) {
