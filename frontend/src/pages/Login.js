@@ -1,11 +1,10 @@
-import { Dumbbell, Utensils, MessageSquare, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Dumbbell, Utensils, MessageSquare, Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
 import useToastStore from "../store/toastStore";
 import "./AuthPages.css";
-
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,8 +21,9 @@ function Login() {
       setUser(res.data.user);
       addToast("Logged in successfully!");
       navigate("/dashboard");
-    } catch {
-      addToast("Invalid credentials. Please try again.", "error");
+    } catch (err) {
+      const errorMsg = err.response?.data?.detail || "Login failed. Please try again.";
+      addToast(errorMsg, "error");
     } finally {
       setLoading(false);
     }
@@ -31,8 +31,6 @@ function Login() {
   return (
     <div className="auth-root">
       <div className="auth-left">
-        <div className="auth-left-blob auth-left-blob-1" />
-        <div className="auth-left-blob auth-left-blob-2" />
         <Link to="/" className="auth-left-logo">
           <img src="/Logo.png" alt="ArogyaMitra" className="auth-left-logo-img" style={{ background: '#fff', borderRadius: 12, padding: 4 }} />
           <div>
@@ -57,9 +55,12 @@ function Login() {
       </div>
       <div className="auth-right">
         <div className="auth-form-card">
+          <Link to="/" className="auth-back-btn">
+            <ArrowLeft size={16} /> Back to Home
+          </Link>
           <Link to="/" className="auth-mobile-logo">
-            <img src="/Logo.png" alt="ArogyaMitra" style={{ width: 36, height: 36, objectFit: "contain" }} />
-            <span className="auth-left-logo-name" style={{ fontSize: "1rem" }}>ArogyaMitra</span>
+            <img src="/Logo.png" alt="ArogyaMitra" style={{ width: 48, height: 48, objectFit: "contain", background: '#fff', borderRadius: 12, padding: 4, border: '1px solid #f3f4f6', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
+            <span className="auth-mobile-logo-name">ArogyaMitra</span>
           </Link>
           <div className="auth-form-header">
             <h1 className="auth-form-title">Welcome Back</h1>
