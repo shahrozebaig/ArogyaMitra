@@ -1,44 +1,39 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from database import get_db
-from models.health_model import HealthProfile
 from schemas.health_schema import HealthCreate, HealthResponse
+from utils.jwt_handler import get_current_user_id
 router = APIRouter()
 @router.post("/assessment", response_model=HealthResponse)
-def create_health(data: HealthCreate, db: Session = Depends(get_db)):
-    user_id = 1
-    health = HealthProfile(
-        user_id=user_id,
-        **data.dict()
-    )
-    db.add(health)
-    db.commit()
-    db.refresh(health)
-    return health
+async def create_health(data: HealthCreate, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
+    health_data = data.dict()
+    health_data["user_id"] = user_id
+    result = await db.health_profiles.insert_one(health_data)
+    health_data["id"] = str(result.inserted_id)
+    if "_id" in health_data: health_data.pop("_id")
+    return health_data
 @router.get("/profile", response_model=HealthResponse | None)
-def get_health_profile(db: Session = Depends(get_db)):
-    user_id = 1
-    health = db.query(HealthProfile).filter(HealthProfile.user_id == user_id).order_by(HealthProfile.id.desc()).first()
+async def get_health_profile(db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
+    health = await db.health_profiles.find_one({"user_id": user_id}, sort=[("_id", -1)])
+    if health:
+        health["id"] = str(health.pop("_id"))
     return health
 @router.post("/profile/update", response_model=HealthResponse | None)
-def update_health_profile(data: HealthCreate, db: Session = Depends(get_db)):
-    user_id = 1
-    health = db.query(HealthProfile).filter(HealthProfile.user_id == user_id).order_by(HealthProfile.id.desc()).first()
-    if health:
-        for key, value in data.dict().items():
-            setattr(health, key, value)
-        db.commit()
-        db.refresh(health)
-    return health
+async def update_health_profile(data: HealthCreate, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
+    health_data = data.dict()
+    result = await db.health_profiles.find_one_and_update(
+        {"user_id": user_id},
+        {"$set": health_data},
+        sort=[("_id", -1)],
+        return_document=True
+    )
+    if result:
+        result["id"] = str(result.pop("_id"))
+    return result
 @router.post("/reset")
-def reset_account(db: Session = Depends(get_db)):
-    user_id = 1
-    from models.workout_model import WorkoutPlan
-    from models.nutrition_model import NutritionPlan
-    from models.progress_model import ProgressRecord
-    db.query(WorkoutPlan).filter(WorkoutPlan.user_id == user_id).delete()
-    db.query(NutritionPlan).filter(NutritionPlan.user_id == user_id).delete()
-    db.query(ProgressRecord).filter(ProgressRecord.user_id == user_id).delete()
-    db.query(HealthProfile).filter(HealthProfile.user_id == user_id).delete()
-    db.commit()
+async def reset_account(db = Depends(get_db)):
+    user_id = "1"
+    await db.workouts.delete_many({"user_id": user_id})
+    await db.nutrition.delete_many({"user_id": user_id})
+    await db.progress.delete_many({"user_id": user_id})
+    await db.health_profiles.delete_many({"user_id": user_id})
     return {"status": "success"}
