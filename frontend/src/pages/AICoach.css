@@ -385,4 +385,13 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 99;
   }
+
+  .ac-messages {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .ac-footer {
+    padding: 1rem;
+  }
 }

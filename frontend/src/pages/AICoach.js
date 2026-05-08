@@ -1,4 +1,4 @@
-import { Bot, SendHorizontal, Trash2, Plus, MessageSquare, Menu } from "lucide-react";
+import { Bot, SendHorizontal, Trash2, Plus, MessageSquare, Menu, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
@@ -132,10 +132,19 @@ function AICoach() {
         <div className="ac-sidebar-overlay" onClick={() => setSidebarOpen(false)}></div>
       )}
       <div className={`ac-sidebar ${sidebarOpen ? 'ac-sidebar-open' : 'ac-sidebar-closed'}`}>
-        <div className="ac-sidebar-header">
-          <button className="ac-new-chat-btn" onClick={createNewChat}>
+        <div className="ac-sidebar-header" style={{ display: 'flex', gap: '10px' }}>
+          <button className="ac-new-chat-btn" onClick={createNewChat} style={{ flex: 1 }}>
             <Plus size={18} /> New Chat
           </button>
+          {window.innerWidth <= 768 && (
+            <button 
+              className="ac-menu-btn" 
+              onClick={() => setSidebarOpen(false)}
+              style={{ background: '#374151', border: '1px solid #4b5563', borderRadius: '12px' }}
+            >
+              <X size={20} color="#f9fafb" />
+            </button>
+          )}
         </div>
         <div className="ac-history custom-scrollbar">
           <div className="ac-history-label">Recent Conversations</div>
