@@ -128,6 +128,9 @@ function AICoach() {
   if (!activeSession) return <div className="ac-loading-screen">Initializing Coach...</div>;
   return (
     <div className="ac-root">
+      {sidebarOpen && (
+        <div className="ac-sidebar-overlay" onClick={() => setSidebarOpen(false)}></div>
+      )}
       <div className={`ac-sidebar ${sidebarOpen ? 'ac-sidebar-open' : 'ac-sidebar-closed'}`}>
         <div className="ac-sidebar-header">
           <button className="ac-new-chat-btn" onClick={createNewChat}>
