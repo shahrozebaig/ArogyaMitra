@@ -123,7 +123,7 @@ function Dashboard() {
                 <p className="db-empty-desc">
                   Complete your health assessment to get your personalized AI workout & nutrition plan.
                 </p>
-                <Link to="/health" className="db-empty-btn">Start Assessment <ArrowRight size={18} /></Link>
+
               </div>
             )}
           </div>
