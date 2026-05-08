@@ -1,4 +1,5 @@
-import { LayoutDashboard, Dumbbell, Utensils, LineChart, Bot, LogOut } from "lucide-react";
+import { LayoutDashboard, Dumbbell, Utensils, LineChart, Bot, LogOut, Menu, X } from "lucide-react";
+import { useState } from "react";
 import useUserStore from "../store/userStore";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
@@ -7,6 +8,7 @@ function Navbar() {
   const logout = useUserStore((state) => state.logout);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -21,14 +23,19 @@ function Navbar() {
   return (
     <div className="nb-root">
       <div className="nb-inner">
-        <Link to="/dashboard" className="nb-logo">
-          <img src="/Logo.png" alt="ArogyaMitra" className="nb-logo-img" />
-          <div>
-            <div className="nb-logo-name">ArogyaMitra</div>
-            <div className="nb-logo-sub">Your AI Health Companion</div>
-          </div>
-        </Link>
-        <nav className="nb-links">
+        <div className="nb-left">
+          <button className="nb-mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+          <Link to="/dashboard" className="nb-logo">
+            <img src="/Logo.png" alt="ArogyaMitra" className="nb-logo-img" />
+            <div>
+              <div className="nb-logo-name">ArogyaMitra</div>
+              <div className="nb-logo-sub">Your AI Health Companion</div>
+            </div>
+          </Link>
+        </div>
+        <nav className={`nb-links ${isMenuOpen ? 'nb-links-mobile-open' : ''}`}>
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
@@ -36,6 +43,7 @@ function Navbar() {
                 key={link.path}
                 to={link.path}
                 className={`nb-link ${isActive ? "nb-link-active" : ""}`}
+                onClick={() => setIsMenuOpen(false)}
               >
                 <span className="nb-link-icon">{link.icon}</span>
                 {link.name}
@@ -53,7 +61,7 @@ function Navbar() {
           <div className="nb-divider" />
           <button className="nb-logout" onClick={handleLogout} title="Logout">
             <LogOut size={18} />
-            Logout
+            <span className="nb-logout-text">Logout</span>
           </button>
         </div>
       </div>
