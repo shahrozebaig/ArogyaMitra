@@ -1,50 +1,44 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from database import get_db
 from schemas.nutrition_schema import NutritionGenerateRequest, NutritionResponse
 from services.nutrition_service import generate_nutrition
-router = APIRouter()
-from models.nutrition_model import NutritionPlan
-from models.health_model import HealthProfile
 import datetime
+import json
+from utils.jwt_handler import get_current_user_id
+router = APIRouter()
 @router.get("/current", response_model=NutritionResponse | None)
-def get_current_nutrition(db: Session = Depends(get_db)):
-    user_id = 1
+async def get_current_nutrition(db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
     today = datetime.date.today().isoformat()
-    nutrition = db.query(NutritionPlan).filter(NutritionPlan.user_id == user_id).order_by(NutritionPlan.id.desc()).first()
-    if not nutrition or nutrition.created_at != today:
-        health = db.query(HealthProfile).filter(HealthProfile.user_id == user_id).order_by(HealthProfile.id.desc()).first()
+    nutrition = await db.nutrition.find_one({"user_id": user_id}, sort=[("_id", -1)])
+    if not nutrition or nutrition.get("created_at") != today:
+        health = await db.health_profiles.find_one({"user_id": user_id}, sort=[("_id", -1)])
         if health:
             payload = {
-                "age": health.age,
-                "height": health.height,
-                "weight": health.weight,
-                "fitness_goal": health.fitness_goal,
-                "fitness_level": health.fitness_level,
-                "diet_type": health.dietary_preference or "Vegetarian",
-                "allergies": health.allergies or "None",
+                "age": health.get("age"),
+                "height": health.get("height"),
+                "weight": health.get("weight"),
+                "fitness_goal": health.get("fitness_goal"),
+                "fitness_level": health.get("fitness_level"),
+                "diet_type": health.get("dietary_preference") or "Vegetarian",
+                "calories": 2000,
+                "allergies": health.get("allergies") or "None",
                 "current_day": datetime.datetime.now().strftime("%A")
             }
-            nutrition = generate_nutrition(db, user_id, payload)
+            nutrition = await generate_nutrition(db, user_id, payload)
+    if nutrition:
+        nutrition["id"] = str(nutrition.pop("_id")) if "_id" in nutrition else nutrition.get("id")
     return nutrition
 @router.post("/generate", response_model=NutritionResponse)
-def generate(data: NutritionGenerateRequest, db: Session = Depends(get_db)):
-    user_id = 1
-    import datetime
+async def generate(data: NutritionGenerateRequest, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
     payload = data.dict()
     payload["current_day"] = datetime.datetime.now().strftime("%A")
-    nutrition = generate_nutrition(
-        db,
-        user_id,
-        payload
-    )
+    nutrition = await generate_nutrition(db, user_id, payload)
     return nutrition
 @router.post("/update")
-def update_nutrition_plan(data: dict, db: Session = Depends(get_db)):
-    user_id = 1
-    import json
-    nutrition = db.query(NutritionPlan).filter(NutritionPlan.user_id == user_id).order_by(NutritionPlan.id.desc()).first()
-    if nutrition:
-        nutrition.plan_json = json.dumps(data.get("plan_json"))
-        db.commit()
+async def update_nutrition_plan(data: dict, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
+    await db.nutrition.find_one_and_update(
+        {"user_id": user_id},
+        {"$set": {"plan_json": json.dumps(data.get("plan_json"))}},
+        sort=[("_id", -1)]
+    )
     return {"status": "success"}
