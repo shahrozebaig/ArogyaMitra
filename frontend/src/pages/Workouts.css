@@ -516,13 +516,13 @@
   }
 
   .wo-root {
-    padding: 1.5rem 1.2rem 4rem;
+    padding: 1.5rem 1rem 5rem;
   }
 }
 
 @media (max-width: 640px) {
   .wo-week-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .wo-header {

@@ -807,10 +807,45 @@
   }
 }
 
+@media (max-width: 900px) {
+  .nt-root {
+    padding: 1.5rem 1rem 5rem;
+  }
+
+  .nt-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .nt-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .nt-sidebar-card {
+    position: static;
+  }
+
+  .nt-week-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .nt-week-right {
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .nt-modal-simple {
     width: 95%;
     max-height: 90vh;
+    margin: 10px;
   }
 
   .nt-modal-header {
@@ -819,5 +854,9 @@
 
   .nt-modal-content-simple {
     padding: 1.5rem;
+  }
+
+  .nt-meal-card {
+    padding: 1rem;
   }
 }

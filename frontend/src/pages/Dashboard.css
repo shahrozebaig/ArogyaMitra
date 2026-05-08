@@ -13,6 +13,7 @@
   font-family: 'Inter', sans-serif;
   background: #f0fdf4;
   height: calc(100vh - 68px);
+  height: calc(100dvh - 68px);
   display: flex;
   flex-direction: column;
   padding: 1.8rem 2.5rem 1.8rem;
@@ -360,11 +361,19 @@
   .db-root {
     height: auto;
     overflow: auto;
-    padding: 1.5rem 1.2rem 5rem;
+    padding: 1.5rem 1rem 5rem;
+  }
+
+  .db-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 2rem;
   }
 
   .db-grid {
     grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
   }
 
   .db-plans-grid {

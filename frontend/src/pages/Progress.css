@@ -410,28 +410,9 @@
 }
 
 
-@media (max-width: 1024px) {
-  .pg-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .pg-card-right {
-    width: 100%;
-    justify-content: space-between;
-    border-top: 1px solid #f3f4f6;
-    pt: 1rem;
-  }
-
-  .pg-stat-box {
-    text-align: left;
-  }
-}
-
 @media (max-width: 640px) {
   .pg-root {
-    padding: 1.5rem 1.2rem 4rem;
+    padding: 1rem 1rem 4rem;
   }
 
   .pg-header {
@@ -451,5 +432,24 @@
 
   .pg-info {
     width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pg-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .pg-card-right {
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 1rem;
+  }
+
+  .pg-stat-box {
+    text-align: left;
   }
 }
