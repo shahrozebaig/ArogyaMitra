@@ -1,4 +1,4 @@
-import { Bot, SendHorizontal, Trash2, Plus, MessageSquare, Menu, X } from "lucide-react";
+import { Bot, SendHorizontal, Trash2, Plus, MessageSquare, Menu, X, MoreHorizontal } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import API from "../api/axios";
 import useUserStore from "../store/userStore";
@@ -17,6 +17,8 @@ function AICoach() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
+  const [menuOpenId, setMenuOpenId] = useState(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const scrollRef = useRef(null);
 
   const getGreeting = () => {
@@ -123,11 +125,6 @@ function AICoach() {
       setLoading(false);
     }
   };
-  const suggestions = [
-    "Give me a 15-min home workout",
-    "Best exercises for back pain",
-    "Simple healthy breakfast ideas"
-  ];
   if (!activeSession) return <div className="ac-loading-screen">Initializing Coach...</div>;
   return (
     <div className="ac-root">
@@ -162,14 +159,49 @@ function AICoach() {
             >
               <MessageSquare size={16} className="ac-history-icon" />
               <span className="ac-history-title">{s.title}</span>
-              <button className="ac-history-delete" onClick={(e) => deleteSession(e, s.id)}>
-                <Trash2 size={14} />
-              </button>
+              <div className="ac-history-actions" style={{ position: 'relative' }}>
+                <button 
+                  className="ac-history-more" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMenuOpenId(menuOpenId === s.id ? null : s.id);
+                  }}
+                >
+                  <MoreHorizontal size={16} />
+                </button>
+                {menuOpenId === s.id && (
+                  <div className="ac-history-menu">
+                    <button onClick={(e) => {
+                      e.stopPropagation();
+                      setConfirmDeleteId(s.id);
+                      setMenuOpenId(null);
+                    }}>
+                      <Trash2 size={14} /> Delete
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
       </div>
       <div className="ac-main" style={{ position: 'relative' }}>
+        {confirmDeleteId && (
+          <div className="ac-modal-overlay">
+            <div className="ac-modal">
+              <h3 className="ac-modal-title">Delete Conversation</h3>
+              <p className="ac-modal-desc">Are you sure you want to permanently delete this conversation? This action cannot be undone.</p>
+              <div className="ac-modal-actions">
+                <button className="ac-modal-cancel" onClick={() => setConfirmDeleteId(null)}>Cancel</button>
+                <button className="ac-modal-confirm" onClick={(e) => {
+                  deleteSession(e, confirmDeleteId);
+                  setConfirmDeleteId(null);
+                  addToast("Conversation deleted", "info");
+                }}>Permanently Delete</button>
+              </div>
+            </div>
+          </div>
+        )}
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -190,11 +222,7 @@ function AICoach() {
             <Menu size={20} />
           </button>
           <h2 className="ac-current-title">{activeSession.title}</h2>
-          <button className="ac-menu-btn" onClick={(e) => {
-            if(window.confirm('Delete this conversation?')) deleteSession(e, activeId);
-          }}>
-            <Trash2 size={18} color="#ef4444" />
-          </button>
+          <div style={{ width: 40 }}></div>
         </div>
         <div ref={scrollRef} className="ac-messages custom-scrollbar" style={{ position: 'relative', zIndex: 1 }}>
           {activeSession.messages.map((msg, i) => (
@@ -218,15 +246,6 @@ function AICoach() {
           )}
         </div>
         <div className="ac-footer" style={{ position: 'relative', zIndex: 1 }}>
-          {activeSession.messages.length < 3 && !loading && (
-            <div className="ac-suggestions">
-              {suggestions.map((s, i) => (
-                <button key={i} className="ac-suggestion-btn" onClick={() => handleSend(s)}>
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
           <div className="ac-input-wrapper">
             <input
               type="text"
