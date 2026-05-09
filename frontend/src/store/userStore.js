@@ -7,7 +7,12 @@ const useUserStore = create((set) => ({
   setUser: (user, token) => {
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", token);
-    set({ user, token });
+    if (user.profile_image) {
+      localStorage.setItem("arogya_profile_image", user.profile_image);
+      set({ user, token, profileImage: user.profile_image });
+    } else {
+      set({ user, token });
+    }
   },
   setProfileImage: (img) => {
     localStorage.setItem("arogya_profile_image", img);

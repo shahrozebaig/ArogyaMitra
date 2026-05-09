@@ -30,10 +30,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap; /* Allow wrapping */
 }
 
 .ha-title-green {
-  color: #d97706;
+  color: #22c55e;
 }
 
 .ha-subtitle {
@@ -164,14 +165,52 @@
 
 @media (max-width: 640px) {
   .ha-root {
-    padding: 1.5rem 1.2rem;
+    padding: 1.25rem 1rem 6rem;
+  }
+
+  .ha-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .ha-title {
+    font-size: 1.8rem; /* Smaller on mobile */
+    gap: 8px;
+  }
+
+  .ha-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .ha-subtitle {
+    font-size: 0.85rem;
   }
 
   .ha-card {
-    padding: 1.5rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: 24px;
+  }
+
+  .ha-card-title {
+    font-size: 1.15rem;
   }
 
   .ha-inputs-grid {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .ha-input,
+  .ha-select,
+  .ha-textarea {
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  .ha-submit-btn {
+    padding: 1.1rem;
+    font-size: 1rem;
+    border-radius: 16px;
   }
 }

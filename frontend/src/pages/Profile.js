@@ -86,13 +86,20 @@ function Profile() {
   const handleSaveCrop = async () => {
     try {
       const croppedImage = await getCroppedImg(imageToCrop, croppedAreaPixels);
+      
+      // Save to local store
       setProfileImage(croppedImage);
+      
+      // Save to backend
+      await API.post("/auth/update-profile-image", { profile_image: croppedImage });
+      
       if (fileInputRef.current) fileInputRef.current.value = null;
       setShowCropModal(false);
       setImageToCrop(null);
+      addToast("Profile picture updated!");
     } catch (e) {
       console.error(e);
-      addToast("Failed to crop image", "error");
+      addToast("Failed to save profile picture", "error");
     }
   };
   const [showResetModal, setShowResetModal] = useState(false);
