@@ -34,14 +34,14 @@ function Nutrition() {
       }
 
       const res = await API.post("/nutrition/generate", {
-        age: profile?.age || 25,
-        height: profile?.height || 170,
-        weight: profile?.weight || 70,
-        fitness_goal: profile?.fitness_goal || "Stay Fit",
-        fitness_level: profile?.fitness_level || "Beginner",
-        diet_type: (profile?.dietary_preference || "Vegetarian") + ". IMPORTANT INSTRUCTION: For the afternoon snack, you MUST provide a combination of a healthy solid Snack AND a healthy Drink/Beverage.",
-        allergies: profile?.allergies || "None",
-        medical_conditions: profile?.medical_conditions || "None",
+        age: profile.age,
+        height: profile.height,
+        weight: profile.weight,
+        fitness_goal: profile.fitness_goal,
+        fitness_level: profile.fitness_level,
+        diet_type: profile.dietary_preference,
+        allergies: profile.allergies,
+        medical_conditions: profile.medical_conditions,
       });
       if (res.data?.plan_json) {
         setPlan(JSON.parse(res.data.plan_json));
@@ -192,7 +192,7 @@ function Nutrition() {
                     <div className="nt-week-meals">
                       {item.meals.map((meal, j) => (
                         <div key={j} className="nt-week-meal">
-                          <span className="nt-week-meal-type">{["Breakfast", "Lunch", "Snacks + Drinks", "Dinner", "Late Snack"][j] || "Snack"}</span>
+                          <span className="nt-week-meal-type">{["Breakfast", "Lunch", "Snack", "Dinner"][j] || "Snack"}</span>
                           <span className="nt-week-meal-name">{meal}</span>
                         </div>
                       ))}

@@ -261,10 +261,9 @@ function Profile() {
             <div className="pr-input-group">
               <label className="pr-label">AI Coach Voice (Male/Female)</label>
               <select 
-                className="pr-input" 
+                className="pr-input pr-select" 
                 value={preferredVoice || ""} 
                 onChange={(e) => setPreferredVoice(e.target.value)}
-                style={{ background: '#374151', color: '#fff', cursor: 'pointer' }}
               >
                 <option value="">Default System Voice</option>
                 {voices

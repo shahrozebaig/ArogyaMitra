@@ -80,10 +80,10 @@ def nutrition_prompt(data: dict) -> str:
     Return a valid JSON object with the following structure:
     {{
       "today": [
-        {{ "type": "Breakfast/Lunch/Dinner/Snack", "time": "String", "name": "String", "calories": Number, "protein": Number, "carbs": Number, "fat": Number, "ingredients": ["String"], "image": "Emoji" }}
+        {{ "type": "Breakfast/Lunch/Snack/Dinner", "time": "String", "name": "String", "calories": Number, "protein": Number, "carbs": Number, "fat": Number, "ingredients": ["String"], "image": "Emoji" }}
       ],
       "week": [
-        {{ "day": "String", "meals": ["String"], "today": Boolean }}
+        {{ "day": "String", "meals": ["String (Breakfast)", "String (Lunch)", "String (Snack)", "String (Dinner)"], "today": Boolean }}
       ],
       "shoppingList": [
         {{ "name": "String", "bought": false }}
