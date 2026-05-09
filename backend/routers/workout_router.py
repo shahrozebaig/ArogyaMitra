@@ -9,7 +9,16 @@ router = APIRouter()
 async def get_current_workout(db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
     today = datetime.date.today().isoformat()
     workout = await db.workouts.find_one({"user_id": user_id}, sort=[("_id", -1)])
-    if not workout or workout.get("created_at") != today:
+    is_valid = False
+    if workout and workout.get("created_at"):
+        try:
+            created_date = datetime.date.fromisoformat(workout.get("created_at"))
+            today_date = datetime.date.today()
+            if (today_date - created_date).days < 7:
+                is_valid = True
+        except:
+            pass
+    if not workout or not is_valid:
         health = await db.health_profiles.find_one({"user_id": user_id}, sort=[("_id", -1)])
         if health:
             payload = {

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from database import get_db
-from schemas.user_schema import UserRegister, UserLogin, UserResponse, ProfileImageUpdate
+from schemas.user_schema import UserRegister, UserLogin, UserResponse, ProfileImageUpdate, UserUpdate
 from services.auth_service import register_user, login_user
 from utils.jwt_handler import get_current_user_id
 from bson import ObjectId
@@ -31,7 +31,6 @@ async def delete_account(user_id: str, db = Depends(get_db)):
         pass
     await db.users.delete_one(query)
     return {"status": "success", "message": "Account deleted permanently"}
-
 @router.post("/update-profile-image")
 async def update_profile_image(data: ProfileImageUpdate, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
     query = {"_id": user_id}
@@ -39,6 +38,21 @@ async def update_profile_image(data: ProfileImageUpdate, db = Depends(get_db), u
         query = {"_id": ObjectId(user_id)}
     except:
         pass
-    
     await db.users.update_one(query, {"$set": {"profile_image": data.profile_image}})
     return {"status": "success", "profile_image": data.profile_image}
+@router.post("/update-profile")
+async def update_profile(data: UserUpdate, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
+    query = {"_id": user_id}
+    try:
+        query = {"_id": ObjectId(user_id)}
+    except:
+        pass
+    update_data = {}
+    if data.name: update_data["name"] = data.name
+    if data.email: update_data["email"] = data.email
+    if update_data:
+        await db.users.update_one(query, {"$set": update_data})
+    updated_user = await db.users.find_one(query)
+    if updated_user:
+        updated_user["id"] = str(updated_user.pop("_id"))
+    return {"status": "success", "user": updated_user}

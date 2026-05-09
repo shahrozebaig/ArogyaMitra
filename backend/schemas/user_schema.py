@@ -6,9 +6,11 @@ class UserRegister(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+class UserUpdate(BaseModel):
+    name: str | None = None
+    email: EmailStr | None = None
 class ProfileImageUpdate(BaseModel):
     profile_image: str
-
 class UserResponse(BaseModel):
     id: str
     name: str

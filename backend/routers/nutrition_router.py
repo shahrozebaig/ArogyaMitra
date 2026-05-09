@@ -10,7 +10,16 @@ router = APIRouter()
 async def get_current_nutrition(db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
     today = datetime.date.today().isoformat()
     nutrition = await db.nutrition.find_one({"user_id": user_id}, sort=[("_id", -1)])
-    if not nutrition or nutrition.get("created_at") != today:
+    is_valid = False
+    if nutrition and nutrition.get("created_at"):
+        try:
+            created_date = datetime.date.fromisoformat(nutrition.get("created_at"))
+            today_date = datetime.date.today()
+            if (today_date - created_date).days < 7:
+                is_valid = True
+        except:
+            pass
+    if not nutrition or not is_valid:
         health = await db.health_profiles.find_one({"user_id": user_id}, sort=[("_id", -1)])
         if health:
             payload = {

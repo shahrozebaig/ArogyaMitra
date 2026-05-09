@@ -9,13 +9,9 @@ function AICoach() {
   const profileImage = useUserStore((state) => state.profileImage);
   const preferredVoice = useUserStore((state) => state.preferredVoice);
   const addToast = useToastStore((state) => state.addToast);
-  const [sessions, setSessions] = useState(() => {
-    const saved = localStorage.getItem('arogya_chat_sessions');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [activeId, setActiveId] = useState(() => {
-    return localStorage.getItem('arogya_active_session_id') || null;
-  });
+  const [sessions, setSessions] = useState([]);
+  const [activeId, setActiveId] = useState(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -80,7 +76,24 @@ function AICoach() {
   };
 
   useEffect(() => {
-    if (sessions.length === 0 && user) {
+    const fetchSessions = async () => {
+      try {
+        const res = await API.get("/coach/sessions");
+        if (res.data.sessions && res.data.sessions.length > 0) {
+          setSessions(res.data.sessions);
+          setActiveId(res.data.sessions[0].id);
+        }
+      } catch (err) {
+        console.error("Failed to fetch sessions:", err);
+      } finally {
+        setHasLoaded(true);
+      }
+    };
+    if (user) fetchSessions();
+  }, [user]);
+
+  useEffect(() => {
+    if (hasLoaded && sessions.length === 0 && user) {
       const newId = Date.now().toString();
       const greetingText = `${getGreeting()}, ${user?.name?.split(' ')[0] || "there"}! I'm your AI Coach. How can I help you reach your fitness goals today?`;
       const initialSession = {
@@ -99,11 +112,22 @@ function AICoach() {
       // Start typing effect after a small delay
       setTimeout(() => animateAiMessage(newId, greetingText), 500);
     }
-  }, [user, sessions.length]);
+  }, [user, sessions.length, hasLoaded]);
   useEffect(() => {
+    if (!hasLoaded) return;
+    
+    const syncSessions = async () => {
+      try {
+        await API.post("/coach/sessions/sync", { sessions });
+      } catch (err) {
+        console.error("Failed to sync sessions:", err);
+      }
+    };
+    
+    syncSessions();
     localStorage.setItem('arogya_chat_sessions', JSON.stringify(sessions));
     if (activeId) localStorage.setItem('arogya_active_session_id', activeId);
-  }, [sessions, activeId]);
+  }, [sessions, activeId, hasLoaded]);
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;

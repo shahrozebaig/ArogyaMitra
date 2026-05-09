@@ -107,6 +107,16 @@ function Profile() {
 
   const handleUpdateProfile = async () => {
     try {
+      // 1. Update basic user info (Name)
+      const userRes = await API.post("/auth/update-profile", {
+        name: formData.name
+      });
+      if (userRes.data?.user) {
+        // Sync the store with the new user data (keeps the token)
+        useUserStore.getState().setUser(userRes.data.user, useUserStore.getState().token);
+      }
+
+      // 2. Update health profile
       await API.post("/health/profile/update", {
         age: parseInt(formData.age) || 0,
         height: parseFloat(formData.height) || 0,
