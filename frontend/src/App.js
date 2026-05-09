@@ -13,8 +13,27 @@ import AICoach from "./pages/AICoach";
 import Profile from "./pages/Profile";
 import MainLayout from "./layout/MainLayout";
 import ToastContainer from "./components/ToastContainer";
-
+import { useEffect } from "react";
+import useUserStore from "./store/userStore";
+import API from "./api/axios";
 function App() {
+  const { token, logout, setUser } = useUserStore();
+  useEffect(() => {
+    const verifySession = async () => {
+      if (token) {
+        try {
+          const res = await API.get("/auth/me");
+          if (res.data?.user) {
+            setUser(res.data.user, token);
+          }
+        } catch (err) {
+          console.error("Session verification failed:", err);
+          logout();
+        }
+      }
+    };
+    verifySession();
+  }, [token, logout, setUser]);
   return (
     <Router>
       <ToastContainer />

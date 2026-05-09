@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   Brain, Dumbbell, Utensils, TrendingUp,
-  Heart, Shield
+  Heart
 } from "lucide-react";
 import "./Landing.css";
 function Landing() {
@@ -97,13 +97,6 @@ function Landing() {
                   </div>
                 </div>
                 <div className="h-feat-item">
-                  <div className="h-feat-icon purple"><Heart size={20} /></div>
-                  <div className="h-feat-info">
-                    <h4>Health Assessment</h4>
-                    <p>Know your health better</p>
-                  </div>
-                </div>
-                <div className="h-feat-item">
                   <div className="h-feat-icon blue"><Brain size={20} /></div>
                   <div className="h-feat-info">
                     <h4>AI Coach</h4>
@@ -151,20 +144,6 @@ function Landing() {
                 <h4>Progress Tracking</h4>
               </div>
               <p>Track workouts, nutrition, and overall progress with insightful analytics.</p>
-            </div>
-            <div className="feat-card-v2">
-              <div className="feat-header">
-                <div className="feat-icon pink"><Heart /></div>
-                <h4>Health Assessment</h4>
-              </div>
-              <p>Regular health assessments to monitor your well-being.</p>
-            </div>
-            <div className="feat-card-v2">
-              <div className="feat-header">
-                <div className="feat-icon navy"><Shield /></div>
-                <h4>Secure & Private</h4>
-              </div>
-              <p>Your data is safe with enterprise grade security and privacy.</p>
             </div>
           </div>
         </div>

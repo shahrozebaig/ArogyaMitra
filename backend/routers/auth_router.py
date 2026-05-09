@@ -33,18 +33,20 @@ async def delete_account(user_id: str, db = Depends(get_db)):
     return {"status": "success", "message": "Account deleted permanently"}
 @router.post("/update-profile-image")
 async def update_profile_image(data: ProfileImageUpdate, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
-    query = {"_id": user_id}
+    query = {"$or": [{"_id": user_id}]}
     try:
-        query = {"_id": ObjectId(user_id)}
+        query["$or"].append({"_id": ObjectId(user_id)})
     except:
         pass
-    await db.users.update_one(query, {"$set": {"profile_image": data.profile_image}})
+    result = await db.users.update_one(query, {"$set": {"profile_image": data.profile_image}})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
     return {"status": "success", "profile_image": data.profile_image}
 @router.post("/update-profile")
 async def update_profile(data: UserUpdate, db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
-    query = {"_id": user_id}
+    query = {"$or": [{"_id": user_id}]}
     try:
-        query = {"_id": ObjectId(user_id)}
+        query["$or"].append({"_id": ObjectId(user_id)})
     except:
         pass
     update_data = {}
@@ -55,4 +57,18 @@ async def update_profile(data: UserUpdate, db = Depends(get_db), user_id: str = 
     updated_user = await db.users.find_one(query)
     if updated_user:
         updated_user["id"] = str(updated_user.pop("_id"))
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
     return {"status": "success", "user": updated_user}
+@router.get("/me")
+async def get_me(db = Depends(get_db), user_id: str = Depends(get_current_user_id)):
+    query = {"$or": [{"_id": user_id}]}
+    try:
+        query["$or"].append({"_id": ObjectId(user_id)})
+    except:
+        pass    
+    user = await db.users.find_one(query)
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+    user["id"] = str(user.pop("_id"))
+    return {"user": user}
