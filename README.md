@@ -18,6 +18,8 @@ Through continuous tracking and adaptive recommendations, ArogyaMitra empowers u
 maintain consistency, improve overall wellness, and stay motivated using gamified charity
 contributions linked to fitness achievements.
 
+https://github.com/user-attachments/assets/df44d05a-fc7c-47bc-9e79-292641850611
+
 ---
 
 ## Technology Stack
@@ -69,7 +71,6 @@ contributions linked to fitness achievements.
 We migrated from SQLite to MongoDB Atlas to solve critical data persistence and scalability challenges. On cloud platforms like Render, SQLite databases are reset every time the server restarts, causing all user data to be lost. By switching to MongoDB Atlas (a cloud NoSQL database), we ensured that user profiles, workout plans, and health data are stored permanently and securely. MongoDB’s flexible document structure also allows us to handle complex AI-generated JSON plans much more efficiently than traditional SQL tables, making the application faster and more reliable for production use.
 
 ---
-
 
 ## Conclusion
 
